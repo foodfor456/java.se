@@ -52,7 +52,7 @@ public class Ex3_Scanner3 {
 		int num3 = scan.nextInt();
 		char ch1 = scan.next().charAt(0);
 		int num4 = scan.nextInt();
-		System.out.println("" + num3 + ch1 + num4);
+		System.out.println(num3 + ch1 + num4);
 
 		
 		

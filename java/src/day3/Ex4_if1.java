@@ -20,7 +20,7 @@ public class Ex4_if1 {
 		int ba = num1 + num2; 
 		int ba2 = num1 - num2;
 		int ba3 = num1 * num2;
-		double ba4 = 1.0 * num1 / num2;
+		int ba4 = num1 / num2;
 		int ba5 = num1 % num2;
 				
 		if (ch == '+') {
