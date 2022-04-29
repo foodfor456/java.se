@@ -42,9 +42,31 @@ public class Ex11_BaseballGame {
 		user2 = scan.nextInt();
 		user3 = scan.nextInt();
 		
-		while(s<3) {
+		
+		for(s=0; s+b==3; s++) {
+			if(com1==user1 || com2==user2 || com3==user3) {
+			}
+		for(b=0; s+b==3; b++) {
+			if(com1==user2 || com1==user3 || com2==user3 ||com2==user1 || com3==user1 || com3==user2){		
+			}
+		}
+		for(;s==0 && b==0;) {
+		System.out.println("O");
+		break;
+		}
+		
+		}
+		System.out.println(s+"S"+b+"B");
+		
+		
+		
+		/*
+		while(s<3){
 			//정수 3개를 입력 받음
-			
+			System.out.println("1~9사이의 정수를 중복되지 않게 입력하세요(예 : 1 2 3) : ");
+			user1 = scan.nextInt();
+			user2 = scan.nextInt();
+			user3 = scan.nextInt();
 			
 			//s와 b를 각각 0으로 초기화;
 			s=0;
@@ -75,10 +97,12 @@ public class Ex11_BaseballGame {
 			}
 			if(s == 0 && b == 0) {
 				System.out.println("O");
-				break;
 			}
+			System.out.println();
+			
 		}
-		System.out.println();
+			*/
+		
 			//com1과 user1이 같으면 s를 1증가
 		/*	if (com1==user1 || com2==user2 || com3==user3) {
 				s++;
@@ -106,25 +130,8 @@ public class Ex11_BaseballGame {
 				break;
 			}
 		}
-		System.out.println();
-		
-		
-		
-		for(s=0; s<3; s++) {
-			if(com1==user1 || com2==user2 || com3==user3) {
-			}
-		for(b=0; b<=3; b++) {
-			if(com1==user2 || com1==user3 || com2==user3 ||com2==user1 || com3==user1 || com3==user2){		
-			}
-		}
-		for(;s==0 && b==0;) {
-		System.out.println("O");
-		break;
-		}
-		
-		}
-		System.out.println(s+"S"+b+"B");
 		*/
+		
 		
 		
 		
