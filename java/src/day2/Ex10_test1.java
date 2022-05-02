@@ -12,7 +12,7 @@ public class Ex10_test1 {
 		int num = 4;
 				
 		
-		System.out.println(num + "는 짝수인가?" + ((num % 2) == 0.0));
+		System.out.println(num + "는 짝수인가?" + ((num % 2) == 0));
 		/* num가 짝수이면 num는 짝수라고 출력하고,
 		 * num가 짝수가 아니면 num는 홀수라고 출력하도록 코드를 작성하세요
 		 * */
