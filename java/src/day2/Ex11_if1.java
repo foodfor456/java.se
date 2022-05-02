@@ -17,11 +17,13 @@ public class Ex11_if1 {
 		 * 	 
 		 * */
 		
-		if(false) {
+		//if(false) 
+		int num2 = 4;
+		if(num2 % 2 == 0){
 			System.out.println("참입니다.");
 		}
 		
-		int num = 2;
+		int num = 4;
 		if(num % 2 ==0){
 			System.out.println("짝수");
 		}
