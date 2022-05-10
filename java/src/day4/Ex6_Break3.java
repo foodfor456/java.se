@@ -15,18 +15,14 @@ public class Ex6_Break3 {
 		Scanner scan = new Scanner(System.in);
 		
 		
-		int i = 0 ;
 		System.out.println("정수를 입력하세요 : ");
 		int i1 = scan.nextInt();
 		System.out.println("정수를 입력하세요 : ");
 		int i2 = scan.nextInt();
-		
-		for( ; i <= i1 * i2 ; i += i1) {
-			
-			if(i % i1  == 0 && i % i2 == 0) {
-				
-				System.out.println("최소 공배수는 : " + i);
-			
+		int i = i1;
+		for( ; i1 <= i1*i2 ; i += i1) {
+			if(i % i1 ==0 && i % i2 == 0) {
+			System.out.println("최소 공배수는 : " + i);
 			break;
 			}	
 		}
