@@ -1,0 +1,52 @@
+package day20;
+
+public class Ex02_Thread1 {
+
+	public static void main(String[] args) {
+		//Test1 t1 = new Test1();
+		//
+		//Thread th1 = new Thread(t1);
+		Thread th1 = new Thread(new Test1());
+		th1.setPriority(Thread.MAX_PRIORITY);//정수 10과 같음 // priority 1~10사이의 정수 우선순위
+		th1.start();
+		
+		Thread th2 = new Test2();
+		th2.setPriority(Thread.MIN_PRIORITY);//정수 1과 같음
+		th2.start();
+		Thread th3 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				for(int i = 0; i < 10000; i++) {
+					System.out.println("@");
+				}
+			}
+		});
+		th3.start();
+		for(int i = 0; i < 10000; i ++) {
+			System.out.println("|");
+		}
+		
+	}
+
+}
+class Test1 implements Runnable{
+
+	@Override
+	public void run() {
+		for(int i = 0; i < 10000; i++) {
+			System.out.println("-");
+		}
+	}
+}
+//Thread 클래스를 상속받은 자식클래스를 이용하는 방법.
+class Test2 extends Thread{
+	
+	@Override
+	public void run() {
+		for(int i = 0; i < 10000; i++) {
+			System.out.println("*");
+		}
+	}
+	
+	
+}
