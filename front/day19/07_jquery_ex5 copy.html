@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>증감 버튼 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.container{
+			margin: 50px; width: 200px;
+			content: ''; display: block; clear: both;
+			text-align: center; line-height: 30px;
+		}
+		.btn-m{
+			float: left; width: 30px; height: 30px; 
+		}
+		.btn-p{
+			float: right; width: 30px; height: 30px; 
+		}
+	</style>
+</head>
+<body>
+	
+		<button class="btn btn-prev"> < </button>
+		<button class="btn btn-next"> > </button>
+		<span class="num">1</span>
+	<script>
+		$(function(){
+			$('.btn-prev').click(function(){
+				var num = $('.num').text();
+				num = parseInt(num);
+				num = num - 1;
+				$('.num').text(num);
+			})
+			$('.btn-next').click(function(){
+				var num = $('.num').text();
+				num = parseInt(num);
+				num = num + 1;
+				$('.num').text(num);
+			})
+		})
+	</script>
+</body>
+</html>

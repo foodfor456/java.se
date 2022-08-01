@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="../js/jquery.js"></script>
+	
+</head>
+<body>
+	<div class="text" data-target=".ck"></div>
+	<input type="checkbox" class="ck" value="축구">축구
+	<input type="checkbox" class="ck" value="농구">농구
+	<input type="checkbox" class="ck" value="야구">야구
+	<input type="checkbox" class="ck" value="음악감상">음악감상
+	<input type="checkbox" class="ck" value="영화감상">영화감상
+	<script>
+		$(function(){
+			var arr = [];
+			$('.ck').click(function(){
+				// 체크박스가 체크되면
+				// 현재 체크된 체크박스 갯수
+				var count = $('.ck').filter(':checked').length;
+				var index = arr.indexOf($(this).val());
+				if(count > 2){
+					// 체크된 개수가 2개가 넘으면 알림창을 띄우고,
+					// 마지막에 체크된 체크박스의 체크를 해제 (현재 클릭된 체크박스)
+					$(this).prop('checked', false);
+					arr.splice(index, 1);
+					alert('두개까지 체크 가능합니다.')
+				}
+				else if($(this).is(':checked')){
+					arr.push($(this).val());
+					$('.text').text(arr);
+				}
+				else{
+					console.log(12);
+					arr.splice(index, 1);
+					$('.text').text(arr);
+				}
+			})
+		})
+		/*$(function(){
+			$('.fruit').click(function(){
+				var val = $(this).val();
+					if($(this).prop('checked')){
+					arr.push(val);
+				}else{
+					var index = arr.indexOf(val);
+					arr.splice(index, 1);
+				}
+				$('.text-box').text(arr.join(','));
+				})
+				*/
+	</script>
+</body>
+</html>

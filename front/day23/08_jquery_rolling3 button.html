@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>롤링 버튼</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		*{	padding: 0; margin: 0; list-style: none; }
+		.view{
+				margin: 30px; height: 50px; width: 300px;
+				border: 1px solid black;
+			}
+		.list{
+			width: 500%; height: 100%;
+		}
+		.item{
+			width: 300px; height: 50px; background-color: yellow;
+			float: left;
+		}
+		.btn{
+			color: none; margin: 20px; width: 50px; font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<button class="btn btn1">위</button>
+	<button class="btn btn2">아래</button>
+	<button class="btn btn3">왼쪽</button>
+	<button class="btn btn4">오른쪽</button>
+	<div class="view">
+		<ul class="list">
+			<li class="item">1</li>
+			<li class="item">2</li>
+			<li class="item">3</li>
+			<li class="item">4</li>
+			<li class="item">5</li>
+		</ul>
+	</div>
+	<script>
+		$(function(){
+			if(!$('.item').first().is(':animated') && !$('.view').is(':hover')){
+				$('.btn').click(function(){
+				let btn = $(this).prop('class');
+				let width = -$('.item').first().width() + 'px';
+				let height = -$('.item').first().height() + 'px';
+				console.log(btn);
+				
+					if(btn == 'btn btn1'){
+					console.log(btn);
+					}
+					if(btn == 'btn btn2'){
+						console.log(btn);
+					}
+					if(btn == 'btn btn3'){
+						console.log(btn);
+					}
+					if(btn == 'btn btn4'){
+						setInterval(() => {
+					$('.item').last().detach().prependTo('.list').css('margin-right', width).animate({
+								'margin-right' : '0px'
+							},1200)
+						}, 1500)
+					}
+					return;
+			
+			})
+		}
+		})
+
+								/*$('.item').first().animate(
+							// 애니메이션을 적용할 속성과 값
+							{'margin-top' : height},
+							// 애니메이션 동작 시간
+							1200,
+							function(){
+								$(this).detach()
+											.removeAttr('style')
+											.appendTo('.list');
+						}
+					)*/
+	</script>
+</body>
+</html>

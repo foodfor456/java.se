@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>메뉴 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		*{	padding: 0; margin: 0;}
+		ul,ol{	list-style: none;}
+		a{	text-decoration: none;}
+		.item-menu{
+			float: left; width: calc(100%/3);
+		}
+		.link-menu{
+			border: 2px solid black; display: block; text-align: center;
+		}
+		.list-menu[class |= "link"]:hover{
+			background-color: aliceblue;
+		}
+		/* 서브 메뉴 */
+		.list-sub-menu{
+			display: none;
+		}
+		item-sub-menu{
+			margin-top: -2px;
+		}
+		.link-sub-menu{
+			border: 2px solid black; display: block;
+		}
+	</style>
+</head>
+<body>
+	<nav>
+		<ul class="list-menu">
+			<li class="item-menu">
+				<a href="#" class="link-menu">메뉴1</a>
+				<ul class="list-sub-menu">
+					<li class="item-sub-menu">
+						<a href="" class="link-sub-menu">메뉴1-1</a>
+					</li>
+					<li class="item-sub-menu">
+						<a href="" class="link-sub-menu">메뉴1-2</a>
+					</li>
+				</ul>
+			</li>
+			<li class="item-menu">
+				<a href="#" class="link-menu">메뉴2</a>
+				<ul class="list-sub-menu">
+					<li class="item-sub-menu">
+						<a href="" class="link-sub-menu">메뉴2-1</a>
+					</li>
+					<li class="item-sub-menu">
+						<a href="" class="link-sub-menu">메뉴2-2</a>
+					</li>
+				</ul>
+			</li>
+			<li class="item-menu">
+				<a href="#" class="link-menu">메뉴3</a>
+				<ul class="list-sub-menu">
+					<li class="item-sub-menu">
+						<a href="" class="link-sub-menu">메뉴3-1</a>
+					</li>
+					<li class="item-sub-menu">
+						<a href="" class="link-sub-menu">메뉴3-2</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+	<script>
+		$('.item-menu').hover(function(){
+			$(this).children('.list-sub-menu').stop().slideToggle(1000);
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="../js/jquery.js"></script>
+	<script src="../day27/01_ex1.js"></script>
+</head>
+<body>
+	<input type="text">
+	<script>
+		$('input').change(function(){
+			console.log(123);
+		})
+		function obj(값, 메소드){
+			this.속성명 = 값;
+			this.ab = 메소드;
+			// this.메소드명 = 메소드;
+		}
+		let obj1 = new obj(1, function(){
+			console.log(123);
+		})
+		obj1.ab();
+		let inputs = document.getElementsByTagName('input');
+		console.log(inputs[0].value);
+		console.log(inputs.value); // 잘못됨
+		inputs[0].value = 1;
+		inputs[0].style.color = 'red';
+		inputs[0].style.backgroundColor = 'yellow';
+		setInterval(() => {
+			console.log(1)
+		}, 1000);
+		console.log('인터벌');
+	</script>
+	
+</body>
+</html>

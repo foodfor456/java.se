@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>달력 예제</title>
+	<script src="../js/jquery.js"></script>
+</head>
+<body>
+	<select class="month">
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+		<option>9</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+	</select>
+	<select class="day" name="day">
+		<option value="0">일</option>
+	</select>
+	<script>
+		let dayArray = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+		$('.month').change(function(){
+			let month = parseInt($(this).text());
+			let options = `<option value = "0">일</option>`;
+			console.log($(this).val());
+			for(i = 1; i <= dayArray[month]; i++){
+				options += `<option>${i}</option>`;
+			}
+			$('.day').html(options);
+		})
+	</script>
+</body>
+</html>

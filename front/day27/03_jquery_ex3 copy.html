@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.box{
+			width: 150px; height: 150px;
+			background-color: orange; display: none;
+		}
+	</style>
+</head>
+<body>
+		<button class="btn" onclick="box1(1)">클릭</button>
+		<div class="box a">
+			<a href="#" class="link" onclick="box1(2)">X</a>
+		</div>
+
+	<script>
+		/*
+		 1. 필요한 요소를 추가
+		 2. 스타일을 적용하여 꾸미기
+		 3. jquery.js 파일을 연경
+		 4. 요소를 선택하여 이벤트를 등록
+			- 요소 : 버튼 => 클래스가 btn인 요소 => .btn
+			- 이벤트 : 클릭 => click
+			$('선택자').이벤트명(function(){
+			
+			})
+		 5. 이벤트 기능 구현
+		  - 클래스명이 box인 요소를 나타나게 해야 함
+				- 요소 : .box
+				- 효과 : show
+		*/
+		function box1(num){
+			switch(num){
+				case 1 : document.getElementsByClassName('box')[0].style.display='block';  break;
+				case 2 : document.getElementsByClassName('box')[0].style.display='none';  break;
+			}
+		}
+	</script>
+</body>
+</html>

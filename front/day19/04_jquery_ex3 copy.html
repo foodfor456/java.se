@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>박스 이동 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.view{	
+			width: 300px; height: 50px; border: 3px solid black;
+		}
+		.container{	width: 600px;}
+		.container::after{	content: ''; display: block; clear: both;}
+		.box{
+			float: left; width: 100px; height: 50px; background-color: yellow;
+		}
+		.box:nth-child(2n){	background-color: gray;}
+	</style>
+</head>
+<body>
+	<button class="btn btn-prev">이전</button>
+	<button class="btn btn-next">다음</button>
+	<div class="view">
+		<div class="container">
+			<div class="box">1</div>
+			<div class="box">2</div>
+			<div class="box">3</div>
+			<div class="box">4</div>
+			<div class="box">5</div>
+			<div class="box">6</div>
+		</div>
+	</div>
+	<script>
+		var min = 1, max = 4;
+		var num = min;
+		$(function(){
+			$('.btn-prev').click(function(){
+				if(num < max){
+					num++;
+				$('.container').animate({'margin-left': '-=100px'}, 500);
+			}
+			})
+			$('.btn-next').click(()=> num > min ? $('.container').animate({'margin-left': '+=100px'}, 500, ()=>num--) : num
+			)
+		})
+	</script>
+</body>
+</html>

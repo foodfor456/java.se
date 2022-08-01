@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+
+
+
+		let arr2 = [1, 2, 3, 4, 5];
+		let num = 7;
+		let index = arr2.indexOf(num);
+		if(index != -1){
+			console.log(num + '의 위치' + index);
+			arr2.splice(index, 1);
+			console.log('arr : ' + arr2);
+		}else{
+			console.log(num + '이 없습니다.');
+		}
+
+
+		let arr = [1, 2, 3, 4, 5];
+		
+		if(arr.indexOf(3) != -1){
+			console.log('3의 위치는  : ' + arr.indexOf(3)+ (' 번지 입니다.'));
+			arr.splice(arr.indexOf(3), 1);
+		}else{
+			console.log('3이 없습니다.');
+		}
+
+		/*
+			arr에 3이 있으면 위치를 출력하고 3을 제거,
+			없으면 없다고 출력.
+		*/
+	</script>
+</body>
+</html>

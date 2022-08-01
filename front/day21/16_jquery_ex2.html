@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>테이블 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.tb{ padding: 10px; width: 300px; height: 50px; 
+			vertical-align: top;}
+		tr{ 
+			text-align: center; display: block;
+			line-height: 50px; font-size: 20px; position: relative;
+			
+			}
+		.ck{
+			margin-right: 5px; 
+		}
+		.tb::after{ content: ''; display: block; clear: both;}
+		
+		
+	</style>
+</head>
+<body>
+	<table class="tb">
+		<tr>
+			<td><input type="checkbox" class="ck ck-m"></td>
+			<th>제목</th>
+			<th>보낸이</th>
+		</tr>
+		<tr>
+			<td><input type="checkbox" class="ck ck-d"></td>
+			<td>시험</td>
+			<td>홍길동</td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" class="ck ck-d"></td>
+			<td>광고입니다</td>
+			<td>광고</td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" class="ck ck-d"></td>
+			<td>시험</td>
+			<td>임꺽정</td>
+		</tr>
+	</table>
+	<script>
+		$(function(){
+			$('.ck-m').click(function(){
+				!$('.ck-d').each(function(){
+					if(!$(this).is(':checked') ){
+						console.log(1);
+						$(this).attr('checked','');
+					}
+					else{
+						console.log(2);
+						$(this).removeAttr('checked','');
+				}
+				})
+			})
+		})
+	</script>
+</body>
+</html>

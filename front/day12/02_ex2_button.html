@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>버튼 예제</title>
+	<style>
+		.btn1{
+			width: 200px; height: 50px;
+			border: 3px solid green; color: green; background-color: #fff;
+			font-size: 13px; vertical-align: top;
+			box-sizing: content-box; padding: 0;
+		}
+		.btn2{
+			width: 200px; height: 50px; display: inline-block;
+			border: 3px solid green; 
+			font-size: 13px; line-height: 50px; text-align: center;
+			text-decoration: none; color: #000;
+		}
+	</style>
+</head>
+<body>
+	<!-- 
+		- button 태크
+			- 글자가 상하, 좌우 가운데 정렬
+			- box-sizing이 border-box
+			- inline-block
+			- 기본 padding이 존재
+		
+		- a태그
+			- inline
+			- box-sizing이 content-box
+			- text-decoration이 underline
+			- color가 -webkit-link 방문 전 파란색 방문 후 보라색
+	 -->
+	<button class="btn1">버튼</button>
+	<a href="#" class="btn2">버튼</a>
+</body>
+</html>

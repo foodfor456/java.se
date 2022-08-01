@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>stop watch</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.box1{
+			width: 200px; height: 50px; border: 2px solid black;
+			text-align: center; padding: 10px; box-sizing: border-box;
+		}
+		.box2{
+			width: 200px; height: 300px; border: 2px solid black;
+			padding: 0px; box-sizing: border-box;
+		}
+		.con{
+			text-align: center;	 width: 200px;
+		}
+		.con::after{
+			content: ''; clear: both; display: block;
+		}
+
+		.btn{
+			width: 98%; margin: 10px 0;
+		}
+		.con>div{ width: 50%; float: left;}
+		.pree{
+			display: block;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="box1">00:00:00</div>
+	<div class="con">
+		<div class="left">
+			<button class="btn btn3">랩</button>
+			<button class="btn btn4">재설정</button>
+		</div>
+		<div class="right">
+			<button class="btn btn1">시작</button>
+			<button class="btn btn2">중지</button>
+		</div>		
+	</div>
+	<div class="box2"></div>
+<script>
+		var ms = 0; // 밀리초
+		var s = 0; // 초
+		var m = 0; // 분
+		var id = null;
+		$(function(){
+			$('.con>div').click(function(){
+				$(this).children().toggle();
+			})
+			$('.btn1').click(function(){
+				if(id == null){
+				id = setInterval(()=>{
+						ms += 10;
+						if(ms == 1000){
+							ms = 0;
+							s++;
+						}
+						if(s == 60){
+							s = 0;
+							m++;
+						}
+						$('.box1').text(getStr(m, s, ms));
+					}, 10);
+				}
+			})
+			$('.btn2').click(function(){
+				clearInterval(id);
+				id = null;
+				$('.left').children.toggle();
+			})
+			$('.btn3').click(function(){
+				if(id != null){
+					var str = 
+					'<div class="lab">' 
+					+ getStr(m, s, ms) +
+					'</div>';
+					$('.box2').prepend(str);
+				}
+				})
+			$('.btn4').click(function(){
+					m = 0;
+					s = 0; 
+					ms = 0;
+					$('.box1').text(getStr(m, s, ms));
+					$('.box2').html('');
+					
+			})
+			$('.left').find('.btn4').hide();
+			$('.right').find('.btn2').hide();
+		})
+		function getStr(m, s, ms){
+			return m + ' : ' + fillZero(s) + '.' + fillZero(ms/10);
+		}
+		function fillZero(num){
+			return num < 10 ? '0'+num : '' + num;
+		}
+		function showBtns(btn3, btn4, btn1, btn2){
+			$('.btn').hide()
+			btn3?$('.btn3').show():'';
+			btn2?$('.btn2').show():'';
+			btn1?$('.btn1').show():'';
+			btn4?$('.btn4').show():'';
+		}
+	</script>
+	
+</body>
+</html>

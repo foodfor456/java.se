@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://kit.fontawesome.com/7a5abb87c2.js" crossorigin="anonymous"></script>
+	<style>
+		.container{	max-width: 600px; height: 50px; padding: 0; margin: 0 auto;
+			content: ''; clear: both; display: block;}
+		.container .box{
+			width: calc(100% / 3); height: 100%; float: left;
+			margin-left: -1px; box-sizing: border-box;
+			border: 1px solid red;
+		}
+		.container .link-icon{ display : none; font-size: 50px;
+			text-align: center; line-height: 50px;}
+		@media (max-width: 600px){
+			.container .box{
+			width: calc(100% / 5); height: 100%;
+			margin-left: -1px;  float: left;
+			border: 1px solid red;
+			}
+			.container .link-icon{	
+			width: calc(100% / 4);
+			height: 100%; float: right; margin-left: -1px; 
+			margin-left: -1px; color: #000;
+			display: block;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="box box1"></div>
+		<div class="box box2"></div>
+		<div class="box box3"></div>
+		<a href="#" class="link-icon"><i class="icon fa-solid fa-bars"></i></a>
+		
+	</div>
+</body>
+</html>

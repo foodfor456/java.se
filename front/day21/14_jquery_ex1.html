@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>버튼 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		ul,ol{	list-style: none;}
+		*{ padding: 0; margin: 0;}
+		.container{
+			height: 100px; width: 300px;
+			background-color: gray; margin: 50px;
+		}
+		.container::after{
+			content: ''; display: block; clear: both;
+		}
+		.list{	text-align: center; line-height: 90px;}
+		.item{
+			border: 1px solid black; box-sizing: border-box;
+			width: 100px; height: 100px; float: left 
+		}
+		.link{	display: block;}
+		.item+.item{	margin-left: -1px;}
+		.bg{ background-color: yellow;}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<ul class="list">
+			<li class="item">
+				<a href="#" class="link">메뉴1</a>
+			</li>
+			<li class="item">
+				<a href="#" class="link">메뉴2</a>
+			</li>
+			<li class="item">
+				<a href="#" class="link">메뉴3</a>
+			</li>
+		</ul>
+	</div>
+	<script>
+		$(function(){
+			$('.link').click(function(){
+				$('.link').removeClass('bg')
+				$(this).addClass('bg')
+			})
+		})
+	</script>
+</body>
+</html>

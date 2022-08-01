@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		*{	margin: 0; padding:0;}
+		.list{
+			width: 300px; height: 100vh;
+			list-style: none; box-sizing:border-box;
+			float: right; position: absolute; right:0; top:0;
+		}
+		.list-link>*{
+			font-size: 20px; text-align: center; line-height:20vh;
+			height: 20vh; box-sizing: border-box;
+			border: 1px solid red;	display:block;
+			margin: -1px; color:red; text-decoration: none;
+			background: #fff;
+		}
+		.list-link>a{
+			margin-right:0; margin-top:0;
+		}
+		.box{
+			width: 5000px; height: 200px;
+			border: 10px solid blue;
+		}
+	</style>
+</head>
+<body>
+	<div class="box"></div>
+	<ul class="list">
+		<li class="list-link"><a href="#">메뉴1</a></li>
+		<li class="list-link"><a href="#">메뉴2</a></li>
+		<li class="list-link"><a href="#">메뉴3</a></li>
+		<li class="list-link"><a href="#">메뉴4</a></li>
+	</ul>
+	
+</body>
+</html>

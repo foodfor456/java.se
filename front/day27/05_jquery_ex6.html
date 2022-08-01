@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>계산 버튼 예제</title>
+	<script src="../js/jquery.js"></script>
+</head>
+<body>
+	<input type="text" class="input-val">
+	<span>+</span>
+	<input type="text" class="input-val">
+	<span>=</span>
+	<input type="text" class="input-val1">
+	<button class="btn">계산</button>
+	<script>
+		$(function(){
+			$('.btn').click(function(){
+				let value = 0;
+				$('.input-val').each(function(){
+					value += parseInt($(this).val());
+				})
+				$('.input-val1').val(value);
+			})
+		})
+	</script>
+</body>
+</html>

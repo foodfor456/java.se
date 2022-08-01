@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>롤링 기능</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		*{	padding: 0; margin: 0; list-style: none; }
+		.view{
+				margin: 30px; height: 50px; width: 300px;
+				border: 1px solid black;
+			}
+		.list{
+			width: 600%; height: 100%;
+		}
+		.item{
+			width: 300px; height: 50px; background-color: yellow;
+			float: left;
+		}
+		.item:nth-child(2n){
+			background-color: skyblue;
+		}
+	</style>
+</head>
+<body>
+	<div class="view">
+		<ul class="list">
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+		</ul>
+	</div>
+	<script>
+		var id = startRolling();
+			$('.view').hover(function(){
+				clearInterval(id);
+			},function(){
+				startRolling();
+			})
+			function startRolling(){
+				var id = setInterval(() => {
+				let width = $('.item').first().width()
+				let ml = $('.list').css('margin-left');
+				let maxMl = -$('.list').width() + width + 'px';
+				if(!$('.list').is(':animated') && ml != maxMl /*&& !$('.view').is(':hover')*/){
+					$('.list').animate({'margin-left' : '-='+width+'px'},1500)
+				}
+				else{
+					var aa = $('.list').animate({'margin-left' : '0px'},200)
+				}
+			}, 2000)
+			return id;
+			}
+		
+	</script>
+</body>
+</html>

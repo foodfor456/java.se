@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		*{	padding: 0; margin: 0;}
+		.btn {
+			width: 50px; height: 40px; font-size: 20px;
+			margin: 30px; margin-right: 0;
+		}
+		.container{
+			margin: 50px;
+			width: 200px; height: 50px; border: 2px solid black;
+		}
+		.box{
+			width: 200px; height: 50px; background-color: green;
+		}
+		.box+.box{
+			background-color: aqua;
+		}
+
+	</style>
+</head>
+<body>
+	<button class="btn-up btn">위</button>
+	<button class="btn-down btn">아래</button>
+	<div class="container">
+		<div class="box-main">
+			<div class="box content"></div>
+			<div class="box content"></div>
+		</div>
+	</div>
+	<script>
+		$(function(){
+			$('.btn-up').click(function(){
+				$('.box-main').animate({'margin-top':'-50px'}, 300);
+			});
+			$('.btn-down').click(function(){
+				$('.box-main').animate({'margin-top':'0'}, 300);
+			});
+		})
+	</script>
+</body>
+</html>

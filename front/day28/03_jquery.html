@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>메뉴 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		ul,ol{	list-style: none;}
+		.item{
+			float: left;
+			position: relative;text-align: center;
+		}
+		.link{
+			display:inline-block; border: 1px solid red;
+			width: 150px; height: 40px; color: #000; 
+			line-height: 40px; text-decoration: none;
+		}
+		.item+.item{
+			margin-left: -1px;
+		}
+		.menu{
+			position: absolute; top: 40px; left: 0; right: 0;
+		}
+		.item::after{
+			content: ''; display: block; clear: both;
+		}
+		.menu{
+			height: 200px; border: 1px solid blue;
+			box-sizing: border-box; display: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="box-menu">
+		<ul class="list">
+			<li class="item">
+				<a href="#" class="link">메뉴1</a>
+				<div class="menu">1</div>
+			</li>
+			<li class="item">
+				<a href="#" class="link">메뉴2</a>
+				<div class="menu">2</div>
+			</li>
+			<li class="item">
+				<a href="#" class="link">메뉴3</a>
+				<div class="menu">3</div>
+			</li>
+		</ul>
+	</div>
+	<script>
+		$('.item').hover(function(){
+			if(!$(this).children('.menu').is(':animated'))
+			$(this).children('.menu').slideDown(400);
+		},function(){
+			$(this).children('.menu').slideUp(400);
+		})
+	</script>
+</body>
+</html>

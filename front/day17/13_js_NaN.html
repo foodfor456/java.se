@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NaN 예제</title>
+</head>
+<body>
+	<script>
+		/*
+			- 주어진 배열이 숫자로만 이루어져 있는지 확인하는 코드를 작성
+				isNaN()을 이용
+				문자열로 된 숫자를 숫자로 인정
+		*/
+		let arr = [1, 2, 3, 'abc'];
+		let arr2 = [1, 2, 3, '4'];
+
+
+		
+		// let isN = arr.every(function (v){
+		// 	return isNaN(v);
+		// });
+		// console.log(isN);
+		
+		// let isN2 = isNaN(arr2.every(function(v){
+		// 	return isNaN(v);
+		// }))
+		// console.log(isN2);
+
+		let isN3 = arr.every((v) => {
+			return !isNaN(v);
+		}  );
+		console.log(isN3);
+		let isN2 = arr2.every((v) => {
+			return !isNaN(v);
+		}  );
+		console.log(isN2);
+		var isNumArray2 = true;
+		arr2.forEach((v, i, a) => {
+			if(isNaN(v))
+				isNumArray2 = false;
+			}
+		)
+		var isNumArray3 = true;
+		for(i = 0; i < arr2.length; i++){
+			if(isNaN(arr2[i]))
+				isNumArray3 = false;
+		}
+
+		// let arr3 = arr.map((v) => v < 0 ? -v : v);
+
+		arr.forEach = (v) => isNaN(v) ? console.log('숫자') : console.log('숫자아님');
+		
+	</script>
+</body>
+</html>

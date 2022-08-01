@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>뉴스 버튼 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.link{
+			float: left; margin-right: 10px;
+		}
+		.dot-box{
+			width: 10px; height: 10px; border-radius: 50%;
+			background-color: gray; display: inline-block;
+		}
+		.select{
+			background-color: blue;
+		}
+	</style>
+</head>
+<body>
+	<div class="menu-box">
+		<a href="#" class="link">뉴스</a>
+		<div class="dot">
+			<div class="dot-box select"></div>
+			<div class="dot-box"></div>
+		</div>
+	</div>
+	<script>
+		$('.link').click(function(e){
+			console.log($('.dot-box').first().hasClass('select'));
+			if(!$('.dot-box').first().hasClass('select')){
+				e.preventDefault();
+				$('.dot-box').removeClass('select');
+				$('.dot-box').first().addClass('select');
+			}
+		})
+		$('.dot').click(function(){
+			$('.dot-box').toggleClass('select');
+		})
+	</script>
+</body>
+</html>

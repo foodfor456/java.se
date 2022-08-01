@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>stop watch</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.box{
+			width: 200px; height: 50px; border: 2px solid black;
+		}
+		.con{
+			text-align: center;	 width: 200px;
+		}
+		.btn{
+			width: 45%; margin-top: 10px;
+		}
+		
+
+	</style>
+</head>
+<body>
+	<div class="con">
+		<div class="box">00:00:00</div>
+		<button class="btn btn1">시작</button>
+		<button class="btn btn2">중지</button>
+	</div>
+	<script>
+		var num, num2, num3;
+		$(function(){
+			$('.btn1').click(function(){
+				num =	setInterval(function(){
+					num++;
+				},10),
+				num2 = setInterval(function(){
+					num2++;
+					console.log(num2);
+				},1000),
+				console.log(num2);
+				num3 = setInterval(function(){
+					num3++;
+					},100000)
+			$(num).change(function(){
+				$('.box').text(num3 + ':' + num2 + '.' + num)	
+			})
+			})
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		*{	padding: 0; margin: 0; list-style: none; }
+		.view{
+				margin: 30px; height: 50px; width: 300px;
+				border: 1px solid black;
+			}
+		.list{
+			width: 100%; height: 500%;
+		}
+		.item{
+			width: 300px; height: 50px; background-color: yellow;
+			float: left;
+		}
+		
+	</style>
+</head>
+<body>
+	<div class="view">
+		<ul class="list">
+			<li class="item">1</li>
+			<li class="item">2</li>
+			<li class="item">3</li>
+			<li class="item">4</li>
+			<li class="item">5</li>
+		</ul>
+	</div>
+	<script>
+		$(function(){
+			setInterval(() => {
+				let height = -$('.item').first().height() + 'px';
+				
+					if($('.item').first().is(':animated') || $('.view').is(':hover') )
+						return;
+						/*$('.item').first().animate(
+							// 애니메이션을 적용할 속성과 값
+							{'margin-top' : height},
+							// 애니메이션 동작 시간
+							1200,
+							function(){
+								$(this).detach()
+											.removeAttr('style')
+											.appendTo('.list');
+						}
+					)*/
+				
+				$('.item').last().detach().css('margin-top',height).prependTo('.list').animate({
+							'margin-top' : '0px'
+						})
+			}, 1500)
+		})
+	</script>
+</body>
+</html>

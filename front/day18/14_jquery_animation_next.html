@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		*{	padding: 0; margin: 0;}
+		.btn{	margin: 10px}
+		.box-m{
+			position: relative;
+			width: 150px; height: 50px; margin-top: 10px;
+			background-color: green;
+			margin-left: 10px;	
+		}
+		.container{
+			width: 300px; height: 50px;
+			position: absolute;
+			top: 0; left: 0; 
+		}
+		.box{
+			height: 100%; width: 50%;
+			border: 1px solid black; box-sizing: border-box; float: left;
+		}
+		
+	</style>
+</head>
+<body>
+	<button class="btn left">이전</button>
+	<button class="btn right">다음</button>
+	<div class="box-m">
+		<div class="container">
+			<div class="box box1">1</div>
+			<div class="box box2">2</div>
+		</div>
+	</div>
+	
+	<script>
+		$(function(){
+			$('.left').click(function(){
+				$('.container').animate({'left' : '0px'}, 300);
+			})
+			$('.right').click(function(){
+				$('.container').animate({'left' : '-=150px'}, 300);
+			})
+		})
+	</script>
+</body>
+</html>

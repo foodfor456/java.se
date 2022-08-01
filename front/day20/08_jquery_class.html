@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>속성 class 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.box{
+			width: 100px; height: 100px; vertical-align: top;
+			display: inline-block; background-color: yellow;
+		}
+		.select{
+			background-color: red;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">1</div>
+	<div class="box select">2</div>
+	<div class="box">3</div>
+	<div class="box">4</div>
+	<script>
+		/*
+			- addClass('클래스명들') : 요소에 클래스들을 추가
+			- removeClass('클래스명들') : 요소에 클래스들을 제거
+			- toggleClass('클래스명들')	: 요소에 클래스가 있으면 제거, 없으면 추가
+			- hasClass('클래스명') : 요소에 클래스가 있는지 없는지를 보여줌
+		*/
+		$(function(){
+			$('.box').click(function(){
+				$('.box').removeClass('select');
+				$(this).addClass('select');
+				console.log($(this).hasClass('select'));
+			})
+			// $('.box').addClass('select'); // 모든 박스에 select를 추가 => 모두 빨강
+			// $('.box').removeClass('select'); // 모든 박스에 select를 제거 => 모두 노란색
+			// $('.box').toggleClass('select'); // 모든 박스에 select를 토글 => 모두 빨강
+		})
+	</script>
+</body>
+</html>

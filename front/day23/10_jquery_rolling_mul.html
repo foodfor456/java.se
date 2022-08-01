@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>여러 항목 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		*{	padding: 0; margin: 0; list-style: none; }
+		.view{
+				margin: 30px; height: 50px; width: 300px;
+				border: 1px solid black; position: relative;
+				display:inline-block; 
+			}
+		.view3{	display: block;}
+		.view2{ float: right;}
+		.list{
+			position: relative; width: 100%;
+		}
+		.view3>.list{
+			width: 400%;
+		}
+		.list::after{
+			content: ''; display: block; clear:both;
+		}
+		.item{
+			background-color: yellow;
+			height: 50px; width: 300px; 
+			float: left;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="view view-up view1">
+		<ul class="list">
+			<li class="item">1</li>
+			<li class="item">2</li>
+			<li class="item">3</li>
+			<li class="item">4</li>
+			<li class="item">5</li>
+		</ul>
+	</div>
+	<div class="view view-up view2">
+		<ul class="list">
+			<li class="item">12</li>
+			<li class="item">22</li>
+			<li class="item">32</li>
+			<li class="item">43</li>
+		</ul>
+	</div>
+	<div class="view view3">
+		<ul class="list">
+			<li class="item">1</li>
+			<li class="item">2</li>
+			<li class="item">3</li>
+			<li class="item">4</li>
+		</ul>
+	</div>
+	<script>
+		$(function(){
+			if(!$('.item').first().is(':animated') && !$('.view').is(':hover')){
+				setInterval(()=>{
+					$('.view1 .item').first().animate({
+						'margin-top' : '-50px'
+					},1200, function(){$(this).first().detach().appendTo('.view1 .list').removeAttr('style')})
+					;
+					$('.view2 .item').first().animate({
+						'margin-top' : '-50px'
+					},1200, function(){$(this).first().detach().appendTo('.view2 .list').removeAttr('style')})
+					;
+				
+					$('.view3 .item').first().animate({
+						'margin-left' : '-300px'
+					},1200, function(){$(this).first().detach().appendTo('.view3 .list').removeAttr('style')})
+					;
+					},1500)
+				}
+		})
+		/*$('.item').first().animate(
+							// 애니메이션을 적용할 속성과 값
+							{'margin-left' : width},
+							// 애니메이션 동작 시간
+							1200,
+							*/
+	</script>
+</body>
+</html>

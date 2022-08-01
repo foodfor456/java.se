@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>달력 예제</title>
+	<script src="../js/jquery.js"></script>
+</head>
+<body>
+	<select class="sel-month" name="month">
+		<option class="month" >월</option>
+		<option class="month" value="1">1월</option>
+		<option class="month" value="2">2월</option>
+		<option class="month" value="3">3월</option>
+		<option class="month" value="4">4월</option>
+		<option class="month" value="5">5월</option>
+		<option class="month" value="6">6월</option>
+		<option class="month" value="7">7월</option>
+		<option class="month" value="8">8월</option>
+		<option class="month" value="9">9월</option>
+		<option class="month" value="10">10월</option>
+		<option class="month" value="11">11월</option>
+		<option class="month" value="12">12월</option>
+	</select>
+	<select class="sel-day">
+		<option class="day" value="0">일</option>
+	</select>
+	<script>
+		$('.sel-month').change(function(){
+			let day = $('.sel-day').html();
+			$('.sel-day').empty();
+			switch($(this).val()){
+				case '1': case '2': case '3': case '4': case '5': case '6': 
+				for(i = 0; i <= 30; i++){
+					day += $('.sel-day').append('<option class="day">' + i + '일' + '</option>');
+				};
+				 break;
+			}
+		})
+	</script>
+</body>
+</html>

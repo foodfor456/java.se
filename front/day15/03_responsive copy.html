@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://kit.fontawesome.com/7a5abb87c2.js" crossorigin="anonymous"></script>
+	<title>Document</title>
+	<style>
+		*{	padding: 0; margin: 0; color: #000;}
+		ul,ol{	list-style: none;}
+		a{	text-decoration: none;}
+		.nav{ 
+			height: 50px; position: relative; box-sizing: border-box; 
+			border: 1px solid #000; }
+		.list-menu{
+			display: flex; height: 100%;
+		}
+		.item-menu{
+			width: 100%; height: 100%;
+			line-height: 50px; text-align: center; box-sizing: border-box;
+		}
+		.item-menu+ .item-menu{
+			margin-left: -1px; border-left: 1px solid #000;
+		}
+		.link-menu{
+			display: block; width: 100%; height: 100%;
+		}
+		.btn-ham-menu{	display: none;}
+		@media (max-width: 600px){
+			.nav{
+				float: right; border: none;
+				height: 50px; min-width: 300px;
+			}
+			.link-menu{
+				margin:0;	
+			}
+			.item-menu{
+				border: 1px solid black;
+				
+			}
+			.item-menu + .item-menu{
+				margin-top: -1px; margin-left: 0px;
+			}
+			.list-menu{
+				display: block; margin: 0;
+				border: none; 
+			}
+			.btn-ham-menu{
+				
+				border: 1px solid #000; 
+				text-align: center; line-height: 48px; font-size: 30px;
+				margin-bottom: -1px;
+				display: block;
+			} 
+		}
+
+	</style>
+</head>
+<body>
+	<nav class="nav">
+		<a href="#" class="btn-ham-menu"><i class="icon fa-solid fa-bars"></i></a>
+		<ul class="list-menu">
+			<li class="item-menu">
+				<a href="#" class="link-menu">메뉴1</a>
+			</li>
+			<li class="item-menu">
+				<a href="#" class="link-menu">메뉴2</a>
+			</li>
+			<li class="item-menu">
+				<a href="#" class="link-menu">메뉴3</a>
+			</li>
+		</ul>
+	</nav>
+</body>
+</html>

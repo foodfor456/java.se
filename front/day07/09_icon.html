@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://kit.fontawesome.com/7a5abb87c2.js" crossorigin="anonymous"></script>
+	<title>아이콘 예제</title>
+	<style>
+		*{	margin:0; padding: 0; list-style: none;}
+		.menu-item{
+			font-size: 100px;
+			float: right; margin-right: 20px; position: relative;
+		}
+		.sub-menu{
+			display: none;
+		}
+		fa-bars:hover .sub-menu{
+			display: block;
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+	<ul class="menu">
+		<a href="#" class="main-menu"><i class="fa-solid fa-bars"></i></a>
+		<li class="menu-item">
+			
+			<a href="#" class="sub-menu">메뉴1</a>
+			<a href="#" class="sub-menu">메뉴2</a>
+			<a href="#" class="sub-menu">메뉴3</a>
+		</li>
+		<li><a href="#" class="menu-link">메뉴2</a></li>
+		<li><a href="#" class="menu-link">메뉴3</a></li>
+	</ul>
+</body>
+</html>

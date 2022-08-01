@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>hover 예제</title>
+	<style>
+		.box{
+			width: 100px; height: 100px; text-align: center; line-height: 100px;
+			background: yellow; margin-bottom: 10px; position: relative; float: left;
+			
+		}
+		.box:hover{
+			background: red;
+		}
+		.box2{	margin-left: 10px;}
+		.box3{	display: none;}
+		.box2:hover .box3{	
+			width: 100%; height: 150px;  background: green;
+			position: absolute; top: 100%; display: block;
+		 }
+	</style>
+</head>
+<body>
+	<div class="box box2">
+		<div class="box box3"></div>
+	</div>
+	<div class="box box2">
+		<div class="box box3"></div>
+	</div>
+	<div class="box box2">
+		<div class="box box3"></div>
+	</div>
+	<div class="box box2">
+		<div class="box box3"></div>
+	</div>
+</body>
+</html>

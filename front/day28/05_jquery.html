@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>입력 예제</title>
+	<script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+	<style>
+		.text-box{
+			width: 200px; height: 30px; border: 1px solid black;
+			margin: 10px; text-align: right; display: inline-block;
+		}
+		.close{
+			margin: 5px; display: inline-block;
+		}
+	</style>
+</head>
+<body>
+	<input type="text" class="text">
+	<button class="btn">추가</button>
+	<div class="box">
+	</div>
+	<script>
+		$(function(){
+			$('.btn').click(function(){
+			let htmlText = $('.box');
+			let text = $('.text').val();
+			htmlText += $('.box').append(`<div class="text-box">
+				<span>${text}</span>
+				<a href="#" class="close">X</a>
+				</div>`);
+				$('.close').click(function(){
+				$(this).parent().empty().remove();
+				})
+			})
+		})
+		
+	</script>
+</body>
+</html>

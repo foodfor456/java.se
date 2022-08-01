@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		body>div::after{
+			content: ''; display: block; clear: both;
+		}
+		.text{
+			width: 200px; height: 50px; border: 1px solid black; margin: 10px 0;
+			display: inline-block; vertical-align: top; line-height: 50px; font-size: 30px;
+			font-weight: bold; text-align: center;
+		}
+		.borders{
+			border-color: #fff; width: auto;
+		}
+		.bordersel{
+			background-color: #fff; border-color: green;
+		}
+	</style>
+	
+</head>
+<body>
+	<div>
+		<div class="text" data-target=".ck"></div>
+		<div class="text" data-target=".ck"></div>
+		<div class="text" data-target=".ck"></div>
+		<div class="text" data-target=".ck"></div>
+	</div>
+	<input type="checkbox" class="ck" value="축구">축구
+	<input type="checkbox" class="ck" value="농구">농구
+	<input type="checkbox" class="ck" value="야구">야구
+	<input type="checkbox" class="ck" value="음악감상">음악감상
+	<input type="checkbox" class="ck" value="영화감상">영화감상
+	<script>
+		var arr = [];
+		$(function(){
+			$('.ck').click(function(){
+				var val = $(this).val();
+				// 체크박스가 체크되면
+				// 현재 체크된 체크박스 갯수
+				if($(this).is(':checked')){
+					var count = $('.ck').filter(':checked').length;
+					
+					if(count > 4){
+					// 체크된 개수가 2개가 넘으면 알림창을 띄우고,
+					// 마지막에 체크된 체크박스의 체크를 해제 (현재 클릭된 체크박스)
+					alert('4개까지 체크 가능합니다.')
+					$(this).prop('checked', false);
+					}
+					else {
+						arr.push(val);
+					}	
+				}
+				else{
+					var index = arr.indexOf(val);
+					arr.splice(index, 1);
+				}
+				$('.text').text('').removeClass('borders bordersel');
+				arr.forEach(function(v, i){
+					$('.text').eq(i).text(v).addClass('borders');
+				})
+			})
+			drow(arr);
+		})
+		function drow(arr){
+			$('.text').not('.bordersel').first().addClass('bordersel');
+		}
+		/*$(function(){
+			$('.fruit').click(function(){
+				var val = $(this).val();
+					if($(this).prop('checked')){
+					arr.push(val);
+				}else{
+					var index = arr.indexOf(val);
+					arr.splice(index, 1);
+				}
+				$('.text-box').text(arr.join(','));
+				})
+				*/
+	</script>
+</body>
+</html>

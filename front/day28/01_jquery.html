@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>hover 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.box{
+			width: 100px; height: 100px; border: 1px solid red;
+		}
+		.box1:hover{
+			background-color: red;
+		}
+		.bg-yellow{
+			background-color: yellow;
+		}
+	</style>
+</head>
+<body>
+	<div class="box"></div>
+	<script>
+		$('.box').hover(function(){
+			$(this).css('backgroundColor', 'yellow');
+		},function(){
+			$(this).css('backgroundColor', 'white');
+		})
+			$('.box').hover(function(){
+				$(this).toggleClass('bg-yellow')
+			})
+		
+	</script>
+</body>
+</html>

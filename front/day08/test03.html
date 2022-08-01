@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		*{	padding: 0; margin: 0;}
+		ul,ol,li{	list-style: none;}
+		.box{
+			position: absolute;
+			left: 268px;
+			
+		}
+		.green_window{
+			position: relative;
+			width: 582px; height: 52px;
+			border: 2px solid #19ce60;
+			border-radius: 2px;
+		}
+		.btn_submit{
+			position: absolute; top: 0; right: 0; bottom: 0;
+			width: 56px; background-color: #19ce60;
+			border-radius: 0 2px 2px 0; border:none;
+		}
+		.text{
+		width: 444px;
+    height: 24px;
+    padding: 13px 15px;
+    margin: 1px;
+    background-color: #fff;
+    font-size: 18px;
+    line-height: 24px;
+    color: #000;
+    font-weight: 700;
+    outline: 0; border: 0;			
+		}
+	</style>
+</head>
+<body>
+	<form action="https://search.naver.com/search.naver">
+		<div class="box">
+			<div class="green_window"><input type="text" class="text"  name="query"></div>
+			<button type="submit" class="btn_submit"></button>
+			<span class="ico"></span>
+		</div>
+
+	</form>
+</body>
+</html>

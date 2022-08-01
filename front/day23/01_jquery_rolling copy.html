@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>롤링 기능</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		*{	padding: 0; margin: 0; list-style: none; }
+		.view{
+				margin: 30px; height: 50px; width: 300px;
+				border: 1px solid black;
+			}
+		.list{
+			width: 600%; height: 100%;
+		}
+		.item{
+			width: 300px; height: 50px; background-color: yellow;
+			float: left;
+		}
+		.item:nth-child(2n){
+			background-color: red;
+		}
+	</style>
+</head>
+<body>
+	<div class="view">
+		<ul class="list">
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+			<li class="item">
+				<a href="#" class="link"></a>
+			</li>
+		</ul>
+	</div>
+	<script>
+		$(function(){
+			var inter = setInterval(() => {
+				let width = $('.item').first().width()
+				if(!$('.list').is(':animated') && $('.list').css('margin-left') != '-1500px'){
+					$('.list').animate({'margin-left' : '-='+width+'px'},900)
+				}
+				else{
+					clearInterval(inter);
+					console.log(3231);
+				}
+			}, 1000);
+		})
+	</script>
+</body>
+</html>

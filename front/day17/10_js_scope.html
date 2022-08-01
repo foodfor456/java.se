@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		// 전역변수 num
+		var num = 10;
+		console.log(num);
+		function test1(){
+			console.log('지역 변수 num : ' + num);
+			console.log('전역 변수 num : ' + window.num);
+			// 지역변수 num
+			var num = 20;
+			console.log('지역 변수 num : ' + num);
+			console.log('전역 변수 num : ' + window.num);
+		}
+		test1();
+		
+		/*
+		// - 호이스팅이 일어났을 때,
+		var num;
+		function test1(){
+			var num;
+			
+			console.log('지역 변수 num : ' + num);
+			console.log('전역 변수 num : ' + window.num);
+			// 지역변수 num
+			num = 20;
+			console.log('지역 변수 num : ' + num);
+			console.log('전역 변수 num : ' + window.num);
+		}
+		num = 10;
+		test1();
+		*/
+	</script>
+</body>
+</html>

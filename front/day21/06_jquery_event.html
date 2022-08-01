@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>이벤트 예제</title>
+	<script src="../js/jquery.js"></script>
+	<style>
+		.bg-yellow{	background-color: yellow;}
+		.bg-pink{	background-color: pink;}
+	</style>
+</head>
+<body>
+	<input type="text" placeholder="아이디"> <br>
+	<input type="password" placeholder="비밀번호">
+	<script>
+		/*
+			- focusin(함수)	:
+			- focusout(함수):
+			- focus(함수) : focusin() 
+			- blur(함수) : focusout()
+			- focus() : 요소를 활성화 함
+			- hover(함수) : 마우스가 요소를 hover때와 hover가 해제될때 함수를 실행
+			- hover(함수1, 함수2) : 마우스가 요소를 hover할 때 함수1을 실행,
+				hover를 해제할 때 함수2가 실행됨.
+		*/
+		$(function(){
+			/*
+			$('input').focusin(function(){
+				$(this).css('background-color','yellow');
+			})
+			$('input').focusout(function(){
+				$(this).css('background','none');
+			})
+			*/
+			$('input').focus(function(){
+				$(this).toggleClass('bg-yellow');
+			})
+			$('input').blur(function(){
+				$(this).toggleClass('bg-yellow');
+			})
+			$('input').first().focus();
+			/*$('input').hover(function(){
+				$(this).addClass('bg-pink')
+			},
+				function(){
+					$(this).removeClass('bg-pink');
+				})
+			*/
+			$('input').hover(function(){
+				$(this).toggleClass('bg-pink');
+			})
+		})
+	</script>
+</body>
+</html>

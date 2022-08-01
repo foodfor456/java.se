@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>checkBox 예제</title>
+	<script src="../js/jquery.js"></script>
+</head>
+<body>
+	<input type="checkbox" name="fruit" value="apple" class="a">사과
+	<input type="checkbox" name="fruit" value="orange" class="b">오렌지
+	<input type="checkbox" name="fruit" value="banana" class="c">바나나
+	<script>
+		var arr = [];
+		$(function(){
+			$('.a').click(function(){
+				if($('.a').prop('checked')){
+					arr.push($('.a').val())
+					console.log(arr);
+				}else{ 
+					var index = arr.indexOf('apple')
+					arr.splice(index, 1);
+				}
+			})
+			$('.b').click(function(){
+				if($('.b').prop('checked')){
+					arr.push($('.b').val())
+					console.log(arr);
+				}else{ 
+					var index = arr.indexOf('orange')
+					arr.splice(index, 1);
+				}
+			})
+			$('.c').click(function(){
+				if($('.c').prop('checked')){
+					arr.push($('.c').val())
+					console.log(arr);
+				}else{ 
+					var index = arr.indexOf('banana')
+					arr.splice(index, 1);
+				}
+			})
+		})
+		
+	</script>
+</body>
+</html>
