@@ -5,6 +5,10 @@ import kr.green.spring.vo.MemberVO;
 public interface MemberService {
 
 	String getEmail(String id);
+	
 	MemberVO getMember(String id);
+	
+	MemberVO getMember(MemberVO member);
+	
 	MemberVO getMember2(MemberVO member);
 }

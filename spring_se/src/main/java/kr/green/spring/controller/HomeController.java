@@ -87,8 +87,10 @@ public class HomeController {
 	  MemberVO dbMember = memberService.getMember(member.getMe_id());
 	  System.out.println("정보 : " + dbMember);
 	  // 아이디와 비번이 주어지면 아이디와 비번이 일치하는 회원 정보를 가져오는 작업
-	  MemberVO dbMember2 = memberService.getMember2(member);
+	  MemberVO dbMember2 = memberService.getMember(member);
 	  System.out.println("정보2 : " + dbMember2);
+	  MemberVO dbMember3 = memberService.getMember2(member);
+	  System.out.println("정보3 : " + dbMember3);
 	  return mv;
 	}
 }

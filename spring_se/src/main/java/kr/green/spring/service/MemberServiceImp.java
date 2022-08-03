@@ -28,7 +28,7 @@ public class MemberServiceImp implements MemberService{
 	}
 
 	@Override
-	public MemberVO getMember2(MemberVO member) {
+	public MemberVO getMember(MemberVO member) {
 		if(member == null || member.getMe_id() == null || member.getMe_pw() == null)
 		return null;
 		
@@ -38,5 +38,14 @@ public class MemberServiceImp implements MemberService{
 		if(dbMember.getMe_pw().equals(member.getMe_pw()))
 			return dbMember;
 		return null;
+	}
+
+	@Override
+	public MemberVO getMember2(MemberVO member) {
+		if(member == null || member.getMe_id() == null || member.getMe_pw() == null)
+			return null;
+		
+		
+		return memberDao.selectUserInfo2(member);
 	}
 }
