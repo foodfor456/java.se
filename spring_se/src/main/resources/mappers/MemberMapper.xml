@@ -6,4 +6,7 @@
   <select id="selectEmail" resultType="String">
 		select me_email from member where me_id = #{id}
   </select>
-</mapper>
+  <select id="selectUserInfo" resultType="kr.green.spring.vo.MemberVO">
+		select * from member where me_id = #{id}
+  </select>
+ </mapper>

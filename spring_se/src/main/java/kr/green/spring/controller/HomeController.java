@@ -80,8 +80,15 @@ public class HomeController {
 	public ModelAndView loginPost(ModelAndView mv, MemberVO member){
 	  mv.setViewName("redirect:/login");
 	  System.out.println(member);
+	  // 아이디가 주어지면 이메일을 가져오는 작업
 	  String email = memberService.getEmail(member.getMe_id());
 	  System.out.println("이메일 : " + email);
+	  // 아이디가 주어지면 회원정보를 가져오는 작업
+	  MemberVO dbMember = memberService.getMember(member.getMe_id());
+	  System.out.println("정보 : " + dbMember);
+	  // 아이디와 비번이 주어지면 아이디와 비번이 일치하는 회원 정보를 가져오는 작업
+	  MemberVO dbMember2 = memberService.getMember2(member);
+	  System.out.println("정보2 : " + dbMember2);
 	  return mv;
 	}
 }
