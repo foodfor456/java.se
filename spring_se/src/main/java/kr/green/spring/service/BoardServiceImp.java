@@ -53,4 +53,46 @@ public class BoardServiceImp implements BoardService{
 		
 		return boardDao.selectBoard(bd_num);
 	}
+
+	@Override
+	public void updateBoard(BoardVO board, MemberVO user) {
+		if(user == null)
+			return;
+		if(board == null)
+			return;
+		// 제목에 공백만 있는 경우
+		if(board.getBd_title().trim().length() == 0)
+			return;
+		// 내용에 공백만 있는 경우
+		if(board.getBd_content().trim().length() == 0)
+			return;
+		
+		BoardVO dbBoard = boardDao.selectBoard(board.getBd_num());
+		
+		// 작성자와 로그인한 회원이 다르면
+		if(!user.getMe_id().equals(dbBoard.getBd_me_id()))
+			return;
+		
+		boardDao.updateBoard(board);
+	}
+
+	@Override
+	public void deleteBoard(Integer bd_num, MemberVO user) {
+		if(bd_num == null)
+			return;
+		if(user == null)
+			return;
+		BoardVO board = boardDao.selectBoard(bd_num);
+		// 해당 게시글이 없으면
+		if(board == null)
+			return;
+		// 삭제하려는 게시글의 작성자와 회원 아이디가 다르면
+		if(board.getBd_me_id().equals(user.getMe_id()) && user.getMe_authority() != 10)
+			return;
+		char del = 'Y';
+		if(user.getMe_authority() == 10)
+			del = 'A';
+		boardDao.deleteBoard(bd_num, del);
+		
+	}
 }
