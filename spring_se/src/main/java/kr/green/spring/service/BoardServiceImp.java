@@ -1,5 +1,7 @@
 package kr.green.spring.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +31,11 @@ public class BoardServiceImp implements BoardService{
 		board.setBd_me_id(user.getMe_id());
 		boardDao.insertBoard(board);
 		
+	}
+
+	@Override
+	public ArrayList<BoardVO> getBoardList() {
+		
+		return boardDao.selectBoardList();
 	}
 }
