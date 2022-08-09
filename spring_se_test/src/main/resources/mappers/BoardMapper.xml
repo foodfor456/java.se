@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.springtest.dao.BoardDAO">
+	<select id="selectBoardList" resultType="kr.green.springtest.vo.BoardVO">
+		select * from board where bd_del = 'N' order by bd_num desc;
+	</select>
+	<select id="boardDetail" resultType = "kr.green.springtest.vo.BoardVO">
+		select * from board where bd_num = #{bd_num};
+	</select>
+	<update id="updateViews">
+		update board set bd_views = bd_views+1 where bd_num = #{bd_num} and bd_del = 'N';
+	</update>
+	<insert id="insertBoard">
+		insert into board(bd_title, bd_content,bd_me_id, bd_reg_date, bd_ori_num, bd_depth)
+		 			select #{b.bd_title},#{b.bd_content},#{user.me_id},now(),ifnull(max(bd_num),0)+1,1
+		 			from board;
+	</insert>
+</mapper>
