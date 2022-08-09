@@ -12,11 +12,6 @@ public class MemberServiceImp implements MemberService {
     MemberDAO memberDao;
     
     @Override
-    public String getEmail(String id) {
-        return memberDao.getEmail(id);
-    }
-
-    @Override
 	public boolean signup(MemberVO member) {
 		if(member == null)
 			return false;
@@ -39,11 +34,13 @@ public class MemberServiceImp implements MemberService {
 		if(member == null || member.getMe_id() == null)
 			return null;
 		
-		MemberVO dbMember = memberDao.selectMember(member.getMe_id());
-		if(dbMember == null)
+		MemberVO user = memberDao.selectMember(member.getMe_id());
+		
+		if(user == null)
 			return null;
-		if(dbMember.getMe_pw().equals(member.getMe_pw()))
-			return dbMember;
+		
+		if(user.getMe_pw().equals(member.getMe_pw()))
+			return user;
 		
 		return null;
 	}

@@ -20,8 +20,7 @@ public class HomeController {
 	@RequestMapping(value="/")
 	public ModelAndView openTilesView(ModelAndView mv){
     mv.setViewName("/main/home");
-    mv.addObject("setHeader", "타일즈");
-    System.out.println(memberService.getEmail("qwe"));
+    
     return mv;
 	}
 
@@ -48,14 +47,12 @@ public class HomeController {
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public ModelAndView loginPost(ModelAndView mv, MemberVO member){
-		MemberVO dbMember = memberService.login(member);
-		mv.addObject("user",dbMember);
-		if(dbMember == null)
+		MemberVO user = memberService.login(member);
+		if(user == null)
 		mv.setViewName("redirect:/login");
 		else
 		mv.setViewName("redirect:/");
-    
+		mv.addObject("user",user);
 		return mv;
 	}
-	
 }
