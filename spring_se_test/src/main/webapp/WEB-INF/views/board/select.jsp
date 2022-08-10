@@ -41,6 +41,9 @@
 		<c:if test="${board.bd_del == 'A'}">
 			<h1>관리자에 의해 삭제된 게시글입니다.</h1>
 		</c:if>
+		<c:if test="${board.bd_me_id == user.me_id}">
+		<a href="/springtest/board/update/${board.bd_num}" class="btn btn-outline-danger mb-5 col-12">수정</a>
+		</c:if>
 	</div>
 </body>
 </html>
