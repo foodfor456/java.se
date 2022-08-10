@@ -68,5 +68,11 @@ public class BoardController {
 		mv.setViewName("redirect:/board/select/"+ bd_num);
 	    return mv;
 	}
-	
+	@RequestMapping(value="/board/delete/{bd_num}", method=RequestMethod.GET)
+	public ModelAndView boardDeleteGet(ModelAndView mv, HttpSession session, @PathVariable("bd_num") int bd_num){
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		boardService.deleteBoard(bd_num, user);
+		mv.setViewName("redirect:/board/list");
+	    return mv;
+	}
 }

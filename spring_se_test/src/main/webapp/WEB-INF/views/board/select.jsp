@@ -42,7 +42,10 @@
 			<h1>관리자에 의해 삭제된 게시글입니다.</h1>
 		</c:if>
 		<c:if test="${board.bd_me_id == user.me_id}">
-		<a href="/springtest/board/update/${board.bd_num}" class="btn btn-outline-danger mb-5 col-12">수정</a>
+		<div class="container col-12 mb-5 clearfix">
+		<a href="<c:url value="/board/update/${board.bd_num}"></c:url>" class="btn btn-outline-danger float-left col-5">수정</a>
+		<a href="<c:url value="/board/delete/${board.bd_num}"></c:url>" class="btn btn-outline-danger float-right col-5">삭제</a>
+		</div> 
 		</c:if>
 	</div>
 </body>
