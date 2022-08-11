@@ -24,6 +24,7 @@
 			  <label for="me_id">아이디:</label>
 			  <input type="text" class="form-control" id="me_id" name="me_id">
 			</div>
+			<button type="button" class="btn btn-outline-success col-12" id="idCheck">아이디 중복확인</button>
 			<div class="form-group">
 			  <label for="me_pw">비밀번호:</label>
 			  <input type="password" class="form-control" id="me_pw" name="me_pw">
@@ -116,6 +117,13 @@
 	      me_birth: {
 	    	  required : "필수항목입니다."
 	      }
+    	},
+    	submitHandler: function(form){
+    		if(!idCheck){
+					alert('아이디 중복 검사를 하세요');
+					return false;
+			}
+    		return true;
     	}
     });
 	})
@@ -127,6 +135,50 @@
 	  },
 	  "Please check your input."
 	);
+		$(function (){
+			$('#idCheck').click(function(){
+				let id = $('[name=me_id]').val();
+				if(id.trim().length == 0){
+					alert('아이디를 입력하세요');
+					return;
+				}
+				
+				let obj = {
+						me_id : id
+				}
+				$.ajax({
+					// 비동기 : 작업이 끝날때 까지 기다리지 않음, ajax가 동작중인지 끝났는지 상관없이 다음 작업을 함
+					// 동기 : 작업이 끝날때 까지 기다림, ajax가 끝날때 까지 기다린 다음 다음 작업을 함
+					async:false, // 비동기 여부 : true(비동기), false(동기)
+		      type:'POST', // 보내는 방식
+		      data: JSON.stringify(obj), // 실제 보내는 데이터
+		      url:'<%=request.getContextPath()%>/id/check',
+		      dataType:"json", //서버에서 보내준 데이터의 타입
+		      contentType:"application/json; charset=UTF-8", // 화면에서 ajax로 보내줄 데이터의 타입 data의 타입
+		       // ajax가 성공적으로 동작했을때 할 작업
+		      success : function(data){
+		    	  if(data){
+		    		  alert('가입 가능한 아이디 입니다.');
+		    		  idCheck = true;
+		    	  }else{
+		    		  alert('이미 사용중이거나, 탈퇴한 아이디입니다.')
+		    	  }
+		    	}
+				});
+			})
+			$('[name=me_id]').change(function(){
+				idCheck = false;
+			})
+			/*
+			$('form').submit(function(){
+				if(!idCheck){
+					alert('아이디 중복 검사를 하세요');
+					return false;
+				}
+			})
+			*/
+		})
+		let idCheck = false;
 	</script>
 </body>
 </html>

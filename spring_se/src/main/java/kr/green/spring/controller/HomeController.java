@@ -1,14 +1,22 @@
 package kr.green.spring.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.green.spring.service.MemberService;
+import kr.green.spring.vo.BoardVO;
 import kr.green.spring.vo.MemberVO;
 
 @Controller
@@ -83,4 +91,35 @@ public class HomeController {
 		mv.setViewName("redirect:/");
 		return mv;
 	}
+	@RequestMapping(value ="/test")
+	@ResponseBody
+	public BoardVO test(@RequestBody BoardVO board){
+		board.setBd_reg_date(new Date());
+		board.setBd_up_date(new Date());
+		return board;
+	}
+	@RequestMapping(value ="/test2")
+	@ResponseBody
+	public ArrayList<BoardVO> test2(@RequestBody BoardVO board){
+		board.setBd_reg_date(new Date());
+		board.setBd_up_date(new Date());
+		ArrayList<BoardVO> list = new ArrayList<BoardVO>();
+		list.add(board);
+		return list;
+	}
+	@RequestMapping(value ="/test3")
+	@ResponseBody
+	public Map<Object, Object> test3(@RequestBody BoardVO board){
+		board.setBd_reg_date(new Date());
+		board.setBd_up_date(new Date());
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("board", board);
+		return map;
+	}
+	@RequestMapping(value ="/id/check")
+	@ResponseBody
+	public boolean idCheck(@RequestBody MemberVO member){
+		
+		return memberService.checkId(member);	
+				}
 }
