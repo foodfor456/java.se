@@ -17,7 +17,7 @@
               value="jdbc:mysql://localhost:3306/spring_se?useSSL=false&amp;serverTimezone=Asia/Seoul">
     </property>
     <property name="username" value="root"></property>
-    <property name="password" value="cjgreen"></property>
+    <property name="password" value="green"></property>
 	</bean>  
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
   	<property name="dataSource" ref="dataSource" />
