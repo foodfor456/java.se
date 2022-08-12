@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.green.springtest.pagination.Criteria;
 import kr.green.springtest.vo.BoardVO;
 import kr.green.springtest.vo.MemberVO;
 
@@ -11,7 +12,7 @@ public interface BoardDAO {
 
 	void listboard(@Param("bd_title")String bd_title, @Param("bd_me_id")String bd_me_id);
 
-	ArrayList<BoardVO> selectBoardList();
+	ArrayList<BoardVO> selectBoardList(@Param("cri")Criteria cri);
 
 	BoardVO boardDetail(@Param("bd_num")int bd_num);
 
@@ -20,6 +21,8 @@ public interface BoardDAO {
 	void insertBoard(@Param("b")BoardVO board, @Param("user")MemberVO user);
 
 	void updateBoard(@Param("b")BoardVO board);
+
+	int boardCount(@Param("cri")Criteria cri);
 
 	
 }
