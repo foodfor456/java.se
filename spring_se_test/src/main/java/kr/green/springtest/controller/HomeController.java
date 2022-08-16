@@ -1,14 +1,17 @@
 package kr.green.springtest.controller;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.green.springtest.service.MemberService;
@@ -65,5 +68,12 @@ public class HomeController {
     mv.setViewName("/main/home");
     session.removeAttribute("user");
     return mv;
+	}
+	@RequestMapping(value="/id/check")
+	@ResponseBody
+	public Map<Object,Object> idCheck(@RequestBody MemberVO member){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+    map.put("check", memberService.idCheck(member));
+    return map;
 	}
 }

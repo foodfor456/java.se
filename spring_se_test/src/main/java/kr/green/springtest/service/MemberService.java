@@ -8,5 +8,7 @@ public interface MemberService {
 
 	public MemberVO login(MemberVO member);
 
+	public Object idCheck(MemberVO member);
+
 	
 }
