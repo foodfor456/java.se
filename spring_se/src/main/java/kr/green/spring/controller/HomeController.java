@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +60,18 @@ public class HomeController {
 	  return mv;
 	}
 	@RequestMapping(value = "/login",method = RequestMethod.GET)
-	public ModelAndView loginGet(ModelAndView mv){
+	public ModelAndView loginGet(ModelAndView mv, HttpServletRequest request){
+		String url = request.getHeader("Referer");
+		if(url != null && !url.contains("/login"))
+			
+		request.getSession().setAttribute("redirectURL", url);
 	  mv.setViewName("/main/login");
+	  /* let href = location.href; // http://localhost:8080/spring/board/select/17
+		* let contextPath = '<%=request.getContextPath()%>' // spring
+		* let index = href.indexOf(contextPath);
+		* let redirectURI = href.substring(index); /// spring/board/select/17
+		* console.log(redirectURI);
+		*/
 	  return mv;
 	}
 	@RequestMapping(value = "/login",method = RequestMethod.POST)

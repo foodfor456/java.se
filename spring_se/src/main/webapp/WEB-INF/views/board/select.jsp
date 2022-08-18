@@ -45,6 +45,9 @@
 				<textarea class="form-control" name="co_content"></textarea>
 				<button class="btn btn-outline-success col-12 btn-comment-insert">댓글등록</button>
 			</div>
+			<c:if test="${user.me_id != board.bd_me_id}">
+				<a href="<%=request.getContextPath()%>/board/insert?bd_ori_num=${board.bd_ori_num}&bd_depth=${board.bd_depth}" class="btn btn-outline-success">답글</a>
+			</c:if>
 			
 			<c:if test="${user != null && user.me_id == board.bd_me_id}">
 				<a href="<%=request.getContextPath()%>/board/update/${board.bd_num}" class="btn btn-outline-success">수정</a>
@@ -109,9 +112,19 @@
 		})
 	})
 	$(function(){
+		// 댓글 등록 버튼 클릭
 		$('.btn-comment-insert').click(function(){
 			let co_content = $('[name=co_content]').val();
 			let co_bd_num = '${board.bd_num}';
+			
+			if('${user.me_id}' == ''){
+				if(confirm('로그인한 회원만 댓글 작성이 가능합니다. 로그인 하겠습니까?')){
+				
+					location.href = '<%=request.getContextPath()%>/login'
+					return;
+				}
+			}
+			
 			let obj = {
 				co_content : co_content,
 				co_bd_num : co_bd_num
