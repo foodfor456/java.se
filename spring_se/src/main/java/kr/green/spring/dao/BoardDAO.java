@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kr.green.spring.pagination.Criteria;
 import kr.green.spring.vo.BoardVO;
+import kr.green.spring.vo.CommentVO;
 import kr.green.spring.vo.LikesVO;
 
 public interface BoardDAO {
@@ -31,6 +32,18 @@ public interface BoardDAO {
 	void updateLikes(@Param("li")LikesVO dbLikes);
 
 	void updateBoardLikes(@Param("bd_num")int li_bd_num);
+
+	void insertComment(@Param("co")CommentVO comment);
+
+	ArrayList<CommentVO> selectCommentList(@Param("co_bd_num")int co_bd_num, @Param("cri")Criteria cri);
+
+	int selectTotalCountComment(@Param("co_bd_num")int co_bd_num);
+
+	CommentVO selectComment(@Param("co_num")int co_num);
+
+	void deleteComment(@Param("co_num")int co_num);
+
+	void updateComment(@Param("co")CommentVO comment);
 	
 
 }
