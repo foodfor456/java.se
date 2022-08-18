@@ -46,7 +46,7 @@
 				<button class="btn btn-outline-success col-12 btn-comment-insert">댓글등록</button>
 			</div>
 			<c:if test="${user.me_id != board.bd_me_id}">
-				<a href="<%=request.getContextPath()%>/board/insert?bd_ori_num=${board.bd_ori_num}&bd_depth=${board.bd_depth}" class="btn btn-outline-success">답글</a>
+				<a href="<%=request.getContextPath()%>/board/insert?bd_ori_num=${board.bd_ori_num}&bd_depth=${board.bd_depth}&bd_order=${board.bd_order}" class="btn btn-outline-success">답글</a>
 			</c:if>
 			
 			<c:if test="${user != null && user.me_id == board.bd_me_id}">
@@ -214,6 +214,14 @@
 				$('.btn-comment-update-cancle').remove();
 				$('.btn-comment-update-complete').remove();
 			})
+			// 답글 버튼 클릭
+			$(document).on('click', '.btn-comment-reply', function(){
+				let str = '<br><textarea class="co_content_reply"></textarea><br>'
+				str += '<button class="btn_insert_reply">답글 등록</button>'
+				str += '<button class="btn_insert_reply">답글 취소</button>'
+				$(this).after(str);
+				$(this).hide();
+			})
 	})
 	
 	let bd_num = '${board.bd_num}'
@@ -240,6 +248,7 @@
 						'<button class="btn-comment-update">수정</button>';
 						}
 						str +=
+							'<button class="btn-comment-reply">답글</button>'+
 					'</div>'
     	 	}
     	 	$('.list-comment').html(str);

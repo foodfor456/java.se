@@ -43,9 +43,7 @@ public class BoardController {
 		return mv;
 	}
 	@RequestMapping(value = "/board/insert", method = RequestMethod.GET)
-	public ModelAndView boardInsertGet(ModelAndView mv, Integer bd_ori_num, Integer bd_depth){
-		mv.addObject("bd_ori_num", bd_ori_num == null ? 0 : bd_ori_num);
-		mv.addObject("bd_depth", bd_depth == null ? 1 : bd_depth+1);
+	public ModelAndView boardInsertGet(ModelAndView mv){
 		mv.setViewName("/board/insert");
 	  return mv;
 	}
@@ -53,7 +51,7 @@ public class BoardController {
 	public ModelAndView boardInsertPost(ModelAndView mv, BoardVO board, 
 			HttpSession session){
 		// 화면에서 전송한 데이터가 잘 오는지 확인
-		System.out.println(board);
+		// System.out.println(board);
 		// 로그인한 회원 정보를 확인.
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		// System.out.println(user);
