@@ -168,17 +168,19 @@
 		})
 	})
 	$(function(){
+		// 수정버튼 클릭
 		$(document).on('click', '.btn-comment-update', function(){
-			$('.btn-comment-update-cancle').click();
+			$('.btn-comment-update-cancel').click();
 			// 기존 댓글 내용이 입력창으로 바뀌어야 함
 			let co_content = $(this).siblings('.co_content').text();
 			let str = '<textarea class="co_content2">'+co_content+'</textarea>';
 			$(this).siblings('.co_content').after(str);
 			$(this).siblings('.co_content').hide();
-			$(this).hide();
-			$(this).siblings('.btn-comment-delete').hide();
+			$(this).hide(); // 수정버튼 감춤
+			$(this).siblings('.btn-comment-delete').hide(); // 삭제버튼 감춤
+			$(this).siblings('.btn-comment-reply').hide(); // 답글버튼 감춤
 			str = '<button class="btn-comment-update-complete">수정완료</button>';
-			str += '<button class="btn-comment-update-cancle">취소</button>'
+			str += '<button class="btn-comment-update-cancel">취소</button>'
 			$(this).parent().append(str);
 		})
 		$(document).on('click','.btn-comment-update-complete', function(){
@@ -205,24 +207,79 @@
 	    	}
 			});
 		})
-			$(document).on('click', '.btn-comment-update-cancle', function(){
+			// 수정버튼 클릭 후 생기는 취소버튼 클릭
+			$(document).on('click', '.btn-comment-update-cancel', function(){
 				// 기존 댓글 내용이 입력창으로 바뀌어야 함
 				$(this).siblings('.co_content').show();
 				$(this).siblings('.co_content2').remove();
-				$(this).siblings('.btn-comment-update').show();
-				$(this).siblings('.btn-comment-delete').show();
-				$('.btn-comment-update-cancle').remove();
+				$(this).siblings('.btn-comment-update').show(); // 수정버튼 보임
+				$(this).siblings('.btn-comment-delete').show(); // 삭제버튼 보임
+				$(this).siblings('.btn-comment-reply').show(); // 답글버튼 보임
+				$('.btn-comment-update-cancel').remove();
 				$('.btn-comment-update-complete').remove();
 			})
 			// 답글 버튼 클릭
 			$(document).on('click', '.btn-comment-reply', function(){
+				let id = '${user.me_id}';
+				if(id == ''){
+					if(confirm('답글은 로그인한 회원만 가능합니다. 로그인을 하시겠습니까?')){
+						location.href = '<%=request.getContextPath()%>/login'
+						return;
+					}
+				}
+				// 답글을 누른 댓글에만 답글을 입력하는 창이 나오게 하기 위해 모든 답글 취소버튼을 클릭해서 없애줌
+				$('.btn-cancel-reply').click(); 
+				$('.btn-comment-update-cancel').click();
 				let str = '<br><textarea class="co_content_reply"></textarea><br>'
-				str += '<button class="btn_insert_reply">답글 등록</button>'
-				str += '<button class="btn_insert_reply">답글 취소</button>'
+				str += '<button class="btn-insert-reply">답글 등록</button>'
+					str += '<button class="btn-cancel-reply">답글 취소</button>'
+				
 				$(this).after(str);
-				$(this).hide();
+				$(this).hide(); // 답변 버튼 감춤
+				$(this).siblings('.btn-comment-update').hide(); // 수정버튼 감춤
+				$(this).siblings('.btn-comment-delete').hide(); // 삭제버튼 감춤
+				
 			})
-	})
+			$(document).on('click', '.btn-insert-reply', function(){
+				// 답글 bd_ori_num, bd_depth, bd_order
+				
+				// 댓글 답글 co_ori_num, co_depth, co_order
+				let co_ori_num = $(this).siblings('[name = co_ori_num]').val();
+				let co_depth = $(this).siblings('[name = co_depth]').val();
+				let co_order = $(this).siblings('[name = co_order]').val();
+				let co_content = $(this).siblings('.co_content_reply').val();
+				let co_bd_num = '${board.bd_num}';
+				let obj = {
+						co_ori_num : co_ori_num,
+						co_depth : co_depth,
+						co_order : co_order,
+						co_content : co_content,
+						co_bd_num : co_bd_num
+				}
+				$.ajax({
+					async:true,
+		      type:'POST',
+		      data: JSON.stringify(obj),
+		      url:'<%=request.getContextPath()%>/ajax/comment/insert',
+		      dataType:"json",
+		      contentType:"application/json; charset=UTF-8",
+		      success : function(data){
+		    	  alert(data.res);
+		    	  getCommentList(criteria, bd_num)
+		    	}
+				});
+			})
+			// 답글 취소버튼 클릭
+			$(document).on('click', '.btn-cancel-reply', function(){
+				$(this).siblings('.co_content_reply').remove();
+				$(this).siblings('.btn-insert-reply').remove();
+				$(this).siblings('br').remove();
+				$(this).siblings('.btn-comment-reply').show(); // 답글 보임
+				$(this).siblings('.btn-comment-update').show(); // 수정버튼 보임
+				$(this).siblings('.btn-comment-delete').show(); // 삭제버튼 보임
+				$(this).remove();
+			});
+		})
 	
 	let bd_num = '${board.bd_num}'
 	function getCommentList(cri, bd_num){
@@ -239,9 +296,17 @@
     	  str +=
 	    	  '<div class="item-comment">'+
 						'<div class="co_me_id"><b>ID : '+co.co_me_id+'</b></div>'+
-						'<div class="co_content mb-3">'+co.co_content+'</div>'+
+						'<div class="co_content">'
+						for(i = 2; i <= co.co_depth; i++){
+							str += '┖';}
+						
+						str += 
+								co.co_content + '</div>' +
 						'<div class="co_reg_date" style="font-size: 13px;">작성일 : '+co.co_reg_date_str+'</div>'+
-						'<input value="'+co.co_num+'" name="co_num" type="hidden">';
+						'<input value="'+co.co_num+'" name="co_num" type="hidden">'+
+						'<input value="'+co.co_ori_num+'" name="co_ori_num" type="hidden">'+
+						'<input value="'+co.co_depth+'" name="co_depth" type="hidden">'+
+						'<input value="'+co.co_order+'" name="co_order" type="hidden">';
 						if(co.co_me_id == '${user.me_id}'){
 							str +=
 						'<button class="btn-comment-delete">삭제</button>' +
