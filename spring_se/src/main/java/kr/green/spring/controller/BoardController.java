@@ -21,6 +21,7 @@ import kr.green.spring.pagination.PageMaker;
 import kr.green.spring.service.BoardService;
 import kr.green.spring.vo.BoardVO;
 import kr.green.spring.vo.CommentVO;
+import kr.green.spring.vo.FileVO;
 import kr.green.spring.vo.LikesVO;
 import kr.green.spring.vo.MemberVO;
 
@@ -61,14 +62,22 @@ public class BoardController {
 	  return mv;
 	}
 	@RequestMapping(value = "/board/select/{bd_num}", method = RequestMethod.GET)
-	public ModelAndView boardSelectGet(ModelAndView mv, @PathVariable("bd_num")Integer bd_num){
+	public ModelAndView boardSelectGet(ModelAndView mv, @PathVariable("bd_num")Integer bd_num, HttpSession session){
 		// 게시글 번호에 맞는 게시글 조회수를 증가
 		boardService.updateViews(bd_num);
 		// 게시글 번호에 맞는 게시글 정보를 가져옴
 		BoardVO board = boardService.getBoard(bd_num);
+		// 해당 게시글에 대한 사용자의 추천 정보 => 게시글 번호, 아이디
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		LikesVO likes = boardService.getLikes(board, user);
+		// 첨부 파일들을 가져옴
+		ArrayList<FileVO> fileList = boardService.getFileList(bd_num);
 		
+		// 가져온 첨부파일들을 화면에 전달
+		mv.addObject("fileList",fileList);
 		// 가져온 게시글을 화면에 전달
 		mv.addObject("board",board);
+		mv.addObject("likes", likes);
 	  mv.setViewName("/board/select");
 	  return mv;
 	}
@@ -78,14 +87,20 @@ public class BoardController {
 		// 게시글 번호에 맞는 게시글 정보를 가져옴
 		BoardVO board = boardService.getBoard(bd_num);
 		
+		ArrayList<FileVO> fileList = boardService.getFileList(bd_num);
+		
+		mv.addObject("fileList",fileList);
 		// 가져온 게시글을 화면에 전달
+		
 		mv.addObject("board",board);
 	  mv.setViewName("/board/update");
 	  return mv;
 	}
 	@RequestMapping(value = "/board/update/{bd_num}", method = RequestMethod.POST)
 	public ModelAndView boardUpdatePost(ModelAndView mv,
-			@PathVariable("bd_num")Integer bd_num, HttpSession session, BoardVO board){
+			@PathVariable("bd_num")Integer bd_num, HttpSession session, BoardVO board,
+			MultipartFile[] files, int [] delFiles){
+			
 		// 수정한 게시글 정보를 확인
 		// System.out.println(board);
 		// 로그인한 회원 정보를 확인
@@ -93,7 +108,7 @@ public class BoardController {
 		// System.out.println(user);
 		// 게시글 수정 요청
 		board.setBd_num(bd_num);
-		boardService.updateBoard(board,user);
+		boardService.updateBoard(board,user, files, delFiles);
 	  mv.setViewName("redirect:/board/select/"+bd_num);
 	  return mv;
 	}

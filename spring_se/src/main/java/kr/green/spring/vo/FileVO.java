@@ -1,8 +1,10 @@
 package kr.green.spring.vo;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class FileVO {
 	private int fi_num;
 	private String fi_name; // 업로드 되는 파일의 원래 파일명
