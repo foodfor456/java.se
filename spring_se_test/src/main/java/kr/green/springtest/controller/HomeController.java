@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.green.springtest.service.MemberService;
+import kr.green.springtest.vo.CommentVO;
 import kr.green.springtest.vo.MemberVO;
 
 
@@ -76,4 +77,5 @@ public class HomeController {
     map.put("check", memberService.idCheck(member));
     return map;
 	}
+
 }
