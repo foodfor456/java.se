@@ -56,7 +56,9 @@ public class HomeController {
 //}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(ModelAndView mv){
-	  mv.setViewName("/main/home");
+	  
+		// memberService.sendEmail("메일 테스트", "내용", "foodfor456@naver.com");
+		mv.setViewName("/main/home");
 	  return mv;
 	}
 	@RequestMapping(value = "/login",method = RequestMethod.GET)
@@ -139,13 +141,30 @@ public class HomeController {
 	  mv.setViewName("/main/find");
 	  return mv;
 	}
-	@RequestMapping(value ="/find/id")
+	@RequestMapping(value ="/find/id", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<Object, Object> findId(@RequestBody MemberVO member){
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		ArrayList<String> idList = memberService.getIdList(member);
 		map.put("idList", idList);
 		
+		return map;	
+	}
+	@RequestMapping(value ="/find/pw", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<Object, Object> findPw(@RequestBody MemberVO member){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		// memberService.sendEmail("제목", "내용", "foodfor456@naver.com");
+		System.out.println(member);
+		boolean res = false;
+		boolean exception = false;
+		try {
+			res = memberService.findPw(member);
+		}catch(Exception e){
+			exception = true;
+		}
+		map.put("res", res);
+		map.put("exception", exception);
 		return map;	
 	}
 }

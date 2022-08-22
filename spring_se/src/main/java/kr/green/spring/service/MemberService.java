@@ -13,5 +13,9 @@ public interface MemberService {
 	boolean checkId(MemberVO member);
 
 	ArrayList<String> getIdList(MemberVO member);
+
+	void sendEmail(String title, String content, String email);
+
+	boolean findPw(MemberVO member);
 	
 }
