@@ -17,5 +17,7 @@ public interface MemberService {
 	void sendEmail(String title, String content, String email);
 
 	boolean findPw(MemberVO member);
+
+	void updateMember(MemberVO member, MemberVO user);
 	
 }
