@@ -50,7 +50,14 @@
 			<button class="btn btn-down <c:if test="${likes.li_state == -1}">red</c:if>" data-value="-1"><i class="fa-solid fa-thumbs-down"></i></button>
 		</div>
 		</c:if>
+
 		<div class="content-area">
+			<div class="list-comment">
+				
+			</div>
+			<ul class="pagination-comment pagination justify-content-center mt-3">
+		   
+		  </ul>
 			<div class="form-group">
 				<textarea class="form-control" rows="5" name="co_content"></textarea>
 			</div>
@@ -143,16 +150,71 @@
 				}
 				ajaxPost(false, obj, '/ajax/comment/insert', commentInsertSuccess)
 			})
+			getCommentList(cri);
 		})
+		// 전역 변수들
+		let cri = {
+				page : 1,
+				perPageNum : 2
+		}
+		
+		
+		
+		// 함수들
+		function getCommentList(cri){
+			if(cri == undefined || cri == null || typeof cri != 'object'){
+				cri = {};
+			}
+			if(isNaN(cri.page)) // 숫자가 아닌경우 true
+				cri.page = 1;
+			ajaxPost(false, cri, '/ajax/comment/list/'+${board.bd_num}, commentListSuccess)
+		}
+		
+		
 		function commentInsertSuccess(data){
 			if(data.res)
 				alert('댓글 등록이 완료됐습니다.')
 			else
 				alert('댓글 등록이 실패했습니다.')
+			getCommentList(cri);
+			$('[name=co_content]').val('');
 			
 		}
 		function commentListSuccess(data){
-			console.log(data);
+			let list = data.list;
+			let pm = data.pm;
+			let str = '';
+			let str2 = '';
+			for(co of list){
+			str += '<div class="media border p-3 comment-text">';
+			str += 		'<div class="media-body">';
+			str += 			'<h4>'+co.co_me_id+'<small><i> '+co.co_reg_date_str+'</i></small></h4>';
+			str += 			'<p>'+co.co_content+'</p>';
+			str += 		'</div>';
+			str += '</div>';
+			
+			}
+			$('.list-comment').html(str);
+			str2 +=
+			'<ul class="pagination-comment pagination justify-content-center mt-3">';
+		  if(pm.prev){
+			str2 +='<li class="page-item" data-page="'+(pm.startPage -1)+'"><a class="page-link" href="javascript:void(0);">이전</a></li>'
+			}
+		  for(let i = pm.startPage; i <= pm.endPage; i++){
+			  if(i == pm.cri.page)
+				  str2 +='<li class="page-item active" data-page="'+i+'"><a class="page-link" href="javascript:void(0);">'+i+'</a></li>'
+			  else
+					str2 +='<li class="page-item" data-page="'+i+'"><a class="page-link" href="javascript:void(0);">'+i+'</a></li>'
+		  }
+	    if(pm.next){
+			str2 +='<li class="page-item" data-page="'+(pm.endPage +1)+'"><a class="page-link" href="javascript:void(0);">다음</a></li>'
+			str2 +='</ul>'
+			}
+			$('.pagination').html(str2);
+			$('.pagination-comment .page-item').click(function(){
+				cri.page = $(this).data('page');
+				getCommentList(cri);
+			})
 		}
 		function commentUpdateSuccess(data){
 			console.log(data);

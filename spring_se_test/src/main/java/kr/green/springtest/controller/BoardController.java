@@ -111,8 +111,23 @@ public class BoardController {
 			HttpSession session){
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		MemberVO user = (MemberVO) session.getAttribute("user");
-    boolean res = boardService.insertComment(comment,user);
+		boolean res = boardService.insertComment(comment,user);
 		map.put("res", res);
     return map;
 	}
+	@RequestMapping(value="/ajax/comment/list/{bd_num}")
+	@ResponseBody
+	public Map<Object,Object> ajaxCommentInsert(@RequestBody Criteria cri, @PathVariable("bd_num")int bd_num){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		ArrayList<CommentVO> list = boardService.getCommentList(bd_num, cri);
+		int totalCount = boardService.getCommentCount(bd_num);
+		PageMaker pm = new PageMaker(totalCount, 5, cri);
+		System.out.println(totalCount);
+		
+		System.out.println(pm);
+		map.put("list", list);
+		map.put("pm", pm);
+    return map;
+	}
+	
 }

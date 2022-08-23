@@ -13,6 +13,10 @@ public class Criteria {
 	private String search;
 	private String searchType;
 	//Criteria 디폴트 생성자 : 현재 페이지를 1페이지로, 한 페이지에 10개의 컨텐츠
+	/* 쿼리문에서 limit에 사용되는 인덱스를 계산하는 getter */
+	public int getPageStart() {
+		return (this.page -1) * perPageNum;
+	}
 	public Criteria() {
 		this.page = 1;
 		this.perPageNum = 10;
