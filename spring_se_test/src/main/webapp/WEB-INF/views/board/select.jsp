@@ -53,7 +53,16 @@
 
 		<div class="content-area">
 			<div class="list-comment">
-				
+				<div class="media border p-3">
+			    <div class="media-body">
+			      <h4>John Doe <small><i>Posted on February 19, 2016</i></small></h4>
+			      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>      
+			    </div>
+			    <div class="btn-box">
+						<button class="btn btn-outline-danger mt-1" style="display : block">수정</button>
+						<button class="btn btn-outline-success" style="display : block">삭제</button>
+					</div>
+			  </div>
 			</div>
 			<ul class="pagination-comment pagination justify-content-center mt-3">
 		   
@@ -77,6 +86,7 @@
 		<a href="<c:url value="/board/delete/${board.bd_num}"></c:url>" class="btn btn-outline-danger float-right col-5">삭제</a>
 		</div> 
 		</c:if>
+		
 	</div>
 	<script type="text/javascript">
 		$(function(){
@@ -132,6 +142,7 @@
 					if(confirm('로그인이 필요합니다 로그인하시겠습니까?')){
 						// 로그인 화면으로 이동
 						location.href = '<%=request.getContextPath()%>/login'
+						return;
 					}else{
 						return;
 					}
@@ -185,16 +196,71 @@
 			let pm = data.pm;
 			let str = '';
 			let str2 = '';
+			// 반복문을 이용하여 댓글들 구성
 			for(co of list){
 			str += '<div class="media border p-3 comment-text">';
 			str += 		'<div class="media-body">';
 			str += 			'<h4>'+co.co_me_id+'<small><i> '+co.co_reg_date_str+'</i></small></h4>';
 			str += 			'<p>'+co.co_content+'</p>';
 			str += 		'</div>';
-			str += '</div>';
+			str +=		'<div class="btn-box">';
+			if(co.co_me_id == '${user.me_id}'){
+				str +=	'<button data-target="'+co.co_num+'" class="btn btn-outline-danger mt-1 btn-co-update" style="display : block">수정</button>';
+				str +=	'<button data-target="'+co.co_num+'" class="btn btn-outline-success btn-co-delete" style="display : block">삭제</button>';
+			}
+			str +=		'</div>';
+			str +=	'</div>';
 			
 			}
+			// 댓글들을 화면에 출력
 			$('.list-comment').html(str);
+			// 댓글 삭제버튼 이벤트 등록
+			$('.btn-co-delete').click(function(){
+				let co_num = $(this).data('target');
+				let comment = {
+						co_num : co_num
+				}
+				ajaxPost(false, comment, '/ajax/comment/delete', commentDeleteSuccess)
+			})
+			$('.btn-co-update').click(function(){
+				$('.btn-co-cancle').click();
+				let contentEl = $(this).parent().siblings('.media-body').children('p');
+				contentEl.hide();
+				let content = contentEl.text();
+				let str = ''; 
+				str += '<div class="form-group box-content">';
+				str +=	'<textarea class="form-control" rows="3">'+content+'</textarea>';
+				str += '</div>';
+				contentEl.after(str);
+				$(this).parent().hide();
+				let co_num = $(this).data('target');
+				str = '';
+				str +=	'<div class="btn-box2">'
+				str +=		'<button data-target="'+co_num+'" class="btn btn-outline-danger mt-1 btn-co-complete" style="display : block">등록</button>';
+				str +=		'<button class="btn btn-outline-success btn-co-cancle" style="display : block">취소</button>';
+				str +=	'</div>'
+				$(this).parent().after(str);
+				$('.btn-co-complete').click(function(){
+					let co_num = $(this).data('target');
+					let co_content = $(this).parent().siblings('.media-body').find('textarea').val();
+					let obj = {
+							co_num : co_num,
+							co_content : co_content
+					}
+					ajaxPost(false, obj, '/ajax/comment/update', commentUpdateSuccess)
+				})
+				$('.btn-co-cancle').click(function(){
+					// .box-content
+					$(this).parent().siblings('.media-body').find('p').show();
+					$(this).parent().siblings('.media-body').find('.box-content').remove();
+					$(this).parent().siblings('.btn-box').show();
+					$(this).parent().remove();
+					
+				})
+			})
+			
+			
+			// 댓글 페이지 네이션 구성
 			str2 +=
 			'<ul class="pagination-comment pagination justify-content-center mt-3">';
 		  if(pm.prev){
@@ -210,17 +276,31 @@
 			str2 +='<li class="page-item" data-page="'+(pm.endPage +1)+'"><a class="page-link" href="javascript:void(0);">다음</a></li>'
 			str2 +='</ul>'
 			}
+	    // 페이지 네이션 화면에 등록
 			$('.pagination').html(str2);
+	    
+	    // 페이지 네이션 이벤트 등록
 			$('.pagination-comment .page-item').click(function(){
 				cri.page = $(this).data('page');
 				getCommentList(cri);
 			})
+			
 		}
 		function commentUpdateSuccess(data){
-			console.log(data);
+			if(data.res)
+				alert('댓글이 수정되었습니다.')
+			else
+				alert('댓글 등록이 실패했습니다.')
+			getCommentList(cri);
 		}
 		function commentDeleteSuccess(data){
-			console.log(data);
+			if(data.res)
+				alert('댓글이 삭제되었습니다.')
+			else
+				alert('댓글 삭제에 실패하였습니다.')
+				
+			getCommentList(cri);
+			
 		}
 		function ajaxPost(async, dataObj, url, success){
 			$.ajax({

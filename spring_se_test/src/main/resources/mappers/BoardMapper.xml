@@ -20,7 +20,7 @@
 	<update id="updateViews">
 		update board set bd_views = bd_views+1 where bd_num = #{bd_num} and bd_del = 'N';
 	</update>
-	<insert id="insertBoard">
+	<insert id="insertBoard" useGeneratedKeys="true" keyProperty="b.bd_num">
 		insert into board(bd_title, bd_content,bd_me_id, bd_reg_date, bd_ori_num, bd_depth)
 		 			select #{b.bd_title},#{b.bd_content},#{user.me_id},now(),ifnull(max(bd_num),0)+1,1
 		 			from board;
@@ -72,5 +72,19 @@
 	<select id="getCommentCount" resultType="int">
 		select count(*) from comments where co_bd_num = #{bd_num};
 	</select>
+	<select id="selectComment" resultType="kr.green.springtest.vo.CommentVO">
+		select * from comments where co_num = #{co.co_num}
+	</select>
+	<delete id="deleteComments">
+		delete from comments where co_num = #{co.co_num};
+	</delete>
+	<update id="updateComment">
+		update comments set
+			co_content = #{co.co_content} where co_num = #{co.co_num};
+	</update>
+	<insert id="insertFile">
+		insert into file(fi_bd_num, fi_ori_name, fi_name)
+			values(#{fi.fi_bd_num},#{fi.fi_ori_name},#{fi.fi_name});
+	</insert>
 	
 </mapper>

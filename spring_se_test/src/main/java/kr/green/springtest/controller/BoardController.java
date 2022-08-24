@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.green.springtest.pagination.Criteria;
@@ -20,6 +21,7 @@ import kr.green.springtest.pagination.PageMaker;
 import kr.green.springtest.service.BoardService;
 import kr.green.springtest.vo.BoardVO;
 import kr.green.springtest.vo.CommentVO;
+import kr.green.springtest.vo.FileVO;
 import kr.green.springtest.vo.LikesVO;
 import kr.green.springtest.vo.MemberVO;
 
@@ -34,7 +36,6 @@ public class BoardController {
 		ArrayList<BoardVO> list = boardService.getBoardList(cri);
 		int totalCount = boardService.getBoardCount(cri);
 		PageMaker pm = new PageMaker(totalCount, 5, cri);
-		System.out.println(pm);
 		mv.addObject("pm",pm);
 		mv.addObject("list",list);
 		mv.setViewName("/board/list");
@@ -45,12 +46,8 @@ public class BoardController {
 			HttpSession session){
 		boardService.updateViews(bd_num);
 		BoardVO board = boardService.boardSelect(bd_num);
-		
 		MemberVO user = (MemberVO) session.getAttribute("user");
-		
-		
 		LikesVO likes = boardService.getLikes(bd_num, user);
-		
 		mv.addObject("likes", likes);
 		mv.addObject("board", board);
 		mv.setViewName("/board/select");
@@ -62,9 +59,14 @@ public class BoardController {
 	    return mv;
 	}
 	@RequestMapping(value="/board/insert", method=RequestMethod.POST)
-	public ModelAndView boardInsertPost(ModelAndView mv, BoardVO board, HttpSession session){
+	public ModelAndView boardInsertPost(ModelAndView mv, BoardVO board,
+			HttpSession session, MultipartFile [] files){ // files는 insert.jsp의 input태그 name과 맞춰줘야함
+		
+		//FileVO uploadFile = new FileVO(file.getOriginalFilename(), file.getBytes(),1);
+		
+		
 		MemberVO user = (MemberVO) session.getAttribute("user");
-		boardService.insertBoard(board,user);
+		boardService.insertBoard(board,user,files);
 		
 		mv.setViewName("redirect:/board/list");
 	    return mv;
@@ -74,7 +76,6 @@ public class BoardController {
 			@PathVariable("bd_num") int bd_num){
 		BoardVO board = boardService.boardSelect(bd_num);
 		mv.addObject("board", board);
-		
 		mv.setViewName("/board/update");
 	    return mv;
 	}
@@ -84,7 +85,6 @@ public class BoardController {
 		
 		MemberVO user = (MemberVO) session.getAttribute("user");
 		boardService.updateBoard(board,user);
-		
 		mv.setViewName("redirect:/board/select/"+ bd_num);
 	    return mv;
 	}
@@ -117,17 +117,33 @@ public class BoardController {
 	}
 	@RequestMapping(value="/ajax/comment/list/{bd_num}")
 	@ResponseBody
-	public Map<Object,Object> ajaxCommentInsert(@RequestBody Criteria cri, @PathVariable("bd_num")int bd_num){
+	public Map<Object,Object> ajaxCommentList(@RequestBody Criteria cri, @PathVariable("bd_num")int bd_num){
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		ArrayList<CommentVO> list = boardService.getCommentList(bd_num, cri);
 		int totalCount = boardService.getCommentCount(bd_num);
 		PageMaker pm = new PageMaker(totalCount, 5, cri);
-		System.out.println(totalCount);
-		
-		System.out.println(pm);
 		map.put("list", list);
 		map.put("pm", pm);
     return map;
 	}
-	
+	@RequestMapping(value="/ajax/comment/delete")
+	@ResponseBody
+	public Map<Object,Object> ajaxCommentDelete(@RequestBody CommentVO comment, HttpSession session){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		boolean res = boardService.deleteComment(comment, user);
+		map.put("res", res);
+    return map;
+	}
+	@RequestMapping(value="/ajax/comment/update")
+	@ResponseBody
+	public Map<Object,Object> ajaxCommentUpdate(@RequestBody CommentVO comment, HttpSession session){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		boolean res = boardService.updateComment(comment, user);
+		map.put("res", res);
+		
+		
+		return map;
+	}
 }

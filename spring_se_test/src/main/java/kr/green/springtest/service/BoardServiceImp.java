@@ -1,14 +1,18 @@
 package kr.green.springtest.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.green.springtest.dao.BoardDAO;
 import kr.green.springtest.pagination.Criteria;
+import kr.green.springtest.utils.UploadFileUtils;
 import kr.green.springtest.vo.BoardVO;
 import kr.green.springtest.vo.CommentVO;
+import kr.green.springtest.vo.FileVO;
 import kr.green.springtest.vo.LikesVO;
 import kr.green.springtest.vo.MemberVO;
 
@@ -16,6 +20,8 @@ import kr.green.springtest.vo.MemberVO;
 public class BoardServiceImp implements BoardService{
 	@Autowired
 	BoardDAO boardDao;
+	
+	String uploadPath = "E:\\uploadfiles";
 
 	@Override
 	public ArrayList<BoardVO> getBoardList(Criteria cri) {
@@ -39,14 +45,30 @@ public class BoardServiceImp implements BoardService{
 
 
 	@Override
-	public void insertBoard(BoardVO board, MemberVO user) {
+	public void insertBoard(BoardVO board, MemberVO user, MultipartFile[] files) {
 		if(board.getBd_title() == null || board.getBd_content() == null)
 			return;
 		if(user == null || user.getMe_id() == null)
 			return;
-		// board.setBd_me_id(user.getMe_id()); // 미리 로그인된 id정보를 넘겨줌
+		board.setBd_me_id(user.getMe_id()); // 미리 로그인된 id정보를 넘겨줌
 		boardDao.insertBoard(board,user);
 		
+		if(files == null || files.length == 0){
+			return;
+		}
+		for(MultipartFile tmp : files) {
+			String fi_ori_name = tmp.getOriginalFilename();
+			if(tmp == null || fi_ori_name == null || fi_ori_name.length() == 0)
+				continue;
+			try {
+				String fi_name = UploadFileUtils.uploadFile(uploadPath, fi_ori_name, tmp.getBytes());
+				FileVO file = new FileVO(fi_name, fi_ori_name, board.getBd_num());
+				boardDao.insertFile(file);
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
@@ -161,6 +183,35 @@ public class BoardServiceImp implements BoardService{
 			return null;
 		
 		return boardDao.selectCommentList(bd_num, cri);
+	}
+
+
+	@Override
+	public boolean deleteComment(CommentVO comment, MemberVO user) {
+		if(comment == null || user == null)
+			return false;
+		CommentVO co = boardDao.selectComment(comment);
+		if(!co.getCo_me_id().equals(user.getMe_id()))
+			return false;
+		
+		boardDao.deleteComments(comment);
+			return true;
+		
+		
+	}
+
+
+	@Override
+	public boolean updateComment(CommentVO comment, MemberVO user) {
+		if(comment == null || user == null)
+			return false;
+		
+		CommentVO co = boardDao.selectComment(comment);
+		if(co == null || !co.getCo_me_id().equals(user.getMe_id()))
+			return false;
+		
+		boardDao.updateComment(comment);
+		return true;
 	}
 
 
