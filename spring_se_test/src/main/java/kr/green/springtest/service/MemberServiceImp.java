@@ -58,6 +58,14 @@ public class MemberServiceImp implements MemberService {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String getMemberId(String me_email, String me_birth_str) {
+		if(me_email == null || me_birth_str == null)
+		return null;
+		
+		return memberDao.getMemberId(me_email, me_birth_str);
+	}
 	
 
 	

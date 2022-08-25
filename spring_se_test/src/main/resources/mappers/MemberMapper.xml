@@ -16,5 +16,8 @@
   <select id="loginMember" resultType="kr.green.springtest.vo.MemberVO">
   	select me_id from member where me_id = #{me_id} AND me_pw = #{me_pw};
   </select>
+  <select id="getMemberId" resultType="string">
+  	select me_id from member where me_email = #{me_email} and me_birth = #{me_birth} ;
+  </select>
 </mapper>
 

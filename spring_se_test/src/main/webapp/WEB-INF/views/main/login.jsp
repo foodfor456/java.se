@@ -17,7 +17,11 @@
 			  <label for="me_pw">비밀번호:</label>
 			  <input type="password" class="form-control" id="me_pw" name="me_pw">
 			</div>
-			<button class="btn btn-outline-primary">로그인</button>
+			<button class="btn btn-outline-primary">로그인</button><br>
+			<div class="mt-3">
+				<a href="<c:url value="/find?type=id"></c:url>">아이디 찾기</a>
+				<a href="<c:url value="/find?type=pw"></c:url>">/ 비밀번호 찾기</a>
+			</div>
 		</form>
 </body>
 </html>
