@@ -3,7 +3,6 @@ package kr.green.springtest.dao;
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.multipart.MultipartFile;
 
 import kr.green.springtest.pagination.Criteria;
 import kr.green.springtest.vo.BoardVO;
@@ -53,5 +52,7 @@ public interface BoardDAO {
 	ArrayList<FileVO> selectFile(@Param("bd_num")int bd_num);
 
 	void deleteFile(@Param("fi_num")int fi_num);
+
+	FileVO selectFiles(@Param("fi_num")int fi_num);
 
 }

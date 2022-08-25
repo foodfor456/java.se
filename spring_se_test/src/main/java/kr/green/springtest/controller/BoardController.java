@@ -77,16 +77,19 @@ public class BoardController {
 	public ModelAndView boardUpdateGet(ModelAndView mv,
 			@PathVariable("bd_num") int bd_num){
 		BoardVO board = boardService.boardSelect(bd_num);
+		ArrayList<FileVO> fileList = boardService.fileSelect(bd_num);
+		mv.addObject("fileList", fileList);
 		mv.addObject("board", board);
 		mv.setViewName("/board/update");
 	    return mv;
 	}
 	@RequestMapping(value="/board/update/{bd_num}", method=RequestMethod.POST)
 	public ModelAndView boardUpdatePost(ModelAndView mv,
-			@PathVariable("bd_num") int bd_num, BoardVO board, HttpSession session){
+			@PathVariable("bd_num") int bd_num, BoardVO board, HttpSession session, 
+			MultipartFile[] files, int[] nums){
 		
 		MemberVO user = (MemberVO) session.getAttribute("user");
-		boardService.updateBoard(board,user);
+		boardService.updateBoard(board,user,files,nums);
 		mv.setViewName("redirect:/board/select/"+ bd_num);
 	    return mv;
 	}

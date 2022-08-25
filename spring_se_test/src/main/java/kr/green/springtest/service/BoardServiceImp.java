@@ -54,22 +54,12 @@ public class BoardServiceImp implements BoardService{
 			return;
 		}
 		for(MultipartFile tmp : files) {
-			String fi_ori_name = tmp.getOriginalFilename();
-			if(tmp == null || fi_ori_name == null || fi_ori_name.length() == 0)
-				continue;
-			try {
-				String fi_name = UploadFileUtils.uploadFile(uploadPath, fi_ori_name, tmp.getBytes());
-				System.out.println(fi_name);
-				FileVO file = new FileVO(fi_name, fi_ori_name, board.getBd_num());
-				boardDao.insertFile(file);
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
+			insertFile(tmp, board.getBd_num());
 		}
 	}
 	
 	@Override
-	public void updateBoard(BoardVO board, MemberVO user) {
+	public void updateBoard(BoardVO board, MemberVO user, MultipartFile[] files, int[] nums) {
 		if(board == null || user == null)
 			return;
 		/*	- 게시글 번호에 맞는 게시글 정보를 가져옴
@@ -85,6 +75,18 @@ public class BoardServiceImp implements BoardService{
 			return;
 		
 		boardDao.updateBoard(board);
+		if(files != null && files.length != 0) {
+			for(MultipartFile tmp : files) {
+				insertFile(tmp, board.getBd_num());
+			}
+		}
+		if(nums == null || nums.length == 0)
+			return;
+		for(int fi_num : nums) {
+			FileVO file = boardDao.selectFiles(fi_num);
+			deleteFile(file);
+		}
+		
 	}
 
 
@@ -103,9 +105,8 @@ public class BoardServiceImp implements BoardService{
 		ArrayList<FileVO> file = boardDao.selectFile(bd_num);
 		if(file == null)
 			return;
-		for(FileVO list : file) {
-			UploadFileUtils.deleteFile(uploadPath, list.getFi_name());
-			boardDao.deleteFile(list.getFi_num());
+		for(FileVO tmp : file) {
+			deleteFile(tmp);
 		}
 	}
 
@@ -226,7 +227,21 @@ public class BoardServiceImp implements BoardService{
 		
 		return boardDao.selectFile(bd_num);
 	}
-
-
+	private void insertFile(MultipartFile tmp, int bd_num) {
+		String fi_ori_name = tmp.getOriginalFilename();
+		if(tmp == null || fi_ori_name == null || fi_ori_name.length() == 0)
+			return;
+		try {
+			String fi_name = UploadFileUtils.uploadFile(uploadPath, fi_ori_name, tmp.getBytes());
+			FileVO file = new FileVO(fi_name, fi_ori_name, bd_num);
+			boardDao.insertFile(file);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	private void deleteFile(FileVO tmp) {
+		UploadFileUtils.deleteFile(uploadPath, tmp.getFi_name());
+		boardDao.deleteFile(tmp.getFi_num());
+	}
 	
 }
