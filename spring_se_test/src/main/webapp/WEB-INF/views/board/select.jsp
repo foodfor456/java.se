@@ -50,7 +50,11 @@
 			<button class="btn btn-down <c:if test="${likes.li_state == -1}">red</c:if>" data-value="-1"><i class="fa-solid fa-thumbs-down"></i></button>
 		</div>
 		</c:if>
-
+		<div>
+			<c:forEach items="${list}" var="files">
+				<a href="<c:url value="/file${files.fi_name}"></c:url>" download="${files.fi_ori_name}">${files.fi_ori_name}</a> <br>
+			</c:forEach>
+		</div>
 		<div class="content-area">
 			<div class="list-comment">
 				<div class="media border p-3">

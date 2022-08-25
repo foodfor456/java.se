@@ -1,6 +1,5 @@
 package kr.green.springtest.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +25,11 @@ public class BoardServiceImp implements BoardService{
 	@Override
 	public ArrayList<BoardVO> getBoardList(Criteria cri) {
 			return boardDao.selectBoardList(cri);	
-		
 	}
 
 	
 	@Override
 	public BoardVO boardSelect(int bd_num) {
-		
 		return boardDao.boardDetail(bd_num);
 	}
 
@@ -62,10 +59,10 @@ public class BoardServiceImp implements BoardService{
 				continue;
 			try {
 				String fi_name = UploadFileUtils.uploadFile(uploadPath, fi_ori_name, tmp.getBytes());
+				System.out.println(fi_name);
 				FileVO file = new FileVO(fi_name, fi_ori_name, board.getBd_num());
 				boardDao.insertFile(file);
 			}catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -102,7 +99,14 @@ public class BoardServiceImp implements BoardService{
 		if(!dbBoard.getBd_me_id().equals(user.getMe_id()))
 			return;
 		dbBoard.setBd_del("Y");
-		boardDao.updateBoard(dbBoard);		
+		boardDao.updateBoard(dbBoard);
+		ArrayList<FileVO> file = boardDao.selectFile(bd_num);
+		if(file == null)
+			return;
+		for(FileVO list : file) {
+			UploadFileUtils.deleteFile(uploadPath, list.getFi_name());
+			boardDao.deleteFile(list.getFi_num());
+		}
 	}
 
 
@@ -212,6 +216,15 @@ public class BoardServiceImp implements BoardService{
 		
 		boardDao.updateComment(comment);
 		return true;
+	}
+
+
+	@Override
+	public ArrayList<FileVO> fileSelect(int bd_num) {
+		if(bd_num == 0)
+			return null;
+		
+		return boardDao.selectFile(bd_num);
 	}
 
 

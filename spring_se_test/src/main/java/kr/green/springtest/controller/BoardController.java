@@ -48,6 +48,8 @@ public class BoardController {
 		BoardVO board = boardService.boardSelect(bd_num);
 		MemberVO user = (MemberVO) session.getAttribute("user");
 		LikesVO likes = boardService.getLikes(bd_num, user);
+		ArrayList<FileVO> list = boardService.fileSelect(bd_num);
+		mv.addObject("list", list);
 		mv.addObject("likes", likes);
 		mv.addObject("board", board);
 		mv.setViewName("/board/select");
@@ -142,8 +144,6 @@ public class BoardController {
 		MemberVO user = (MemberVO) session.getAttribute("user");
 		boolean res = boardService.updateComment(comment, user);
 		map.put("res", res);
-		
-		
 		return map;
 	}
 }
