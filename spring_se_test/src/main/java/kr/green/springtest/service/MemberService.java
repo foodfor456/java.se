@@ -12,5 +12,7 @@ public interface MemberService {
 
 	public String getMemberId(String me_email, String me_birth_str);
 
+	public boolean findPw(MemberVO member);
+
 	
 }

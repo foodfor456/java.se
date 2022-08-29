@@ -1,6 +1,10 @@
 package kr.green.springtest.service;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +17,8 @@ public class MemberServiceImp implements MemberService {
     MemberDAO memberDao;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private JavaMailSender mailSender;
     
     @Override
 	public boolean signup(MemberVO member) {
@@ -66,6 +72,53 @@ public class MemberServiceImp implements MemberService {
 		
 		return memberDao.getMemberId(me_email, me_birth_str);
 	}
+
+	@Override
+	public boolean findPw(MemberVO member) {
+		String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		String newPw = "";
+		if(member == null || member.getMe_email() == null || member.getMe_birth_str() == null)
+			return false;
+		
+		String id = memberDao.getMemberId(member.getMe_email(), member.getMe_birth_str());
+		if(id == null)
+			return false;
+		
+		MemberVO user = memberDao.selectMember(id);
+		
+		for(int i = 0; i < 8; i++) {
+			int r = (int)(Math.random()*str.length());
+			newPw += str.charAt(r);
+		}
+		String encPw = passwordEncoder.encode(newPw);
+		user.setMe_pw(encPw);
+		memberDao.updateMember(user);
+		
+		String title = "새 비밀번호가 발급됐습니다.";
+		String content = "새 비밀번호는 <br>" + newPw + "</br>입니다";
+		
+		return sendEmail(user.getMe_email(), title, content);
+	}
+
+	public boolean sendEmail(String to, String title, String content) {
+	 try {
+	   MimeMessage message = mailSender.createMimeMessage();
+	   MimeMessageHelper messageHelper 
+	       = new MimeMessageHelper(message, true, "UTF-8");
+	
+	   messageHelper.setFrom("foodfor456@naver.com");  // 보내는사람 생략하거나 하면 정상작동을 안함
+	   messageHelper.setTo(to);     // 받는사람 이메일
+	   messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+	   messageHelper.setText(content, true);  // 메일 내용 true가 없으면 위의 br태그가 문자로 인식됨
+	
+	   mailSender.send(message);
+   }catch(Exception e){
+  	 e.printStackTrace();
+  	 return false;
+   }
+		 return true;
+	}
+	
 	
 
 	

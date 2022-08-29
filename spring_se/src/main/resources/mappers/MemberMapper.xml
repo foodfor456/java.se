@@ -26,4 +26,5 @@
   		me_authority = #{m.me_authority}
   	where me_id = #{m.me_id};
   </update>
+  
  </mapper>

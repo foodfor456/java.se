@@ -8,7 +8,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-		<form action="/springtest/login" method="post">
+		<form action="/springtest/login" method="post" class="container mt-3">
+			<h1>로그인</h1>
 			<div class="form-group">
 			  <label for="me_id">아이디:</label>
 			  <input type="text" class="form-control" id="me_id" name="me_id">

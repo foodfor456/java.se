@@ -39,13 +39,15 @@
 	      <div class="form-group">
 	      	<input type="text" class="form-control me_birth" placeholder="생일을 입력하세요">
 	      </div>
-	      <button class="btn btn-outline-success btn-find-id col-12">비밀번호 찾기</button>
+	      <button class="btn btn-outline-success btn-find-pw col-12">비밀번호 찾기</button>
 	    </div>
 	  </div>
 	</div>
 <script>
 	
 	$(function(){
+		$('[href = "#${type}"]').click();
+		
 		$('.btn-find-id').click(function(){
 			let me_email = $('#id .me_email').val();
 			let me_birth = $('#id .me_birth').val();
@@ -65,9 +67,38 @@
 				me_birth : me_birth
 			}
 			ajaxPost(false, obj, '/ajax/find/id', function(data){
-				console.log(data);
+				if(data.memberId == null)
+			  	alert('회원아이디가 없습니다.')
+			  else
+			  	alert('회원님의 아이디는: '+data.memberId+' 입니다.')
+				
 			})
 		});
+		$('.btn-find-pw').click(function(){
+			let me_email = $('#pw .me_email').val();
+			let me_birth = $('#pw .me_birth').val();
+			if(me_email.trim() == ''){
+				alert('이메일을 입력하세요.');
+				return;
+			}
+			let birthRegex = /^\d{4}-\d{2}-\d{2}$/
+			if(!birthRegex.test(me_birth)){
+				alert('생일을 올바르게 입력하세요.');
+				$('#pw .me_birth').focus();
+				return;
+			}
+			obj = {
+					me_email : me_email,
+					me_birth : me_birth
+				}
+				ajaxPost(false, obj, '/ajax/find/pw', function(data){
+					if(data.res){
+						alert('입력한 이메일로 새 비밀번호를 발송했습니다.')
+					}else{
+						alert('없는 정보입니다.')
+					}
+			})
+		})
 	})
 	function ajaxPost(async, dataObj, url, success){
 		$.ajax({
@@ -78,10 +109,7 @@
 	    dataType:"json",
 	    contentType:"application/json; charset=UTF-8",
 	    success : function(data){
-	  	  if(data == null)
-	  		  alert('회원아이디가 없습니다.')
-	  		else
-	  			alert('회원님의 아이디는: '+data.memberId+' 입니다.')
+	    	success(data);
 	    }
 		});
 	}

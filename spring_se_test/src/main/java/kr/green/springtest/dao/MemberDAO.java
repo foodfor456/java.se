@@ -13,4 +13,6 @@ public interface MemberDAO {
 	public void loginMember(@Param("me_id")String me_id, @Param("me_pw")String me_pw);
 
 	public String getMemberId(@Param("me_email")String me_email, @Param("me_birth")String me_birth_str);
+
+	public void updateMember(@Param("m")MemberVO user);
 }
