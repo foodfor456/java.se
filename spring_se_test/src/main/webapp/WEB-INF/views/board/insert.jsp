@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 </head>
 <body>
 	<form method="post" class="container" enctype="multipart/form-data">

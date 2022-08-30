@@ -43,4 +43,6 @@ public interface BoardService {
 
 	LikesVO getLikes(BoardVO board, MemberVO user);
 
+	String uploadImage(MultipartFile file);
+
 }

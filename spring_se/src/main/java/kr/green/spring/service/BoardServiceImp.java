@@ -1,5 +1,6 @@
 package kr.green.spring.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class BoardServiceImp implements BoardService{
 	BoardDAO boardDao;
 	
 	private String uploadPath = "E:\\uploadfiles";
+	private String imgUploadPath = "E:\\uploadfiles\\img";
 	@Override
 	public void insertBoard(BoardVO board, MemberVO user, MultipartFile[] files) {
 		if(board == null || board.getBd_title() == null || board.getBd_content() == null)
@@ -284,11 +286,24 @@ public class BoardServiceImp implements BoardService{
 			try {
 				String fi_name = UploadFileUtils.uploadFile(uploadPath, fi_ori_name, file.getBytes());
 				FileVO fileVo = new FileVO(fi_name, fi_ori_name, bd_num);
-				System.out.println(fileVo);// 첨부파일 정보 확인
+				// System.out.println(fileVo);// 첨부파일 정보 확인
 				boardDao.insertFile(fileVo);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	@Override
+	public String uploadImage(MultipartFile file) {
+		if(file == null || file.getOriginalFilename().length() == 0)
+			return null;
+		
+		try {
+			return UploadFileUtils.uploadFile(imgUploadPath, file.getOriginalFilename(), file.getBytes());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

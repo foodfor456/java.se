@@ -17,6 +17,7 @@
 	<resources mapping="/resources/**" location="/resources/" />
 	<!-- file:/// ==> 프로젝트 외부 폴더 -->
 	<resources mapping="/file/**" location="file:///E:/uploadfiles/" />
+	<resources mapping="/simg/**" location="file:///E:/uploadfiles/img/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -43,6 +44,7 @@
 	<beans:bean id="memberInterceptor" class="kr.green.spring.interceptor.MemberInterceptor"></beans:bean>
 	<beans:bean id="guestInterceptor" class="kr.green.spring.interceptor.GuestInterceptor"></beans:bean>
 	<beans:bean id="redirectInterceptor" class="kr.green.spring.interceptor.RedirectInterceptor"></beans:bean>
+	<beans:bean id="autoLoginInterceptor" class="kr.green.spring.interceptor.AutoLoginInterceptor"></beans:bean>
 	<interceptors>
 	  <interceptor>
 	   <mapping path="/login"/>
@@ -63,6 +65,10 @@
   	<interceptor>
 	   <mapping path="/**"/>
 	   <beans:ref bean="redirectInterceptor"/>
+  	</interceptor>
+  	<interceptor>
+	   <mapping path="/**"/>
+	   <beans:ref bean="autoLoginInterceptor"/>
   	</interceptor>
 	</interceptors>
 	
