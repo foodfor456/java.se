@@ -26,7 +26,11 @@
       <tr>
         <td>${board.bd_num}</td>
         <td>
-        	<a href="/springtest/board/select/${board.bd_num}">${board.bd_title}</a>
+        	<a href="/springtest/board/select/${board.bd_num}">
+        	<c:forEach begin="2" end="${board.bd_depth}">
+        	-
+        	</c:forEach>
+        	${board.bd_title}</a>
         </td>
         <td>${board.bd_me_id}</td>
         <td>${board.bd_reg_date_str}</td>

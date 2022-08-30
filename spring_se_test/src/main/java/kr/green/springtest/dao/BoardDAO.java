@@ -55,4 +55,6 @@ public interface BoardDAO {
 
 	FileVO selectFiles(@Param("fi_num")int fi_num);
 
+	void updateOrderBoard(@Param("bo")BoardVO board);
+
 }

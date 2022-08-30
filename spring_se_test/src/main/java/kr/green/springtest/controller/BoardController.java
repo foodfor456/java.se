@@ -32,7 +32,7 @@ public class BoardController {
 	
 	@RequestMapping(value="/board/list", method=RequestMethod.GET)
 	public ModelAndView boardListGet(ModelAndView mv, Criteria cri){
-		cri.setPerPageNum(2);
+		cri.setPerPageNum(5);
 		ArrayList<BoardVO> list = boardService.getBoardList(cri);
 		int totalCount = boardService.getBoardCount(cri);
 		PageMaker pm = new PageMaker(totalCount, 5, cri);
@@ -56,9 +56,9 @@ public class BoardController {
 	    return mv;
 	}
 	@RequestMapping(value="/board/insert", method=RequestMethod.GET)
-	public ModelAndView boardInsertGet(ModelAndView mv){
+	public ModelAndView boardInsertGet(ModelAndView mv, BoardVO board){
 		mv.setViewName("/board/insert");
-	    return mv;
+		  return mv;
 	}
 	@RequestMapping(value="/board/insert", method=RequestMethod.POST)
 	public ModelAndView boardInsertPost(ModelAndView mv, BoardVO board,
@@ -149,4 +149,5 @@ public class BoardController {
 		map.put("res", res);
 		return map;
 	}
+	
 }

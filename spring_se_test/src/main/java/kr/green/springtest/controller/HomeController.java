@@ -70,8 +70,8 @@ public class HomeController {
 	}
 	@RequestMapping(value="/logout")
 	public ModelAndView logout(ModelAndView mv, HttpSession session){
-    mv.setViewName("/main/home");
     session.removeAttribute("user");
+    mv.setViewName("redirect:/");
     return mv;
 	}
 	@RequestMapping(value="/id/check")
@@ -103,6 +103,21 @@ public class HomeController {
     boolean res = memberService.findPw(member);
     map.put("res", res);
 		return map;
+	}
+	@RequestMapping(value="/member/update", method=RequestMethod.GET)
+	public ModelAndView memberUpdateGet(ModelAndView mv){
+		
+    mv.setViewName("/main/update");
+    return mv;
+	}
+	@RequestMapping(value="/member/update", method=RequestMethod.POST)
+	public ModelAndView memberUpdatePost(ModelAndView mv, MemberVO member, HttpSession session){
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		boolean res = memberService.memberUpdate(member, user);
+		mv.addObject("res",res);
+		mv.addObject("member",member);
+		mv.setViewName("redirect:/member/update");
+    return mv;
 	}
 
 }

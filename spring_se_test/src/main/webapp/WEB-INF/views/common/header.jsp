@@ -20,10 +20,10 @@
 		   	<li class="nav-item">
 		     	<a class="nav-link" href="<%=request.getContextPath()%>/board/list">게시글</a>
 		   	</li>
-		   	<li class="nav-item">
-		     	<a class="nav-link" href="#">Link</a>
-		   	</li> 
 		   	<c:if test="${user != null}">
+		   	<li class="nav-item">
+		     	<a class="nav-link" href="<%=request.getContextPath()%>/member/update">회원정보 수정</a>
+		   	</li> 
 		   	<li class="nav-item">
 		     	<a class="nav-link" href="<%=request.getContextPath()%>/logout">로그아웃</a>
 		   	</li>

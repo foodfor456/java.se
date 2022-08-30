@@ -48,6 +48,9 @@ public class BoardServiceImp implements BoardService{
 		if(user == null || user.getMe_id() == null)
 			return;
 		board.setBd_me_id(user.getMe_id()); // 미리 로그인된 id정보를 넘겨줌
+		boardDao.updateOrderBoard(board);
+		System.out.println(board);
+		
 		boardDao.insertBoard(board,user);
 		
 		if(files == null || files.length == 0){
