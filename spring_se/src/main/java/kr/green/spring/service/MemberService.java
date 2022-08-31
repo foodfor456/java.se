@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import kr.green.spring.vo.MemberVO;
 
@@ -30,5 +29,9 @@ public interface MemberService {
 	MemberVO autoLogin(String session_id);
 
 	void logout(HttpServletRequest request, HttpServletResponse response);
+
+	ArrayList<MemberVO> getMemberList(MemberVO user);
+
+	boolean adminUserUpdate(MemberVO member, MemberVO user);
 	
 }

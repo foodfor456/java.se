@@ -108,7 +108,7 @@ public class MemberServiceImp implements MemberService{
       messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
       messageHelper.setTo(email);     // 받는사람 이메일
       messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
-      messageHelper.setText(content);  // 메일 내용
+      messageHelper.setText(content, true);  // 메일 내용
 
       mailSender.send(message);
     } catch(Exception e){
@@ -172,7 +172,7 @@ public class MemberServiceImp implements MemberService{
 		if(member.getMe_authority() != 0)
 			user.setMe_authority(member.getMe_authority());
 		// 비밀번호가 있으면 암호화하여 저장
-		if(member.getMe_pw() != null || member.getMe_pw().length() != 0) {
+		if(member.getMe_pw() != null && member.getMe_pw().length() != 0) {
 		String encPw = passwordEncoder.encode(member.getMe_pw());
 		user.setMe_pw(encPw);
 		}
@@ -214,6 +214,39 @@ public class MemberServiceImp implements MemberService{
 		loginCookie.setMaxAge(0);
 		response.addCookie(loginCookie);
 		keepLogin(user.getMe_id(), null, null);
+	}
+
+	@Override
+	public ArrayList<MemberVO> getMemberList(MemberVO user) {
+		if(user == null)
+			return null;
+		if(user.getMe_authority() < 8)
+			return null;
+		
+		return memberDao.selectMemberList(user.getMe_authority());
+	}
+
+	@Override
+	public boolean adminUserUpdate(MemberVO member, MemberVO user) {
+		if(member == null || user == null)
+			return false;
+		// 화면에서 권한 숫자를 수정하여 접근한 경우를 처리
+		MemberVO memberDB = memberDao.selectMember(member.getMe_id());
+		if(member.getMe_authority() >= user.getMe_authority())
+			return false;
+		
+		// 화면에서 아이디를 수정하여 접근한 경우를 처리
+		if(memberDB == null || memberDB.getMe_authority() >= user.getMe_authority())
+			return false;
+
+		// 접근 권한이 없는 회원이 접근한 경우를 처리(혹시나)
+		if(user.getMe_authority() < 8)
+			return false;
+		
+		memberDB.setMe_authority(member.getMe_authority());
+		memberDao.updateMember(memberDB);
+		return true;
+		
 	}
 	
 }
