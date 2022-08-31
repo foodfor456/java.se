@@ -1,5 +1,6 @@
 package kr.green.springtest.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class BoardServiceImp implements BoardService{
 	BoardDAO boardDao;
 	
 	String uploadPath = "E:\\uploadfiles";
+	String imgUploadPath = "E:\\uploadfiles\\img";
 
 	@Override
 	public ArrayList<BoardVO> getBoardList(Criteria cri) {
@@ -245,6 +247,24 @@ public class BoardServiceImp implements BoardService{
 	private void deleteFile(FileVO tmp) {
 		UploadFileUtils.deleteFile(uploadPath, tmp.getFi_name());
 		boardDao.deleteFile(tmp.getFi_num());
+	}
+
+
+	@Override
+	public String uploadImg(MultipartFile file) {
+		if(file == null || file.getOriginalFilename().length() == 0)
+			return null;
+		String url = "";
+		
+		try {
+			url = UploadFileUtils.uploadFile(imgUploadPath, file.getOriginalFilename(), file.getBytes());
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return url;
 	}
 	
 }

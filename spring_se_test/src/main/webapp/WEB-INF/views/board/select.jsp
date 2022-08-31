@@ -42,7 +42,7 @@
 		</div>
 		<div class="form-group">
 		  <label>내용</label>
-		  <textarea class="form-control" rows="10" readonly>${board.bd_content}</textarea>
+		  <div class="form-control" style="height: auto; min-height: 500px">${board.bd_content}</div>
 		</div>
 		<c:if test="${board.bd_me_id == user.me_id}">
 		<div class="form-group">

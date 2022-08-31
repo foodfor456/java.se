@@ -44,4 +44,6 @@ public interface BoardService {
 
 	ArrayList<FileVO> fileSelect(int bd_num);
 
+	String uploadImg(MultipartFile file);
+
 }
