@@ -1,5 +1,6 @@
 package kr.green.springtest.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.mail.internet.MimeMessage;
@@ -182,6 +183,31 @@ public class MemberServiceImp implements MemberService {
 		memberDao.updateMemberSession(user.getMe_id(), null, null);
 		
 		
+	}
+
+	@Override
+	public ArrayList<MemberVO> adminMemberSelect(MemberVO user) {
+		if(user == null || user.getMe_authority() <= 8)
+			return null;
+		
+		
+		
+		return memberDao.adminMemberSelect(user.getMe_authority());
+	}
+
+	@Override
+	public boolean adminUpdateAthority(MemberVO member, MemberVO user) {
+		if(member == null || user == null)
+			return false;
+		if(user.getMe_authority() < 8)
+			return false;
+		MemberVO memberDB = memberDao.selectMember(member.getMe_id());
+		if(memberDB == null || memberDB.getMe_authority() >= user.getMe_authority())
+			return false;
+		
+		memberDB.setMe_authority(member.getMe_authority());
+		memberDao.updateMember(memberDB);
+		return true;
 	}
 	
 	
