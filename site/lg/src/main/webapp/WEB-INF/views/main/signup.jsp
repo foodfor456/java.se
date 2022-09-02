@@ -24,6 +24,7 @@
 			<div class="form-group">
 			  <label for="me_email">이메일:</label>
 			  <input type="text" class="form-control" id="me_email" name="me_email">
+			  <label id="me_email-error" class="error" for="me_email"></label>
 			</div>
 			<div class="form-group">
 			  <label for="me_pw">비밀번호:</label>
@@ -52,118 +53,112 @@
 			<button class="btn btn-outline-success col-12 mb-5">회원가입</button>
 		</form>
 	</div>
-	<script type="text/javascript">
-		$(function(){
-			$( "#me_birth" ).datepicker({
-				changeMonth: true,
-			  changeYear: true,
-			  dateFormat: 'yy-mm-dd',
-			  yearRange: "1900:2022"
-			});
-		})
-		$(function(){
-    $("form").validate({
-      rules: {
-	      me_pw: {required : true},
-	      me_pw2: {
-	      	required : true,
-	      	equalTo : me_pw
-	      },
-	      me_email: {
-	    	  required : true,
-	     		email : true
-	      },
-	      me_birth: {required : true}
-      },
-      //규칙체크 실패시 출력될 메시지
-      messages : {
-	      me_pw: {required : "필수항목입니다."},
-	      me_pw2: {
-	    	  required : "필수항목입니다.",
-	    	  equalTo : "비밀번호와 비밀번호 확인이 일치하지 않습니다."
-	      },
-	      me_email: {
-	    	  required : "필수항목입니다.",
-	    	  email : "이메일 형식에 맞지 않습니다."
-	      },
-	      me_birth: {required : "필수항목입니다."}
-    	},
-    	submitHandler: function(form){
-    		if(!idCheck){
-					alert('중복된 이메일 입니다. 다른 이메일을 사용하세요.');
-					return false;
-			}
-    		return true;
-    	}
-    });
+<script type="text/javascript">
+	$(function(){
+		$( "#me_birth" ).datepicker({
+			changeMonth: true,
+		  changeYear: true,
+		  dateFormat: 'yy-mm-dd',
+		  yearRange: "1900:2022"
+		});
 	})
-	$.validator.addMethod(
-	  "regex",
-	  function(value, element, regexp) {
-	    var re = new RegExp(regexp);
-	    return this.optional(element) || re.test(value);
-	  },
-	  "Please check your input."
-	);
-		$(function (){
-			$('#idCheck').click(function(){
-				let id = $('[name=me_id]').val();
-				if(id.trim().length == 0){
-					alert('아이디를 입력하세요');
-					return;
-				}
-				
-				let obj = {
-						me_id : id
-				}
-				$.ajax({
-					// 비동기 : 작업이 끝날때 까지 기다리지 않음, ajax가 동작중인지 끝났는지 상관없이 다음 작업을 함
-					// 동기 : 작업이 끝날때 까지 기다림, ajax가 끝날때 까지 기다린 다음 다음 작업을 함
-					async:false, // 비동기 여부 : true(비동기), false(동기)
-		      type:'POST', // 보내는 방식
-		      data: JSON.stringify(obj), // 실제 보내는 데이터
-		      url:'<%=request.getContextPath()%>/id/check',
-		      dataType:"json", //서버에서 보내준 데이터의 타입
-		      contentType:"application/json; charset=UTF-8", // 화면에서 ajax로 보내줄 데이터의 타입 data의 타입
-		       // ajax가 성공적으로 동작했을때 할 작업
-		      success : function(data){
-		    	  if(data){
-		    		  alert('가입 가능한 아이디 입니다.');
-		    		  idCheck = true;
-		    	  }else{
-		    		  alert('이미 사용중이거나, 탈퇴한 아이디입니다.')
-		    	  }
-		    	}
-				});
-			})
-			$('[name=me_id]').change(function(){
-				idCheck = false;
-			})
+	$(function(){
+   $("form").validate({
+     rules: {
+      me_pw: {required : true},
+      me_pw2: {
+      	required : true,
+      	equalTo : me_pw
+      },
+      me_email: {
+    	  required : true,
+     		email : true
+      },
+      me_birth: {required : true}
+     },
+     //규칙체크 실패시 출력될 메시지
+     messages : {
+      me_pw: {required : "필수항목입니다."},
+      me_pw2: {
+    	  required : "필수항목입니다.",
+    	  equalTo : "비밀번호와 비밀번호 확인이 일치하지 않습니다."
+      },
+      me_email: {
+    	  required : "필수항목입니다.",
+    	  email : "이메일 형식에 맞지 않습니다."
+      },
+      me_birth: {required : "필수항목입니다."}
+   	},
+   	submitHandler: function(form){
+   		if(!idCheck){
+				$('#me_email-error').text('이미 사용중인 이메일 입니다.').show();
+				$('#me_email').focus();
+				return false;
+			}
+   		return true;
+   	}
+  });
+})
+$.validator.addMethod(
+  "regex",
+  function(value, element, regexp) {
+    var re = new RegExp(regexp);
+    return this.optional(element) || re.test(value);
+  },
+  "Please check your input."
+);
+$(function (){
+	$('[name=me_email]').on('input',function(){
+		idCheck = false;
+		let me_email = $(this).val();
+		console.log(me_email);
+		if(me_email.length == 0)
+			return;
+		let obj = {
+				me_email : me_email
+		}
+		ajaxPost(false, obj, '/check/email', function(data){
+			idCheck = data.res;
 		})
-		let idCheck = true;
-		function execDaumPostcode() {
-    	new daum.Postcode({
-	    	oncomplete: function(data) {
-	        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-	
-	        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-	        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-	        var addr = ''; // 주소 변수
-	        
-	        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-	        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-	          addr = data.roadAddress;
-	        } else { // 사용자가 지번 주소를 선택했을 경우(J)
-	         	addr = data.jibunAddress;
-	        }
-					// 우편번호와 주소 정보를 해당 필드에 넣는다.
-	        document.getElementById('me_post_code').value = data.zonecode;
-	        document.getElementById("me_addr").value = addr;
-	        // 커서를 상세주소 필드로 이동한다.
-	        document.getElementById("me_addr_detail").focus();
-	    	}
-    	}).open();
+	})
+})
+let idCheck = false;
+function ajaxPost(async, dataObj, url, success){
+	$.ajax({
+	  async: async,
+	  type:'POST',
+	  data:JSON.stringify(dataObj),
+	  url:"<%=request.getContextPath()%>"+url,
+	  dataType:"json",
+	  contentType:"application/json; charset=UTF-8",
+	  success : function(data){
+		  success(data);
 	  }
+  });
+}
+function execDaumPostcode() {
+  	new daum.Postcode({
+   	oncomplete: function(data) {
+       // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+       // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+       // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+       var addr = ''; // 주소 변수
+       
+       //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+       if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+         addr = data.roadAddress;
+       } else { // 사용자가 지번 주소를 선택했을 경우(J)
+        	addr = data.jibunAddress;
+       }
+			// 우편번호와 주소 정보를 해당 필드에 넣는다.
+       document.getElementById('me_post_code').value = data.zonecode;
+       document.getElementById("me_addr").value = addr;
+       // 커서를 상세주소 필드로 이동한다.
+       document.getElementById("me_addr_detail").focus();
+   	}
+  	}).open();
+ }
 	</script>
 </body>
 </html>
