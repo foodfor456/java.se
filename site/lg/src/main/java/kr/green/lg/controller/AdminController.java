@@ -81,4 +81,33 @@ public class AdminController {
 		mv.setViewName("redirect:/admin/product/list");
 		return mv;
 	}
+	@RequestMapping(value = "/admin/product/delete", method = RequestMethod.POST)
+	public ModelAndView productDeletePost(ModelAndView mv, HttpServletResponse response, String pr_code) {
+		System.out.println(pr_code);
+		boolean res = productService.deleteProduct(pr_code);
+		if(res)
+			messageService.message(response, "제품을 삭제했습니다.", "/lg/admin/product/list");
+		else
+			messageService.message(response, "제품을 삭제에 실패했습니다.", "/lg/admin/product/list");
+		mv.setViewName("redirect:/admin/product/list");
+		return mv;
+	}
+	@RequestMapping(value = "/admin/product/update", method = RequestMethod.GET)
+	public ModelAndView productUpdateGet(ModelAndView mv, String pr_code) {
+		ProductVO product = productService.selectProduct(pr_code);
+		mv.addObject("pr", product);
+		mv.setViewName("/admin/productUpdate");
+		return mv;
+	}
+	@RequestMapping(value = "/admin/product/update", method = RequestMethod.POST)
+	public ModelAndView productUpdatePost(ModelAndView mv, ProductVO product, MultipartFile file,
+			HttpServletResponse response) {
+		boolean res = productService.updateProduct(product, file);
+		if(res)
+			messageService.message(response, "제품을 수정했습니다.", "/lg/admin/product/list");
+		else
+			messageService.message(response, "제품을 수정하지못했습니다.", "/lg/admin/product/list");
+		mv.setViewName("/admin/productUpdate");
+		return mv;
+	}
 }

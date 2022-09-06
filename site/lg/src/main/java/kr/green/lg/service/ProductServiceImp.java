@@ -83,6 +83,46 @@ public class ProductServiceImp implements ProductService{
 			return null;
 		return productDao.selectProduct(pr_code);
 	}
+
+	@Override
+	public boolean deleteProduct(String pr_code) {
+		if(pr_code == null || pr_code.length() != 6)
+			return false;
+		ProductVO product = productDao.selectProduct(pr_code);
+		if(product == null)
+			return false;
+		UploadFileUtils.deleteFile(productThumbUploadPath, product.getPr_thumb());
+		return productDao.deleteProduct(pr_code) == 1 ? true : false;
+		
+	}
+
+	@Override
+	public boolean updateProduct(ProductVO product, MultipartFile file) {
+		System.out.println(product);
+		if(product == null)
+			return false;
+		ProductVO dbProduct = productDao.selectProduct(product.getPr_code());
+		if(dbProduct == null)
+			return false;
+		if(file == null || file.getOriginalFilename().length() == 0)
+			product.setPr_thumb(dbProduct.getPr_thumb());
+		else {
+			// 기존 썸네일 서버에서 삭제
+			UploadFileUtils.deleteFile(productThumbUploadPath,dbProduct.getPr_thumb());
+			
+			// 새 썸네일 서버에 업로드 후 vo에 추가
+			String prefix = product.getPr_code(); // COM001
+			try {
+				String dir = product.getPr_ca_name(); // COM
+				String str = UploadFileUtils.uploadFile(productThumbUploadPath, File.separator + dir, prefix, file.getOriginalFilename(), file.getBytes());
+				product.setPr_thumb("/" + dir + str);
+			}  catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return productDao.updateProduct(product) == 1 ? true : false;
+	}
 	
 	
 }
