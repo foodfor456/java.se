@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.green.lg.dao.ProductDAO;
+import kr.green.lg.pagination.Criteria;
 import kr.green.lg.utils.UploadFileUtils;
 import kr.green.lg.vo.CategoryVO;
 import kr.green.lg.vo.ProductVO;
@@ -60,6 +61,27 @@ public class ProductServiceImp implements ProductService{
 		}
 		productDao.insertProduct(product);
 		productDao.updateCategory(category);
+	}
+
+	@Override
+	public ArrayList<ProductVO> selectProductList(Criteria cri) {
+		if(cri == null)
+			cri = new Criteria();
+		return productDao.selectProductList(cri);
+	}
+
+	@Override
+	public int getProductTotalCount(Criteria cri) {
+		if(cri == null)
+			cri = new Criteria();
+		return productDao.selectProductTotalCount(cri);
+	}
+
+	@Override
+	public ProductVO selectProduct(String pr_code) {
+		if(pr_code == null || pr_code.length() != 6)
+			return null;
+		return productDao.selectProduct(pr_code);
 	}
 	
 	
