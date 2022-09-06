@@ -98,7 +98,6 @@ public class ProductServiceImp implements ProductService{
 
 	@Override
 	public boolean updateProduct(ProductVO product, MultipartFile file) {
-		System.out.println(product);
 		if(product == null)
 			return false;
 		ProductVO dbProduct = productDao.selectProduct(product.getPr_code());
