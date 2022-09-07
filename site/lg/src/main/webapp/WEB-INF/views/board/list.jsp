@@ -22,14 +22,12 @@ form.btn{
 <body>
 <div class="container">
   <h2>제품 리스트</h2>
-  <a href="<c:url value="/admin/notice/insert"></c:url>" class="btn btn-outline-warning mb-3">공지사항등록</a>
   <table class="table table-hover">
     <thead>
       <tr>
         <th>번호</th>
         <th>제목</th>
         <th>작성일</th>
-        <th>기능</th>
       </tr>
     </thead>
     <tbody>
@@ -40,36 +38,28 @@ form.btn{
 	        	<a href="<c:url value="/board/select?bd_num=${bo.bd_num}"></c:url>">${bo.bd_title}</a>
 	        </td>
 	        <td>${bo.bd_reg_date_str}</td>
-	        <td>
-	        	<a class="btn btn-outline-danger" href="<c:url value="/admin/notice/update?bd_num=${bo.bd_num}"></c:url>">수정</a>
-	        	<form class="btn btn-outline-warning" action="<c:url value="/board/delete"></c:url>" method="post">
-	        		<button class="btn-del">삭제</button>
-	        		<input type="hidden" name="bd_num" value="${bo.bd_num}">
-	        		<input type="hidden" name="bd_type" value="${bo.bd_type}">
-	        	</form>
-	        </td>
 	      </tr>
       </c:forEach>
   	</tbody>
   </table>
   <ul class="pagination justify-content-center">
   	<li class="page-item <c:if test="${!pm.prev}">disabled</c:if>">
-    	<a class="page-link" href="<c:url value="/admin/notice/list?page=1&search=${pm.cri.search}"></c:url>">처음</a>
+    	<a class="page-link" href="<c:url value="/board/list?page=1&search=${pm.cri.search}&bd_type=${bd_type}"></c:url>">처음</a>
     </li>
     <li class="page-item <c:if test="${!pm.prev}">disabled</c:if>">
-    	<a class="page-link" href="<c:url value="/admin/notice/list?page=${pm.startPage -1}&search=${pm.cri.search}"></c:url>">이전</a>
+    	<a class="page-link" href="<c:url value="/board/list?page=${pm.startPage -1}&search=${pm.cri.search}&bd_type=${bd_type}"></c:url>">이전</a>
     </li>
     
     <c:forEach begin="${pm.startPage }" end="${pm.endPage}" var="i">
     	<li class="page-item <c:if test="${pm.cri.page == i}">active</c:if>">
-    		<a class="page-link" href="<c:url value="/admin/notice/list?page=${i}&search=${pm.cri.search}"></c:url>">${i}</a>
+    		<a class="page-link" href="<c:url value="/board/list?page=${i}&search=${pm.cri.search}&bd_type=${bd_type}"></c:url>">${i}</a>
     	</li>
     </c:forEach>
     <li class="page-item <c:if test="${!pm.next}">disabled</c:if>">
-    	<a class="page-link" href="<c:url value="/admin/notice/list?page=${pm.endPage +1}&search=${pm.cri.search}"></c:url>">다음</a>
+    	<a class="page-link" href="<c:url value="/board/list?page=${pm.endPage +1}&search=${pm.cri.search}&bd_type=${bd_type}"></c:url>">다음</a>
     </li>
     <li class="page-item <c:if test="${!pm.next}">disabled</c:if>">
-    	<a class="page-link" href="<c:url value="/admin/notice/list?page=${pm.finalPage}&search=${pm.cri.search}"></c:url>">마지막</a>
+    	<a class="page-link" href="<c:url value="/board/list?page=${pm.finalPage}&search=${pm.cri.search}&bd_type=${bd_type}"></c:url>">마지막</a>
     </li>
   </ul>
   <form>
@@ -78,6 +68,7 @@ form.btn{
 		  <div class="input-group-append">
 		    <button class="btn btn-success" type="submit">검색</button>
 		  </div>
+		  <input type="hidden" name="bd_type" value="${bd_type}">
 		</div>
   </form>
 </div>
