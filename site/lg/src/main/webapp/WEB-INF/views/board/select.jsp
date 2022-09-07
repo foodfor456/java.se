@@ -16,11 +16,9 @@
 	  <input type="text" class="form-control" value="${bo.bd_title}">
 	</div>
 	<div class="form-group">
-	  <div class="form-control" style="height: ayto; min-height: 300px;">${bo.bd_content}</div>
+	  <div class="form-control" style="height: auto; min-height: 300px;">${bo.bd_content}</div>
 	</div>
 	
-	<a href="<c:url value="/admin/notice/list"></c:url>" class="btn btn-outline-primary">목록</a>
 </div>
-
 </body>
 </html>
