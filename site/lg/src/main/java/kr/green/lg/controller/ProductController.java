@@ -43,6 +43,14 @@ public class ProductController {
 		mv.setViewName("/product/list");
 		return mv;
 	}
+	@RequestMapping(value = "/likes/list", method = RequestMethod.GET)
+	public ModelAndView likesList(ModelAndView mv, HttpSession session) {
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		ArrayList<ProductVO> list = productService.selectProductListByLikes(user);
+		mv.addObject("list", list);
+		mv.setViewName("/product/likesList");
+		return mv;
+	}
 	// ajax
 	@RequestMapping(value = "/category/list", method = RequestMethod.POST)
 	@ResponseBody
