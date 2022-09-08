@@ -1,14 +1,18 @@
 package kr.green.lg.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,6 +21,7 @@ import kr.green.lg.pagination.PageMaker;
 import kr.green.lg.service.BoardService;
 import kr.green.lg.service.MessageService;
 import kr.green.lg.vo.BoardVO;
+import kr.green.lg.vo.FileVO;
 import kr.green.lg.vo.MemberVO;
 
 @Controller
@@ -30,8 +35,8 @@ public class BoardController {
 	public ModelAndView boardDeletePost(ModelAndView mv, Integer bd_num, HttpSession session,
 			HttpServletResponse response, String bd_type) {
 		MemberVO user = (MemberVO)session.getAttribute("user");
+		String redirectUrl = boardService.getDeleteRedirectURL(bd_type, bd_num);
 		boolean res = boardService.deleteBoard(bd_num, user);
-		String redirectUrl = boardService.getDeleteRedirectURL(bd_type);
 		if(res)
 			messageService.message(response, "게시글이 삭제되었습니다.", redirectUrl);
 		else
@@ -41,6 +46,9 @@ public class BoardController {
 	@RequestMapping(value = "/board/select", method = RequestMethod.GET)
 	public ModelAndView boardSelectGet(ModelAndView mv, Integer bd_num) {
 		BoardVO board = boardService.getBoard(bd_num);
+		ArrayList<FileVO> fileList = boardService.getFileList(bd_num);
+		System.out.println(fileList);
+		mv.addObject("fileList",fileList);
 		mv.addObject("bo", board);
 		mv.setViewName("/board/select");
 		return mv;
@@ -74,6 +82,44 @@ public class BoardController {
 			messageService.message(response, "게시글 등록에 실패했습니다.", "/lg/product/select?pr_code="+board.getBd_pr_code());
 		
 		return mv;
+	}
+	@RequestMapping(value = "/board/update", method = RequestMethod.GET)
+	public ModelAndView boardUpdateGet(ModelAndView mv, Integer bd_num, HttpSession session,
+				HttpServletResponse response) {
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		BoardVO board = boardService.getBoard(bd_num);
+		ArrayList<FileVO> fileList = boardService.getFileList(bd_num);
+		mv.addObject("fileList", fileList);
+		mv.addObject("bo", board);
+		if(boardService.isWriter(board, user)) {
+			mv.setViewName("/board/update");
+		}	else {
+			messageService.message(response, "", "/lg/board/select?bd_num="+bd_num);
+		}
+		return mv;
+	}
+	@RequestMapping(value = "/board/update", method = RequestMethod.POST)
+	public ModelAndView boardUpdatePost(ModelAndView mv, BoardVO board, HttpSession session,
+				MultipartFile [] files, HttpServletResponse response, int []nums) {
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		boolean res = boardService.updateBoard(board, user, files, nums);
+		if(res)
+			messageService.message(response, "게시글을 등록했습니다.", "/lg/product/select?pr_code="+board.getBd_pr_code());
+		else
+			messageService.message(response, "게시글 등록에 실패했습니다.", "/lg/product/select?pr_code="+board.getBd_pr_code());
+		
+		return mv;
+	}
+	@RequestMapping(value = "/qna/list", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<Object, Object> checkEmail(@RequestBody Criteria cri) {
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		ArrayList<BoardVO> list = boardService.getBoardList(cri, "QNA");
+		int totalCount = boardService.getTotalCount(cri, "QNA");
+		PageMaker pm = new PageMaker(totalCount, 5, cri);
+		map.put("pm", pm);
+		map.put("list", list);
+		return map;
 	}
 	
 }
