@@ -6,9 +6,11 @@
 	<title>Home</title>
 </head>
 <body>
-<h1>
-	123
-</h1>
+	<div class="container">
+		<h1>1</h1>	
+	</div>
+
+
 
 <P>  The time on the server is ${serverTime}. </P>
 </body>

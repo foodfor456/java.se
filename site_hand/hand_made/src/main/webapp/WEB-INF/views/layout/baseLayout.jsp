@@ -12,6 +12,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<tiles:insertAttribute name="menu"/>
 	<tiles:insertAttribute name="header"/>
 	<tiles:insertAttribute name="body" />
 	<tiles:insertAttribute name="footer" />
