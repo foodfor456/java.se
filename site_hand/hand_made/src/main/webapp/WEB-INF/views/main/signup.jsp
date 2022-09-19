@@ -23,6 +23,7 @@
 		<h1 class="mt-3">회원가입</h1>	
 		<div class="form-group">
 		  <label>아이디</label>
+		  <button type="button" class="btn btn-outline-primary ml-5">아이디 중복확인</button>
 		  <input type="text" class="form-control col-6" id="me_id" name="me_id">
 		</div>
 		<div class="form-group">
@@ -36,6 +37,7 @@
 		<div class="form-group">
 		  <label>이메일</label>
 		  <input type="text" class="form-control col-6" id="me_email" name="me_email">
+		 
 		</div>
 		<div class="form-group post">
 		  <label>주소</label><br>
@@ -57,54 +59,56 @@
 </body>
 <script>
 $(function(){
-	$("form").validate({
-	  rules: {
-	    me_id: {
-	      required : true,
-	      minlength : 5,
-	      maxlength : 12
-	    },
-	    me_pw: {
-	      required : true,
-	      minlength : 8,
-	      regex: /^(?=\w{8,20}$)\w*(\d[A-z]|[A-z]\d)\w*$/
-	    },
-	    me_pw2: {
-	      required : true,
-	      minlength : 8,
-	      equalTo : me_pw
-	    },
-	    me_email: {
-	    	email : true
-	    },
-	    me_phon: {
-	    	regex: /^0(?=\w{1,11}$)\w*(\d)\w*$/
-	    }
-	  },
-	  //규칙체크 실패시 출력될 메시지
-	  messages : {
-		  me_id: {
-	      required : "필수로입력하세요",
-	      minlength : "최소 {5}글자이상이어야 합니다"
-	    },
-	    me_pw: {
-	      required : "필수로입력하세요",
-	      minlength : "최소 {8}글자이상이어야 합니다",
-	      regex : "영문자, 숫자로 이루어져있으며 최소 하나이상 포함"
-	    },
-	    me_pw2: {
-	      required : "필수로입력하세요",
-	      minlength : "최소 {0}글자이상이어야 합니다",
-	      equalTo : "비밀번호가 일치하지 않습니다."
-	    },
-	    me_email: {
-	      email : "메일형식이 아닙니다."
-	    },
-	    me_phon: {
-	    	regex : "핸드폰번호를 다시 입력해주세요."
-	    }
-	  }
-	});
+	$("form").change(function(){
+		$(this).validate({
+		  rules: {
+		    me_id: {
+		      required : true,
+		      minlength : 5,
+		      maxlength : 12
+		    },
+		    me_pw: {
+		      required : true,
+		      minlength : 8,
+		      regex: /^(?=\w{8,20}$)\w*(\d[A-z]|[A-z]\d)\w*$/
+		    },
+		    me_pw2: {
+		      required : true,
+		      minlength : 8,
+		      equalTo : me_pw
+		    },
+		    me_email: {
+		    	email : true
+		    },
+		    me_phon: {
+		    	regex: /^0(?=\w{1,11}$)\w*(\d)\w*$/
+		    }
+		  },
+		  //규칙체크 실패시 출력될 메시지
+		  messages : {
+			  me_id: {
+		      required : "필수로입력하세요",
+		      minlength : "최소 {5}글자이상이어야 합니다"
+		    },
+		    me_pw: {
+		      required : "필수로입력하세요",
+		      minlength : "최소 {8}글자이상이어야 합니다",
+		      regex : "영문자, 숫자로 이루어져있으며 최소 하나이상 포함"
+		    },
+		    me_pw2: {
+		      required : "필수로입력하세요",
+		      minlength : "최소 {0}글자이상이어야 합니다",
+		      equalTo : "비밀번호가 일치하지 않습니다."
+		    },
+		    me_email: {
+		      email : "메일형식이 아닙니다."
+		    },
+		    me_phon: {
+		    	regex : "핸드폰번호를 다시 입력해주세요."
+		    }
+		  }
+		});
+	})
 })
 $.validator.addMethod(
     "regex",

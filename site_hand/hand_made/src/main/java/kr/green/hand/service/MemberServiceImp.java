@@ -21,8 +21,17 @@ public class MemberServiceImp implements MemberService{
 		
 		String encPw = passwordEncoder.encode(member.getMe_pw());
 		member.setMe_pw(encPw);
-    
+    memberDao.signUp(member);
 		return true;
+	}
+
+	@Override
+	public boolean idCheck(String me_id) {
+		if(me_id == null || me_id.length() <= 4)
+			return false;
+		
+		
+		return memberDao.idCheck(me_id) == 0 ? true : false;
 	}
 
 
