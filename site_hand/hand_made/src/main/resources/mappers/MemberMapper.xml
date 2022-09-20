@@ -4,10 +4,22 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.green.hand.dao.MemberDAO">
 	<insert id="signUp">
-		insert into member(me_id, me_pw, me_email, me_post, me_addr, me_addr_detail, me_phon, me_vali)
-			values(#{me_id},#{me_pw},#{me_email},#{me_post},#{me_addr},#{me_addr_detail},#{me_phon},#{me_vali});
+		insert into member(me_id, me_pw, me_email, me_post, me_addr, me_addr_detail, me_phon, me_vali, me_authority)
+			values(#{me_id},#{me_pw},#{me_email},#{me_post},#{me_addr},#{me_addr_detail},#{me_phon},#{me_vali},#{me_authority});
 	</insert>
   <select id="idCheck" resultType="int">
-  	select count(*) from member me_id = #{me_id};
+  	select count(*) from member where me_id = #{me_id};
   </select>
+  <select id="getMember" resultType="kr.green.hand.vo.MemberVO">
+  	select * from member where me_id = #{me_id};
+  </select>
+  <insert id="insertVali">
+  	insert into membervali(mv_me_mail, mv_me_code) values(#{me_email}, #{me_code});
+  </insert>
+  <select id="memberCodeCheck" resultType="string">
+  	select mv_me_mail from membervali where mv_me_code = #{me_vali};
+  </select>
+  <delete id="memberValiSuccess">
+  	delete from membervali where mv_me_mail = #{me_email};
+  </delete>
 </mapper>
