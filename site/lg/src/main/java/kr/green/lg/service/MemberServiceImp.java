@@ -147,7 +147,7 @@ public class MemberServiceImp implements MemberService{
 	public void logout(HttpServletRequest request, HttpServletResponse response) {
 		if(request == null)
 			return;
-		HttpSession session =request.getSession();
+		HttpSession session = request.getSession();
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		if(user == null)
 			return;

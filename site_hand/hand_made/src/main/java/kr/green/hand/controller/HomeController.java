@@ -3,6 +3,7 @@ package kr.green.hand.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -34,6 +35,7 @@ public class HomeController {
 	@RequestMapping(value= "/login")
 	public ModelAndView login(ModelAndView mv, MemberVO member){
 		MemberVO user = memberService.login(member);
+		System.out.println(member.isAutoLogin());
 		mv.addObject("user",user);
 		if(user == null)
 			mv.setViewName("/main/login");
@@ -42,11 +44,8 @@ public class HomeController {
 	  return mv;
 	}
 	@RequestMapping(value= "/logout")
-	public ModelAndView logout(ModelAndView mv, HttpSession session){
-		MemberVO user = (MemberVO) session.getAttribute("user");
-		if(user == null)
-			return null;
-		session.removeAttribute("user");
+	public ModelAndView logout(ModelAndView mv, HttpServletRequest request, HttpServletResponse response){
+		memberService.logout(request, response);
 		mv.setViewName("redirect:/");
 	  return mv;
 	}

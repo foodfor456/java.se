@@ -1,5 +1,7 @@
 package kr.green.hand.vo;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -13,4 +15,7 @@ public class MemberVO {
 	private Integer me_phon;
 	private int me_authority;
 	private int me_vali;
+	private String me_s_id;
+	private Date me_s_limit;
+	private boolean autoLogin;
 }

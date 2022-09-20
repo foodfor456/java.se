@@ -1,12 +1,17 @@
 package kr.green.hand.service;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
 import kr.green.hand.dao.MemberDAO;
 import kr.green.hand.vo.MemberVO;
@@ -63,10 +68,25 @@ public class MemberServiceImp implements MemberService{
 		if(user == null || user.getMe_id() == null || user.getMe_pw() == null)
 			return null;
 		
+		user.setAutoLogin(member.isAutoLogin());
+		
 		if(passwordEncoder.matches(member.getMe_pw(), user.getMe_pw()))
 			return user;
 		
 		return null;
+	}
+	@Override
+	public MemberVO loginBySession(String me_s_id) {
+		if(me_s_id == null)
+			return null;
+		return memberDao.selectBySession(me_s_id);
+	}
+
+	@Override
+	public void updateMemberSession(MemberVO user) {
+		if(user == null || !user.isAutoLogin())
+			return;
+		memberDao.updateSession(user);
 	}
 
 	@Override
@@ -126,6 +146,28 @@ public class MemberServiceImp implements MemberService{
 		memberDao.memberValiSuccess(me_email);
 		return true;
 	}
+
+	@Override
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		if(request == null)
+			return;
+		HttpSession session = request.getSession();
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(user == null)
+			return;
+		session.removeAttribute("user");
+		Cookie cookie = WebUtils.getCookie(request, "autoHM");
+		if(cookie == null || response == null)
+			return;
+		cookie.setPath("/");
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
+		user.setMe_s_id(null);
+		user.setMe_s_limit(null);
+		memberDao.updateSession(user);
+	}
+
+	
 
 	
 	

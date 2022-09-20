@@ -18,6 +18,10 @@ public interface MemberDAO {
 
 	void memberValiSuccess(String me_email);
 
+	void updateSession(MemberVO user);
+
+	MemberVO selectBySession(String me_s_id);
+
 	
 
 }

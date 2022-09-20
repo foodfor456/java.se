@@ -17,7 +17,13 @@
 		  <label>비밀번호</label>
 		  <input type="password" class="form-control" id="me_pw" name="me_pw">
 		</div>
+		  <div class="form-check mb-3">
+			  <label class="form-check-label">
+			    <input type="checkbox" class="form-check-input auto-login" value="1" name="autoLogin">자동로그인
+			  </label>
+			</div>
 		<button class="btn btn-outline-primary">로그인</button>
+		
 	</form>
 </body>
 </html>
