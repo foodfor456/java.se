@@ -10,10 +10,10 @@
 	 	<div class="collapse navbar-collapse" id="collapsibleNavbar">
 	   	<ul class="navbar-nav">
 	     	<li class="nav-item">
-	       	<a class="nav-link" href="#">Link</a>
+	     	 	<a class="nav-link" href="<c:url value="/product/list"></c:url>">제품</a>
 	     	</li>
 	     	<li class="nav-item">
-	       	<a class="nav-link" href="#">Link</a>
+	       	<a class="nav-link" href="<c:url value="/product/category"></c:url>">카테고리 등록</a>
 	     	</li>
 	     	<li class="nav-item">
 	       	<a class="nav-link" href="#">Link</a>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.hand.dao.ProductDAO">
+	<insert id="categoryInsertL">
+		insert into prcategoryl(cl_name) values(#{cl_name});
+	</insert>
+	<select id="getCategoryL" resultType="string">
+		select cl_name from prcategoryl;
+	</select>
+	<insert id="categoryInsertS">
+		insert into prcategorys(cs_name, cs_cl_num) select #{cs_name}, cl_num from prcategoryL where cl_name = #{cl_name}
+	</insert>
+</mapper>
