@@ -78,7 +78,6 @@ public class HomeController {
 	@RequestMapping(value ="/ajax/email/check")
 	@ResponseBody
 	public String emailCheck(String me_email, String send){
-	  System.out.println(me_email + send);
 	  memberService.emailVali(me_email, send);
 	  return me_email;
 	}

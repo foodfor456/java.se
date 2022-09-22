@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.green.hand.dao.ProductDAO;
+import kr.green.hand.vo.MemberVO;
+import kr.green.hand.vo.ProductVO;
 
 @Service
 public class ProductServiceImp implements ProductService{
@@ -31,6 +33,39 @@ public class ProductServiceImp implements ProductService{
 		
 		productDao.categoryInsertS(cl_name, cs_name);
 		return  true;
+	}
+	@Override
+	public ArrayList<String> getCategoryS(String cl_name) {
+		if(cl_name == null)
+			return null;
+		return productDao.getCategoryS(cl_name);
+	}
+	@Override
+	public int countCategory(String pr_code) {
+		if(pr_code == null)
+			return 0;
+		return productDao.countCategory(pr_code);
+	}
+	@Override
+	public String getCategoryCode(String ca_code, int pr_num) {
+		int length = (int)(Math.log10(pr_num)+1);
+		int count = 8 - ca_code.length() - length; 
+		String num_str = "";
+		if(ca_code != null & count != 8) {
+			for(int i = 0; i < count ; i++)
+				num_str += 0;
+			ca_code += num_str + pr_num;
+			return ca_code;
+		}
+		return null;
+	}
+	@Override
+	public boolean productInsert(ProductVO product, MemberVO user) {
+		if(product == null || user == null)
+			return false;
+		productDao.productInsert(product,user);
+		
+		return true;
 	}
 
 }

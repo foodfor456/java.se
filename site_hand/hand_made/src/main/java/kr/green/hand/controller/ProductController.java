@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.green.hand.service.ProductService;
+import kr.green.hand.vo.MemberVO;
+import kr.green.hand.vo.ProductVO;
 
 @Controller
 public class ProductController {
@@ -23,9 +27,23 @@ public class ProductController {
 		mv.setViewName("/product/list");
 	  return mv;
 	}
+	@RequestMapping(value= "/product/insert", method=RequestMethod.GET)
+	public ModelAndView productInsertGet(ModelAndView mv){
+		ArrayList<String> categoryL = productService.getCategoryL();
+		mv.addObject("categoryL",categoryL);
+		mv.setViewName("/product/insert");
+	  return mv;
+	}
 	@RequestMapping(value= "/product/category")
 	public ModelAndView categoryList(ModelAndView mv){
 		mv.setViewName("/product/category");
+	  return mv;
+	}
+	@RequestMapping(value ="/product/insert", method=RequestMethod.POST)
+	public ModelAndView productInsert(ModelAndView mv, ProductVO product, HttpSession session){
+		MemberVO user = (MemberVO)session.getAttribute("user");
+	  boolean res = productService.productInsert(product, user);
+	  mv.setViewName("redirect:/product/insert");
 	  return mv;
 	}
 	// ajax
@@ -49,6 +67,18 @@ public class ProductController {
 		boolean res = productService.categoryInsertS(cl_name, cs_name);
 	  return ""+res;
 	}
-	
+	@RequestMapping(value="/product/insert/categoryS", method=RequestMethod.POST)
+	@ResponseBody
+	public ArrayList<String> productInsertS(String cl_name){
+		ArrayList<String> categoryS = productService.getCategoryS(cl_name);
+		return categoryS;
+	}
+	@RequestMapping(value="/product/select/category", method=RequestMethod.POST)
+	@ResponseBody
+	public String categoryGetca(String ca_code){
+		int pr_num = productService.countCategory(ca_code);
+		String pr_code = productService.getCategoryCode(ca_code, pr_num);
+		return pr_code;
+	}
 	
 }

@@ -12,4 +12,14 @@
 	<insert id="categoryInsertS">
 		insert into prcategorys(cs_name, cs_cl_num) select #{cs_name}, cl_num from prcategoryL where cl_name = #{cl_name}
 	</insert>
+	<select id="getCategoryS" resultType="string">
+		select cs_name from prcategorys join prcategoryl on cl_num = cs_cl_num where cl_name = #{cl_name};
+	</select>
+	<select id="countCategory" resultType="int">
+		select count(*)+1 from product where pr_code like concat(#{pr_code},'_____')
+	</select>
+	<insert id="productInsert">
+  	insert into product(pr_code, pr_title, pr_content, pr_price, pr_amount, pr_me_id)
+  		values (#{pr.pr_code}, #{pr.pr_title}, #{pr.pr_content}, #{pr.pr_price}, #{pr.pr_amount}, #{user.me_id});
+  </insert>
 </mapper>
