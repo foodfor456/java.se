@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.green.hand.pagination.Criteria;
+import kr.green.hand.pagination.PageMaker;
 import kr.green.hand.service.ProductService;
 import kr.green.hand.vo.MemberVO;
 import kr.green.hand.vo.ProductVO;
@@ -23,7 +25,12 @@ public class ProductController {
 	ProductService productService;
 	
 	@RequestMapping(value= "/product/list")
-	public ModelAndView productList(ModelAndView mv){
+	public ModelAndView productList(ModelAndView mv, Criteria cri){
+		ArrayList<ProductVO> list = productService.getProductList(cri);
+		int totalCount = productService.getTotalcountPr(cri);
+		PageMaker pm = new PageMaker(totalCount, 5, cri);
+		mv.addObject("list", list);
+		mv.addObject("pm",pm);
 		mv.setViewName("/product/list");
 	  return mv;
 	}

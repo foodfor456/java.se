@@ -22,4 +22,10 @@
   	insert into product(pr_code, pr_title, pr_content, pr_price, pr_amount, pr_me_id)
   		values (#{pr.pr_code}, #{pr.pr_title}, #{pr.pr_content}, #{pr.pr_price}, #{pr.pr_amount}, #{user.me_id});
   </insert>
+  <select id="getProductList" resultType="kr.green.hand.vo.ProductVO">
+  	select * from product order by pr_date desc limit #{pageStart}, #{perPageNum};
+  </select>
+  <select id="getTotalcountPr" resultType="int">
+  	select count(*) from product;
+  </select>
 </mapper>

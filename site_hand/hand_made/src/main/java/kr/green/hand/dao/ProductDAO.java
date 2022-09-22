@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.green.hand.pagination.Criteria;
 import kr.green.hand.vo.MemberVO;
 import kr.green.hand.vo.ProductVO;
 
@@ -20,6 +21,10 @@ public interface ProductDAO {
 	int countCategory(String pr_code);
 
 	void productInsert(@Param("pr")ProductVO product, @Param("user")MemberVO user);
+
+	ArrayList<ProductVO> getProductList(Criteria cri);
+
+	int getTotalcountPr(Criteria cri);
 	
 	
 	

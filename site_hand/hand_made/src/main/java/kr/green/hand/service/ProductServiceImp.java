@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.green.hand.dao.ProductDAO;
+import kr.green.hand.pagination.Criteria;
 import kr.green.hand.vo.MemberVO;
 import kr.green.hand.vo.ProductVO;
 
@@ -66,6 +67,19 @@ public class ProductServiceImp implements ProductService{
 		productDao.productInsert(product,user);
 		
 		return true;
+	}
+	@Override
+	public ArrayList<ProductVO> getProductList(Criteria cri) {
+		if(cri == null)
+			return null;
+		cri.setPerPageNum(10);
+		return productDao.getProductList(cri);
+	}
+	@Override
+	public int getTotalcountPr(Criteria cri) {
+		if(cri == null)
+			cri = new Criteria();
+		return productDao.getTotalcountPr(cri);
 	}
 
 }

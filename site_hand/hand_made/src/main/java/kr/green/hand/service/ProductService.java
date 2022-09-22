@@ -2,6 +2,7 @@ package kr.green.hand.service;
 
 import java.util.ArrayList;
 
+import kr.green.hand.pagination.Criteria;
 import kr.green.hand.vo.MemberVO;
 import kr.green.hand.vo.ProductVO;
 
@@ -20,5 +21,9 @@ public interface ProductService {
 	String getCategoryCode(String ca_code, int pr_num);
 
 	boolean productInsert(ProductVO product, MemberVO user);
+
+	ArrayList<ProductVO> getProductList(Criteria cri);
+
+	int getTotalcountPr(Criteria cri);
 
 }
