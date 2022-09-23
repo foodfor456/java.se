@@ -47,7 +47,6 @@ public class BoardController {
 	public ModelAndView boardSelectGet(ModelAndView mv, Integer bd_num) {
 		BoardVO board = boardService.getBoard(bd_num);
 		ArrayList<FileVO> fileList = boardService.getFileList(bd_num);
-		System.out.println(fileList);
 		mv.addObject("fileList",fileList);
 		mv.addObject("bo", board);
 		mv.setViewName("/board/select");

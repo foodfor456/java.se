@@ -8,14 +8,18 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.green.hand.pagination.Criteria;
 import kr.green.hand.pagination.PageMaker;
 import kr.green.hand.service.ProductService;
+import kr.green.hand.vo.CategoryVO;
+import kr.green.hand.vo.FileVO;
 import kr.green.hand.vo.MemberVO;
 import kr.green.hand.vo.ProductVO;
 
@@ -34,10 +38,19 @@ public class ProductController {
 		mv.setViewName("/product/list");
 	  return mv;
 	}
+	@RequestMapping(value= "/product/select")
+	public ModelAndView productSelect(ModelAndView mv, String pr_code){
+		ProductVO pr = productService.selectProduct(pr_code);
+		ArrayList<FileVO> file = productService.selectProductFile(pr_code);
+		mv.addObject("pr",pr);
+		mv.addObject("file",file);
+		mv.setViewName("/product/select");
+	  return mv;
+	}
 	@RequestMapping(value= "/product/insert", method=RequestMethod.GET)
 	public ModelAndView productInsertGet(ModelAndView mv){
-		ArrayList<String> categoryL = productService.getCategoryL();
-		mv.addObject("categoryL",categoryL);
+		ArrayList<CategoryVO> category = productService.getCategoryL();
+		mv.addObject("categoryL",category);
 		mv.setViewName("/product/insert");
 	  return mv;
 	}
@@ -47,9 +60,11 @@ public class ProductController {
 	  return mv;
 	}
 	@RequestMapping(value ="/product/insert", method=RequestMethod.POST)
-	public ModelAndView productInsert(ModelAndView mv, ProductVO product, HttpSession session){
+	public ModelAndView productInsert(ModelAndView mv, ProductVO product, HttpSession session,
+			MultipartFile[] files){
 		MemberVO user = (MemberVO)session.getAttribute("user");
-	  boolean res = productService.productInsert(product, user);
+	  boolean res = productService.productInsert(product, user, files);
+	  
 	  mv.setViewName("redirect:/product/insert");
 	  return mv;
 	}
@@ -64,7 +79,8 @@ public class ProductController {
 	@ResponseBody
 	public Map<Object, Object> categoryListL(){
 	  Map<Object, Object> map = new HashMap<Object, Object>();
-	  ArrayList<String> list = productService.getCategoryL();
+	  ArrayList<CategoryVO> list = productService.getCategoryL();
+	  System.out.println(list);
 	  map.put("list", list);
 	  return map;
 	}
@@ -76,9 +92,11 @@ public class ProductController {
 	}
 	@RequestMapping(value="/product/insert/categoryS", method=RequestMethod.POST)
 	@ResponseBody
-	public ArrayList<String> productInsertS(String cl_name){
-		ArrayList<String> categoryS = productService.getCategoryS(cl_name);
-		return categoryS;
+	public Map<Object, Object> productInsertS(@RequestBody CategoryVO cl_name){
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		ArrayList<CategoryVO> categoryS = productService.getCategoryS(cl_name.getCl_name());
+	  map.put("categoryS", categoryS);
+		return map;
 	}
 	@RequestMapping(value="/product/select/category", method=RequestMethod.POST)
 	@ResponseBody

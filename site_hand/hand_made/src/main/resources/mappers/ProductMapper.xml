@@ -6,14 +6,16 @@
 	<insert id="categoryInsertL">
 		insert into prcategoryl(cl_name) values(#{cl_name});
 	</insert>
-	<select id="getCategoryL" resultType="string">
-		select cl_name from prcategoryl;
+	<select id="getCategoryL" resultType="kr.green.hand.vo.CategoryVO">
+		select  cs_num, cs_name, cl_num, cl_name from prcategorys right join prcategoryl on cs_cl_num = cl_num
+			group by cl_name;
 	</select>
 	<insert id="categoryInsertS">
 		insert into prcategorys(cs_name, cs_cl_num) select #{cs_name}, cl_num from prcategoryL where cl_name = #{cl_name}
 	</insert>
-	<select id="getCategoryS" resultType="string">
-		select cs_name from prcategorys join prcategoryl on cl_num = cs_cl_num where cl_name = #{cl_name};
+	<select id="getCategoryS" resultType="kr.green.hand.vo.CategoryVO">
+		select cs_num, cs_name, cl_num, cl_name from prcategorys left join prcategoryl on cs_cl_num = cl_num 
+		 where cl_name = #{cl_name};
 	</select>
 	<select id="countCategory" resultType="int">
 		select count(*)+1 from product where pr_code like concat(#{pr_code},'_____')
@@ -27,5 +29,15 @@
   </select>
   <select id="getTotalcountPr" resultType="int">
   	select count(*) from product;
+  </select>
+  <insert id="insertFile">
+  	insert into file(fi_name, fi_ori_name, fi_table, fi_code)
+  		values (#{fi_name}, #{fi_ori_name}, #{fi_table}, #{fi_code});
+  </insert>
+  <select id="selectProduct" resultType="kr.green.hand.vo.ProductVO">
+  	select * from product where pr_code = #{pr_code};
+  </select>
+  <select id="selectProductFile" resultType="kr.green.hand.vo.FileVO">
+  	select * from file where fi_code = #{pr_code};
   </select>
 </mapper>

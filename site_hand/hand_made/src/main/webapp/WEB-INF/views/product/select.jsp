@@ -24,8 +24,8 @@
 			<label>카테고리 :</label>
 			<select class="form-control mb-3" id="cl_name" name="cl_name">
 				<option value="0">대분류 카테고리</option>
-				<c:forEach items="${categoryL}" var="cl">
-					<option value="${cl.cl_num}">${cl.cl_name}</option>
+				<c:forEach items="${categoryL}" var="cl" varStatus="i">
+					<option value="${i.count}">${cl}</option>
 				</c:forEach>
 			</select>
 			<div class="form-check-inline mt-3 ml-2">
@@ -73,13 +73,12 @@ $(function(){
 		let obj = {
 			cl_name : cl_name
 		}
-		ajaxPost(false, obj, '/product/insert/categoryS', function(data){
-			 if(data.categoryS.length != 0){
+		ajaxString(false, obj, '/product/insert/categoryS', function(data){
+			if(data.length != 0){
 			str +=	'<select class="form-control" id="cs_name" name="cs_name">'
 			str +=		'<option value="0">소분류 카테고리</option>'
-			
-				for(let cs of data.categoryS){
-			str +=		'<option value="'+(cs.cs_num)+'">'+cs.cs_name+'</option>'
+				for(let cs of data){
+			str +=		'<option value="'+(cs.length-1)+'">'+cs+'</option>'
 				}
 			str +=	'</select>'
 			}else{
@@ -88,6 +87,7 @@ $(function(){
 				str +=	'</select>'
 			}
 			$('#cl_name').after(str);
+			console.log(data);
 		})
 	});
 		$(document).on('change','.category-box', function(){
@@ -99,9 +99,8 @@ $(function(){
 			if(fa_check)
 				fa_num = 1;
 			if(cl_name != 0 && cs_name != null && cs_name != 0){
-				let strs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-				let pr_num = [cl_name,cs_name,fa_num];
-				console.log(pr_num);
+				let strs = 'ABCDEFGHIJ';
+				let pr_num = cl_name+cs_name+fa_num;
 				for(let i = 0; i < pr_num.length; i++)
 					ca_code += strs[pr_num[i]];
 				let obj = {ca_code : ca_code};

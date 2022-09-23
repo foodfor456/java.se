@@ -31,7 +31,7 @@
     <c:forEach items="${list}" var="pr">
 	    <tr>
 	      <td>${pr.pr_code}</td>
-	      <td><a href="<c:url value="/product/select"></c:url>">${pr.pr_title}</a></td>
+	      <td><a href="<c:url value="/product/select?pr_code=${pr.pr_code}"></c:url>">${pr.pr_title}</a></td>
 	      <td>${pr.pr_price}</td>
 	      <td>${pr.pr_amount}</td>
 	      <td>${pr.pr_date_str}</td>

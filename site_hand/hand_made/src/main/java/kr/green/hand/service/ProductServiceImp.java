@@ -4,9 +4,13 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.green.hand.dao.ProductDAO;
 import kr.green.hand.pagination.Criteria;
+import kr.green.hand.utils.UploadFileUtils;
+import kr.green.hand.vo.CategoryVO;
+import kr.green.hand.vo.FileVO;
 import kr.green.hand.vo.MemberVO;
 import kr.green.hand.vo.ProductVO;
 
@@ -14,6 +18,8 @@ import kr.green.hand.vo.ProductVO;
 public class ProductServiceImp implements ProductService{
 	@Autowired
 	ProductDAO productDao;
+	String uploadPath = "E:\\uploadfiles\\HM";
+	
 	@Override
 	public boolean categoryInsertL(String cl_name) {
 		if(cl_name == null || cl_name == "")
@@ -22,11 +28,7 @@ public class ProductServiceImp implements ProductService{
 			return true;
 		
 	}
-	@Override
-	public ArrayList<String> getCategoryL() {
-		
-		return productDao.getCategoryL();
-	}
+	
 	@Override
 	public boolean categoryInsertS(String cl_name, String cs_name) {
 		if(cl_name == null || cs_name == null)
@@ -36,7 +38,11 @@ public class ProductServiceImp implements ProductService{
 		return  true;
 	}
 	@Override
-	public ArrayList<String> getCategoryS(String cl_name) {
+	public ArrayList<CategoryVO> getCategoryL() {
+		return productDao.getCategoryL();
+	}
+	@Override
+	public ArrayList<CategoryVO> getCategoryS(String cl_name) {
 		if(cl_name == null)
 			return null;
 		return productDao.getCategoryS(cl_name);
@@ -61,10 +67,12 @@ public class ProductServiceImp implements ProductService{
 		return null;
 	}
 	@Override
-	public boolean productInsert(ProductVO product, MemberVO user) {
+	public boolean productInsert(ProductVO product, MemberVO user, MultipartFile[] files) {
 		if(product == null || user == null)
 			return false;
 		productDao.productInsert(product,user);
+		
+		insertFiles(files, "product", product.getPr_code());
 		
 		return true;
 	}
@@ -81,5 +89,37 @@ public class ProductServiceImp implements ProductService{
 			cri = new Criteria();
 		return productDao.getTotalcountPr(cri);
 	}
+	private void insertFiles(MultipartFile[] files, String fi_table, String fi_code) {
+		if(files == null || files.length == 0)
+			return;
+		for(MultipartFile file : files) {
+			if(file.getOriginalFilename().length() == 0)
+				continue;
+			try {
+				String fi_name = UploadFileUtils.uploadFileUUID(uploadPath, file.getOriginalFilename(), file.getBytes());
+				FileVO fileVo = new FileVO(fi_name, file.getOriginalFilename(), fi_table, fi_code);
+				productDao.insertFile(fileVo);
+				System.out.println(fileVo);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	@Override
+	public ProductVO selectProduct(String pr_code) {
+		if(pr_code == null)
+			return null;
+		
+		return productDao.selectProduct(pr_code);
+	}
+	@Override
+	public ArrayList<FileVO> selectProductFile(String pr_code) {
+		if(pr_code == null)
+			return null;
+		
+		return productDao.selectProductFile(pr_code);
+	}
+
+	
 
 }
