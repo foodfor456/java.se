@@ -49,8 +49,7 @@ $(function(){
 				str +=   '<select class="form-control" id="cl_name" name="cl_name">'
 				str +=   '<option value="0">대분류 카테고리</option>'
 				for(categoryL of data.list){
-				str +=   	 '<option value="'+categoryL+'">'+categoryL+'</option>'
-				}
+				str +=   	 '<option value="'+categoryL.cl_name+'">'+categoryL.cl_name+'</option>'}
 				str +=   '</select>'
 				str +=   '<input type="text" class="form-control category-s" id="cs_name" name="cs_name">'
 				str +=   '<button class="btn btn-outline-success category-s-success">등록</button>'

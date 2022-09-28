@@ -6,112 +6,162 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+
 <style type="text/css">
 .price-box{	float: right; width: 40%;}
 .header-box{	position: relative;}
-.code {	margin-top: 10px; position: absolute; bottom: -30px; right: 0; padding: 0;}
+.code {	margin-top: 10px; padding: 0; float: right; box-sizing: border-box; width: 40%;}
+.check {
+	margin-top: 10px; padding: 0; box-sizing: border-box;  width: 40%; float: left;
+}
+.themb-box-main>img{width: 100%; height: 100%;}
+.sub-box>img{width: 60px; height: 100%;}
+.themb-box-sub{	padding: 0 50px;}
 .themb-box-main { border: 1px solid gray; width: 50%; height: 50%; display: inline-block;}
 .themb-box-sub {	border: 1px solid gray;	width: 50%; height: 60px;}
+.sub-box{	display: inline-block;}
+.wa_nt>span{ vertical-align: top;}
+
 </style>
 </head>
 <body>
-<form class="container mt-4" id="cl_category" method="post" enctype="multipart/form-data">
-	<h1>제품 등록</h1>
-	<div class="form-group header-box">
-		<div class="category-box">
-			<label>카테고리 :</label>
-			<select class="form-control mb-3" id="cl_name" name="cl_name">
-				<option value="0">대분류 카테고리</option>
-				<c:forEach items="${categoryL}" var="cl" varStatus="i">
-					<option value="${i.count}">${cl}</option>
-				</c:forEach>
-			</select>
-			<div class="form-check-inline mt-3 ml-2">
-			  <label class="form-check-label">
-			    <input type="checkbox" class="form-check-input fa_check" value="1" name="fa_check">공방제품
-			  </label>
+<form class="container mt-4">
+	<h1>제품 정보</h1>
+	<div class="wait-box">
+		<c:if test="${pr.pr_waiting == 'Y'}">
+			<span>대기 상태 : <input type="text" value="${wa.wp_state}"></span>
+			<span>대기 일자 : <input type="text" value="${wa.wp_date_str}"></span><br>
+			<div class="wa_nt mt-3">
+				<span>대기 사유 : </span>
+				<textarea name="wp_note">${wa.wp_note}</textarea>
 			</div>
+		</c:if>
+	</div>
+	<div class="form-group header-box clearfix">
+		<div class="category-box">
+			<label>대분류 카테고리 :</label>
+			<input class="form-control mb-3" readonly value="${ca.cl_name}">
+			<label>소분류 카테고리 :</label>
+			<input class="form-control mb-3" readonly value="${ca.cs_name}">
 		</div>
-		<div class="col-6 code">
+		<div class="check">
+		  <label>제품 형식:</label>
+		   <input type="text" class="form-control mb-3 fa_check" readonly
+		    value="<c:if test="${pr.pr_check == 1}">공방제품</c:if><c:if test="${pr.pr_check == 0}">일반제품</c:if>">
+		</div>
+		<div class="code">
 		  <label>제품 코드 :</label>
-		  <input type="text" class="form-control" id="pr_code" readonly name="pr_code">
+		  <input type="text" class="form-control" id="pr_code" readonly value="${pr.pr_code}">
 		</div>
 	</div>
 	<div class="form-group mt-3">
 	  <label>제목 :</label>
-	  <input type="text" class="form-control" id="pr_title" name="pr_title">
+	  <input type="text" class="form-control" readonly value="${pr.pr_title}">
 	</div>
 	<div class="form-group themb-box">
-		<div class="themb-box-main"></div>
+		<div class="themb-box-main">
+			<c:forEach items="${file}" var="fi" varStatus="i">
+				<c:if test="${i.count == 1}">
+					<img src="<c:url value="/thumb${fi.fi_name}"></c:url>" alt="사진이 없습니다">
+				</c:if>	
+			</c:forEach>
+		</div>
 		<div class="price-box">
 			<label>수량 :</label>
-	    <input type="text" class="form-control" name="pr_amount">
+	    <input type="text" class="form-control" readonly value="${pr.pr_amount}">
 	    <label class="mt-5">가격 :</label>
-			<input type="text" class="form-control" id="pr_price" name="pr_price">
+			<input type="text" class="form-control" readonly value="${pr.pr_price}">
 			<label class="mt-5">파일 :</label>
-			<input type="file" class="form-control" id="pr_file" name="files">
-			<input type="file" class="form-control" id="pr_file" name="files">
-			<input type="file" class="form-control" id="pr_file" name="files">
+			<c:forEach items="${file}" var="fi">
+				<a href="" class="form-control" id="pr_file">${fi.fi_ori_name}</a>
+			</c:forEach>
 		</div>
-		<div class="themb-box-sub"></div>
+		<div class="themb-box-sub">
+			<c:forEach items="${file}" var="fi" varStatus="i">
+				<c:if test="${i.count != 1}">
+					<div class="sub-box">
+						<img src="<c:url value="/thumb${fi.fi_name}"></c:url>" alt="사진이 없습니다">
+					</div>
+				</c:if>	
+			</c:forEach>
+		</div>
 	</div>
 	<div class="form-group mt-3">
 	  <label>내용 :</label>
-	  <textarea class="form-control" id="sn" name="pr_content"></textarea>
+	  <div class="form-control" style="height: auto; min-height: 300px;">${pr.pr_content}</div>
 	</div>
-	<button class="btn btn-outline-success">제품 등록</button>
+	<a class="btn btn-outline-warning" href="<c:url value="/product/update?pr_code=${pr.pr_code}"></c:url>">제품 수정</a>
+	<c:if test="${pr.pr_waiting == 'N'}">
+		<button class="btn btn-outline-warning wa-wait" type="button">제품대기로</button>
+	</c:if>
 </form>
 <script type="text/javascript">
 $(function(){
-	$('#cl_name').change(function(){
-		$('#cs_name').remove();
+	$('.wa-wait').click(function(){
 		let str = '';
-		let cl_name = $(this).children().eq($(this).val()).text();
-		let cs_name = $('#cs_name').text();
+		str +=	'<span>대기 상태 : <input type="text" id="wp_state" name="wp_state"></span>'
+		str +=	'<div class="wa_nt mt-3">'
+		str +=		'<span>대기 사유 : </span>'
+		str +=		'<textarea id="wp_note" name="wp_note"></textarea>'
+		str +=	'</div>'
+		str +=	'<button class="btn btn-outline-warning wa-insert" type="button">제품대기로</button>'
+		$('.wait-box').html(str);
+		$('#wp_state').focus();
+	})
+	$(document).on('click','.wa-insert', function(){
+		let pr_code = $('#pr_code').val();
+		let wp_state = $('#wp_state').val();
+		let wp_note = $('#wp_note').val();
 		let obj = {
-			cl_name : cl_name
-		}
-		ajaxString(false, obj, '/product/insert/categoryS', function(data){
-			if(data.length != 0){
-			str +=	'<select class="form-control" id="cs_name" name="cs_name">'
-			str +=		'<option value="0">소분류 카테고리</option>'
-				for(let cs of data){
-			str +=		'<option value="'+(cs.length-1)+'">'+cs+'</option>'
-				}
-			str +=	'</select>'
-			}else{
-				str +=	'<select class="form-control" id="cs_name" name="cs_name">'
-				str +=	'<option value="0">등록된 카테고리가 없습니다.</option>'
-				str +=	'</select>'
+			wp_pr_code : pr_code,
+			wp_state : wp_state,
+			wp_note : wp_note
+		};
+		ajaxPost(false, obj, '/product/waiting/insert', function(data){
+			
+			if(data){
+				alert('제품이 대기상태로 등록되었습니다.');
+				location.href = '<%=request.getContextPath()%>/product/select?pr_code='+pr_code
 			}
-			$('#cl_name').after(str);
+			else
+				alert('대기 등록에 실패했습니다.');
 			console.log(data);
 		})
+	})
+	$("form").validate({
+	  rules: {
+		  wp_state: {
+	      required : true,
+	      maxlength : 5,
+	    },
+	    wp_note: {
+	      required : true,
+	      minlength : 5,
+		  }
+	  },
+	  //규칙체크 실패시 출력될 메시지
+	  messages : {
+		  wp_state: {
+	      required : "필수로 입력하세요",
+	      maxlength : "최대 5글자 입니다.",
+	    },
+	    wp_note: {
+	      required : "필수로 입력하세요",
+	      minlength : "최소 5글자이상 입력해주세요.",
+			}
+	  }
 	});
-		$(document).on('change','.category-box', function(){
-			let cl_name = $('#cl_name').val();
-			let cs_name = $('#cs_name').val();
-			let fa_check = $('.fa_check').is(':checked');
-			let ca_code = '';
-			let fa_num = 0;
-			if(fa_check)
-				fa_num = 1;
-			if(cl_name != 0 && cs_name != null && cs_name != 0){
-				let strs = 'ABCDEFGHIJ';
-				let pr_num = cl_name+cs_name+fa_num;
-				for(let i = 0; i < pr_num.length; i++)
-					ca_code += strs[pr_num[i]];
-				let obj = {ca_code : ca_code};
-				ajaxString(true, obj, '/product/select/category', function(data){
-					$('#pr_code').val(data);
-					console.log(data);
-				}, null)
-			}else
-				$('#pr_code').val('');
-		})
-});
+})
+$.validator.addMethod(
+	"regex",
+	function(value, element, regexp) {
+	  var re = new RegExp(regexp);
+	  return this.optional(element) || re.test(value);
+	},
+	"Please check your input."
+);
 function ajaxPost(async, dataObj, url, success){
 	$.ajax({
 	  async: async,
@@ -125,38 +175,7 @@ function ajaxPost(async, dataObj, url, success){
 	  }
   })
 };
-function ajaxString(async, dataObj, url, success){
-	$.ajax({
-	  async: async,
-	  type:'POST',
-	  data:dataObj,
-	  url:"<%=request.getContextPath()%>"+url,
-	  dataType:"json",
-	  success : function(data){
-		  success(data);
-	  },error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);}
-  })
-};
-function ajaxString(async, dataObj, url, success, dataType){
-	$.ajax({
-	  async: async,
-	  type:'POST',
-	  data:dataObj,
-	  url:"<%=request.getContextPath()%>"+url,
-	  dataType:dataType,
-	  success : function(data){
-		  success(data);
-	  },error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);}
-  })
-};
-$('#sn').summernote({
-	  placeholder: 'Hello Bootstrap 4',
-	  tabsize: 2,
-	  height: 400,
-	//onImageUpload callback
-	});
+
 </script>
 </body>
 </html>

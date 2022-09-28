@@ -54,6 +54,10 @@
 			<input type="file" class="form-control" id="pr_file" name="files">
 			<input type="file" class="form-control" id="pr_file" name="files">
 			<input type="file" class="form-control" id="pr_file" name="files">
+			<input type="file" class="form-control" id="pr_file" name="files">
+			<input type="file" class="form-control" id="pr_file" name="files">
+			<input type="file" class="form-control" id="pr_file" name="files">
+			<input type="file" class="form-control" id="pr_file" name="files">
 		</div>
 		<div class="themb-box-sub"></div>
 	</div>
@@ -66,13 +70,14 @@
 <script type="text/javascript">
 $(function(){
 	$('#cl_name').change(function(){
-		$('#cs_name').remove();
+		$('#cs_name').remove();	
 		let str = '';
 		let cl_name = $(this).children().eq($(this).val()).text();
 		let cs_name = $('#cs_name').text();
 		let obj = {
 			cl_name : cl_name
 		}
+		console.log($(this).children().eq($(this).val()).val()-1);
 		ajaxPost(false, obj, '/product/insert/categoryS', function(data){
 			 if(data.categoryS.length != 0){
 			str +=	'<select class="form-control" id="cs_name" name="cs_name">'
@@ -84,24 +89,23 @@ $(function(){
 			str +=	'</select>'
 			}else{
 				str +=	'<select class="form-control" id="cs_name" name="cs_name">'
-				str +=	'<option value="0">등록된 카테고리가 없습니다.</option>'
+				str +=	'<option value="-1">등록된 카테고리가 없습니다.</option>'
 				str +=	'</select>'
 			}
 			$('#cl_name').after(str);
 		})
 	});
 		$(document).on('change','.category-box', function(){
-			let cl_name = $('#cl_name').val();
-			let cs_name = $('#cs_name').val();
+			let cl_name = $('#cl_name').val()-1;
+			let cs_name = $('#cs_name').val()-1;
 			let fa_check = $('.fa_check').is(':checked');
 			let ca_code = '';
 			let fa_num = 0;
 			if(fa_check)
 				fa_num = 1;
-			if(cl_name != 0 && cs_name != null && cs_name != 0){
+			if(cl_name != -1 && cs_name != null && cs_name != -1){
 				let strs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 				let pr_num = [cl_name,cs_name,fa_num];
-				console.log(pr_num);
 				for(let i = 0; i < pr_num.length; i++)
 					ca_code += strs[pr_num[i]];
 				let obj = {ca_code : ca_code};

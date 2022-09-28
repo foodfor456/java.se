@@ -109,7 +109,7 @@ public class BoardController {
 		// System.out.println(user);
 		// 게시글 수정 요청
 		board.setBd_num(bd_num);
-		boardService.updateBoard(board,user, files, delFiles);
+		boardService.updateBoard(board, user, files, delFiles);
 	  mv.setViewName("redirect:/board/select/"+bd_num);
 	  return mv;
 	}

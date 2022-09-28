@@ -7,14 +7,14 @@
 		insert into prcategoryl(cl_name) values(#{cl_name});
 	</insert>
 	<select id="getCategoryL" resultType="kr.green.hand.vo.CategoryVO">
-		select  cs_num, cs_name, cl_num, cl_name from prcategorys right join prcategoryl on cs_cl_num = cl_num
+		select * from prcategorys right join prcategoryl on cs_cl_num = cl_num
 			group by cl_name;
 	</select>
 	<insert id="categoryInsertS">
 		insert into prcategorys(cs_name, cs_cl_num) select #{cs_name}, cl_num from prcategoryL where cl_name = #{cl_name}
 	</insert>
 	<select id="getCategoryS" resultType="kr.green.hand.vo.CategoryVO">
-		select cs_num, cs_name, cl_num, cl_name from prcategorys left join prcategoryl on cs_cl_num = cl_num 
+		select * from prcategorys left join prcategoryl on cs_cl_num = cl_num 
 		 where cl_name = #{cl_name};
 	</select>
 	<select id="countCategory" resultType="int">
@@ -25,10 +25,11 @@
   		values (#{pr.pr_code}, #{pr.pr_title}, #{pr.pr_content}, #{pr.pr_price}, #{pr.pr_amount}, #{user.me_id});
   </insert>
   <select id="getProductList" resultType="kr.green.hand.vo.ProductVO">
-  	select * from product order by pr_date desc limit #{pageStart}, #{perPageNum};
+  	select * from product where pr_waiting = #{pr_waiting} 
+  		order by pr_date desc limit #{pageStart}, #{perPageNum};
   </select>
   <select id="getTotalcountPr" resultType="int">
-  	select count(*) from product;
+  	select count(*) from product where pr_waiting = #{pr_waiting};
   </select>
   <insert id="insertFile">
   	insert into file(fi_name, fi_ori_name, fi_table, fi_code)
@@ -39,5 +40,44 @@
   </select>
   <select id="selectProductFile" resultType="kr.green.hand.vo.FileVO">
   	select * from file where fi_code = #{pr_code};
+  </select>
+  <select id="getCategory" resultType="kr.green.hand.vo.CategoryVO">
+  	select * from prcategorys left join prcategoryl on cs_cl_num = cl_num
+  		where cs_num = #{cs_num} and cl_num = #{cl_num};
+  </select>
+  <select id="getFileList" resultType="kr.green.hand.vo.FileVO">
+  	select * from file;
+  </select>
+  <select id="getCategoryList" resultType="kr.green.hand.vo.CategoryVO">
+  	select * from prcategorys left join prcategoryl on cs_cl_num = cl_num;
+  </select>
+  <select id="getDelFile" resultType="kr.green.hand.vo.FileVO">
+  	select * from file where fi_code = #{fi_code};
+  </select>
+  <delete id="deleteFile">
+  	delete from file where fi_num = #{fi_num};
+  </delete>
+  <select id="delFileInfo" resultType="kr.green.hand.vo.FileVO">
+  	select * from file where fi_num = #{fi_num};
+  </select>
+  <update id="updateProduct">
+  	update product
+  		set pr_code = #{p.pr_code}, pr_title = #{p.pr_title}, pr_content = #{p.pr_content},
+	  		pr_price = #{p.pr_price}, pr_amount = #{p.pr_amount}, pr_me_id = #{p.pr_me_id}, pr_update_date = now()
+	  		, pr_waiting = #{p.pr_waiting}
+	  where pr_code = #{pr_ori_code}
+  </update>
+  <update id="updateFile">
+  	update file set fi_code = #{fi_code} where fi_code = #{fi_ori_code};
+  </update>
+  <delete id="deleteWaiting">
+  	delete from waitingproduct where wp_pr_code = #{pr_code};
+  </delete>
+  <insert id="insertWaiting">
+  	insert into waitingproduct(wp_state, wp_note, wp_date, wp_pr_code)
+  		values (#{wp_state}, #{wp_note}, now(), #{wp_pr_code});
+  </insert>
+  <select id="getWaiting" resultType="kr.green.hand.vo.WaitingVO">
+  	select * from waitingproduct where wp_pr_code = #{pr_code};
   </select>
 </mapper>
