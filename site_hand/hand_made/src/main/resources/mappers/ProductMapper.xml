@@ -80,4 +80,13 @@
   <select id="getWaiting" resultType="kr.green.hand.vo.WaitingVO">
   	select * from waitingproduct where wp_pr_code = #{pr_code};
   </select>
+  <insert id="insertOpSelect">
+  	insert into prselect(ps_name, ps_pr_code)
+  		values (#{ps_name}, #{ps_pr_code});
+  </insert>
+  <insert id="insertOption">
+  	insert into proption(op_title, op_price, op_ps_num)
+  		select #{op_title}, #{op_price}, ps_num
+  		from prselect where ps_name = #{ps_name} and ps_pr_code = #{ps_pr_code};
+  </insert>
 </mapper>

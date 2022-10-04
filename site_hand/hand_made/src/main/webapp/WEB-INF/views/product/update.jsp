@@ -31,6 +31,17 @@
 <body>
 <form class="container mt-4" action="<c:url value="/product/update"></c:url>" id="cl_category" method="post" enctype="multipart/form-data">
 	<h1>제품 정보</h1>
+	<div class="form-group wa-box">
+		<c:if test="${pr.pr_waiting == 'Y'}">
+			<span>대기 상태 : <input type="text" value="${wa.wp_state}"></span>
+			<span>대기 일자 : <input type="text" value="${wa.wp_date_str}" readonly></span><br>
+			<div class="wa_nt mt-3">
+				<span>대기 사유 : </span>
+				<textarea name="wp_note">${wa.wp_note}</textarea>
+			</div>
+			<button class="btn btn-outline-primary wa-stop"type="button">대기 해제</button>
+		</c:if>
+	</div>
 	<div class="form-group header-box clearfix">
 		<div class="category-box">
 			<label>카테고리 :</label>
@@ -147,14 +158,14 @@ $(function(){
 		});
 	})
 		$(document).on('change','.category-box', function(){
-			let cl_name = $('#cl_name').val();
-			let cs_name = $('#cs_name').val();
+			let cl_name = $('#cl_name').val()-1;
+			let cs_name = $('#cs_name').val()-1;
 			let fa_check = $('.fa_check').is(':checked');
 			let ca_code = '';
 			let fa_num = 0;
 			if(fa_check)
 				fa_num = 1;
-			if(cl_name != 0 && cs_name != null && cs_name != 0){
+			if(cl_name != -1 && cs_name != null && cs_name != -1){
 				let strs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 				let pr_num = [cl_name,cs_name,fa_num];
 				for(let i = 0; i < pr_num.length; i++)
@@ -202,18 +213,28 @@ $(function(){
 				$('.themb-box-main').html(str);
 				$('.themb-box-sub').html(strs);
 			})
-			/*
-			let list = new Array();
-			<c:forEach items="${file}" var="fi">
-				obj = {
-						bd_num : `${fi.fi_ori_name}`
-				};
-				list.push(obj);
-			</c:forEach>
-			for(let ad of list)
-				console.log(ad);
-			*/
+			
 		})
+	$(document).on('click','.wa-stop', function(){
+		if(confirm('대기상태를 해제 하시겠습니까?')){
+			let pr_code = $('#pr_code').val();
+			let obj = {
+				pr_code : pr_code
+			};
+			ajaxPost(false, obj, '/product/waiting/delete', function(data){
+				if(data){
+					alert('제품 대기가 해제 되었습니다.');
+					$('.wa-box').html('');					
+				}
+				else
+					alert('대기 해제가 실패하였습니다.');
+			})
+			return true;
+		}
+		else{
+			return false;
+		}
+	})
 });
 function ajaxPost(async, dataObj, url, success){
 	$.ajax({
@@ -260,7 +281,17 @@ $('#sn').summernote({
 	  height: 400,
 	//onImageUpload callback
 	});
-
+/* c:forEach script에서도 가능
+let list = new Array();
+<c:forEach items="${file}" var="fi">
+	obj = {
+			bd_num : `${fi.fi_ori_name}`
+	};
+	list.push(obj);
+</c:forEach>
+for(let ad of list)
+	console.log(ad);
+*/
 
 
 

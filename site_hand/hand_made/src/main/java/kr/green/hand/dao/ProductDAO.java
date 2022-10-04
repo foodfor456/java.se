@@ -8,6 +8,7 @@ import kr.green.hand.pagination.Criteria;
 import kr.green.hand.vo.CategoryVO;
 import kr.green.hand.vo.FileVO;
 import kr.green.hand.vo.MemberVO;
+import kr.green.hand.vo.OptionVO;
 import kr.green.hand.vo.ProductVO;
 import kr.green.hand.vo.WaitingVO;
 
@@ -55,7 +56,12 @@ public interface ProductDAO {
 
 	WaitingVO getWaiting(String pr_code);
 
-	void deleteWaiting(String pr_code);
+	int deleteWaiting(String pr_code);
+
+	void insertOption(OptionVO ot);
+
+	void insertOpSelect(OptionVO ot);
+
 	
 	
 	

@@ -12,6 +12,8 @@ import kr.green.hand.utils.UploadFileUtils;
 import kr.green.hand.vo.CategoryVO;
 import kr.green.hand.vo.FileVO;
 import kr.green.hand.vo.MemberVO;
+import kr.green.hand.vo.OptionListVO;
+import kr.green.hand.vo.OptionVO;
 import kr.green.hand.vo.ProductVO;
 import kr.green.hand.vo.WaitingVO;
 
@@ -68,13 +70,25 @@ public class ProductServiceImp implements ProductService{
 		return null;
 	}
 	@Override
-	public boolean productInsert(ProductVO product, MemberVO user, MultipartFile[] files) {
+	public boolean productInsert(ProductVO product, MemberVO user, MultipartFile[] files, OptionListVO op) {
 		if(product == null || user == null)
 			return false;
-		productDao.productInsert(product,user);
-		
-		insertFiles(files, "product", product.getPr_code());
-		
+		//productDao.productInsert(product,user);
+		if(op == null)
+			return false;
+		String ps_name = "";
+		for(OptionVO ot : op.getList()) {
+			ot.setPs_pr_code(product.getPr_code());
+			if(ot.getPs_name() == null)
+				ot.setPs_name(ps_name);
+			else {
+				ps_name = ot.getPs_name(); 
+				productDao.insertOpSelect(ot);
+			}
+			System.out.println(ot);
+			productDao.insertOption(ot);
+		}
+		//insertFiles(files, "product", product.getPr_code());
 		return true;
 	}
 	@Override
@@ -217,6 +231,18 @@ public class ProductServiceImp implements ProductService{
 			return null;
 		return productDao.getWaiting(pr_code);
 	}
-	
+
+	@Override
+	public boolean deleteWaiting(String pr_code, ProductVO prd, MemberVO user) {
+		if(pr_code == null)
+			return false;
+		if(user == null)
+			return false;
+		if(prd == null || prd.getPr_waiting() == "N")
+			return false;
+		prd.setPr_waiting("N");
+		productDao.updateProduct(prd, pr_code);
+		return productDao.deleteWaiting(pr_code) != 0 ? true : false;
+	}
 
 }

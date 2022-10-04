@@ -8,6 +8,7 @@ import kr.green.hand.pagination.Criteria;
 import kr.green.hand.vo.CategoryVO;
 import kr.green.hand.vo.FileVO;
 import kr.green.hand.vo.MemberVO;
+import kr.green.hand.vo.OptionListVO;
 import kr.green.hand.vo.ProductVO;
 import kr.green.hand.vo.WaitingVO;
 
@@ -23,7 +24,7 @@ public interface ProductService {
 
 	String getCategoryCode(String ca_code, int pr_num);
 
-	boolean productInsert(ProductVO product, MemberVO user, MultipartFile[] files);
+	boolean productInsert(ProductVO product, MemberVO user, MultipartFile[] files, OptionListVO op);
 
 	ArrayList<ProductVO> getProductList(Criteria cri);
 
@@ -50,5 +51,7 @@ public interface ProductService {
 	boolean insertWaiting(WaitingVO wa, MemberVO user, ProductVO pr);
 
 	WaitingVO getWaiting(String pr_code);
+
+	boolean deleteWaiting(String pr_code, ProductVO prd, MemberVO user);
 
 }

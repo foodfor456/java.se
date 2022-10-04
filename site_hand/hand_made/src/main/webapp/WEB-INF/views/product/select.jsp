@@ -29,7 +29,7 @@
 <body>
 <form class="container mt-4">
 	<h1>제품 정보</h1>
-	<div class="wait-box">
+	<div class="wa-box">
 		<c:if test="${pr.pr_waiting == 'Y'}">
 			<span>대기 상태 : <input type="text" value="${wa.wp_state}"></span>
 			<span>대기 일자 : <input type="text" value="${wa.wp_date_str}"></span><br>
@@ -37,7 +37,9 @@
 				<span>대기 사유 : </span>
 				<textarea name="wp_note">${wa.wp_note}</textarea>
 			</div>
+			<button class="btn btn-outline-primary wa-stop"type="button">대기 해제</button>
 		</c:if>
+		
 	</div>
 	<div class="form-group header-box clearfix">
 		<div class="category-box">
@@ -107,7 +109,7 @@ $(function(){
 		str +=		'<textarea id="wp_note" name="wp_note"></textarea>'
 		str +=	'</div>'
 		str +=	'<button class="btn btn-outline-warning wa-insert" type="button">제품대기로</button>'
-		$('.wait-box').html(str);
+		$('.wa-box').html(str);
 		$('#wp_state').focus();
 	})
 	$(document).on('click','.wa-insert', function(){
@@ -129,6 +131,26 @@ $(function(){
 				alert('대기 등록에 실패했습니다.');
 			console.log(data);
 		})
+	})
+	$(document).on('click','.wa-stop', function(){
+		if(confirm('대기상태를 해제 하시겠습니까?')){
+			let pr_code = $('#pr_code').val();
+			let obj = {
+				pr_code : pr_code
+			};
+			ajaxPost(false, obj, '/product/waiting/delete', function(data){
+				if(data){
+					alert('제품 대기가 해제 되었습니다.');
+					$('.wa-box').html('');
+				}
+				else
+					alert('대기 해제가 실패하였습니다.');
+			})
+			return true;
+		}
+		else{
+			return false;
+		}
 	})
 	$("form").validate({
 	  rules: {

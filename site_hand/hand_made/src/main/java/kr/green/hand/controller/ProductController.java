@@ -23,6 +23,8 @@ import kr.green.hand.service.ProductService;
 import kr.green.hand.vo.CategoryVO;
 import kr.green.hand.vo.FileVO;
 import kr.green.hand.vo.MemberVO;
+import kr.green.hand.vo.OptionListVO;
+import kr.green.hand.vo.OptionVO;
 import kr.green.hand.vo.ProductVO;
 import kr.green.hand.vo.WaitingVO;
 
@@ -76,10 +78,9 @@ public class ProductController {
 	}
 	@RequestMapping(value ="/product/insert", method=RequestMethod.POST)
 	public ModelAndView productInsert(ModelAndView mv, ProductVO product, HttpSession session,
-			MultipartFile[] files){
+			MultipartFile[] files, OptionListVO op){
 		MemberVO user = (MemberVO)session.getAttribute("user");
-	  boolean res = productService.productInsert(product, user, files);
-	  
+		boolean res = productService.productInsert(product, user, files, op);
 	  mv.setViewName("redirect:/product/insert");
 	  return mv;
 	}
@@ -89,7 +90,7 @@ public class ProductController {
 		ArrayList<FileVO> file = productService.selectProductFile(pr_code);
 		ArrayList<CategoryVO> ca = productService.getCategoryList();
 		CategoryVO cl_num = productService.getCategory(pr_code);
-		System.out.println(pr_code);
+		WaitingVO wa = productService.getWaiting(pr_code);
 		ArrayList<CategoryVO> category = new ArrayList<CategoryVO>();
 		if(pr_code.matches("(..B)(\\d{5})$"))
 			pr.setPr_check(1);
@@ -97,6 +98,7 @@ public class ProductController {
 			if(cas.getCl_name().equals(cl_num.getCl_name()))
 				category.add(cas);
 		}
+		mv.addObject("wa", wa);
 		mv.addObject("category",category);
 		mv.addObject("cl_num",cl_num);
 		mv.addObject("pr",pr);
@@ -108,7 +110,9 @@ public class ProductController {
 	@RequestMapping(value= "/product/update", method=RequestMethod.POST)
 	public ModelAndView productUpdatePost(ModelAndView mv, int[] delFiles, MultipartFile[] files,
 			HttpSession session, ProductVO pr, String pr_num, HttpServletResponse response){
+		System.out.println(pr_num);
 		MemberVO user = (MemberVO)session.getAttribute("user");
+		WaitingVO wa = productService.getWaiting(pr_num);
 		boolean res = productService.updateProduct(user, files, pr, delFiles, pr_num);
 		if(res)
 			messageService.message(response, "제품을 수정했습니다.", "/hand/product/select?pr_code="+pr.getPr_code());
@@ -198,6 +202,15 @@ public class ProductController {
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		ProductVO pr = productService.selectProduct(wa.getWp_pr_code());
 		boolean res = productService.insertWaiting(wa, user, pr);
+		return res;
+	}
+	@RequestMapping(value= "/product/waiting/delete", method=RequestMethod.POST)
+	@ResponseBody
+	public boolean productWaitingDelete(@RequestBody ProductVO pr,
+				HttpSession session){
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		ProductVO prd = productService.selectProduct(pr.getPr_code());
+		boolean res = productService.deleteWaiting(pr.getPr_code(), prd, user);
 		return res;
 	}
 }
