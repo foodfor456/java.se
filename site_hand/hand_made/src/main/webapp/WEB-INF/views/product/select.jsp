@@ -23,6 +23,7 @@
 .themb-box-sub {	border: 1px solid gray;	width: 50%; height: 60px;}
 .sub-box{	display: inline-block;}
 .wa_nt>span{ vertical-align: top;}
+#pr_file{ display: none;}
 
 </style>
 </head>
@@ -39,7 +40,6 @@
 			</div>
 			<button class="btn btn-outline-primary wa-stop"type="button">대기 해제</button>
 		</c:if>
-		
 	</div>
 	<div class="form-group header-box clearfix">
 		<div class="category-box">
@@ -71,11 +71,36 @@
 			</c:forEach>
 		</div>
 		<div class="price-box">
-			<label>수량 :</label>
-	    <input type="text" class="form-control" readonly value="${pr.pr_amount}">
+			<c:if test="${pr.pr_check == 1}">
+				<label>수량 :</label>
+		    <input type="text" class="form-control" readonly value="${pr.pr_amount}">
+	    </c:if>
+	    <c:if test="${op != null || op.size() != 0}">
+		    <div class="form-group">
+		    	<c:set var="ona" value=""/>
+		    	<c:forEach items="${op}" var="opl">
+		    		<c:if test="${opl.ps_name != ona}">
+		    			<c:set var="ona" value="${opl.ps_name}"/>
+		    		  <label for="sel1">옵션 : ${opl.ps_name}</label>
+						  <select class="form-control op-box" id="sel1">
+						  	<option value="0">${opl.ps_name}</option>
+						  	<c:forEach items="${op}" var="opp">
+						  		<c:if test="${opp.ps_name == ona}">
+						  			<c:if test="${opp.op_price == null || opp.op_price == 0}">
+						  				<option value="${opp.op_price}">${opp.op_title}</option>
+						  			</c:if>
+						  			<c:if test="${opp.op_price != null || opp.op_price != 0}">
+						  				<option value="${opp.op_price}">${opp.op_title}  + ${opp.op_price_str}</option>
+						  			</c:if>
+						  		</c:if>
+						  	</c:forEach>
+						  </select>
+			    	</c:if>
+			    </c:forEach>
+				</div>
+			</c:if>
 	    <label class="mt-5">가격 :</label>
-			<input type="text" class="form-control" readonly value="${pr.pr_price}">
-			<label class="mt-5">파일 :</label>
+			<input type="text" class="form-control pr_price" data-target="${pr.pr_price}" name="pr_price" readonly value="${pr.pr_price_str}">
 			<c:forEach items="${file}" var="fi">
 				<a href="" class="form-control" id="pr_file">${fi.fi_ori_name}</a>
 			</c:forEach>
@@ -151,6 +176,15 @@ $(function(){
 		else{
 			return false;
 		}
+	})
+	let pr_price = parseInt($('.pr_price').data('target'));
+	$(document).on('change','.op-box', function(){
+		let op_price = 0;
+		$('.op-box').each(function(){
+			op_price += parseInt($(this).val());
+		});
+		let totalPrice = op_price + pr_price;
+		$('.pr_price').val(totalPrice.toLocaleString() + ' 원');
 	})
 	$("form").validate({
 	  rules: {

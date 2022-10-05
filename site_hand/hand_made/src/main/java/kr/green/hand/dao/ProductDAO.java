@@ -62,6 +62,14 @@ public interface ProductDAO {
 
 	void insertOpSelect(OptionVO ot);
 
+	ArrayList<OptionVO> getOption(String pr_code);
+
+	ArrayList<OptionVO> deleteOptionSelect(String pr_code);
+
+	void deleteOption(String ps_code);
+
+	void deleteOpSelect(String pr_code);
+
 	
 	
 	

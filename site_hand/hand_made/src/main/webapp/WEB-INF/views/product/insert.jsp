@@ -15,7 +15,7 @@
 .code {	margin-top: 10px; position: absolute; bottom: -30px; right: 0; padding: 0;}
 .themb-box-main { border: 1px solid gray; width: 50%; height: 50%; display: inline-block;}
 .themb-box-sub {	border: 1px solid gray;	width: 50%; height: 60px;}
-.file-area, .sub-box{ text-align: center;}
+.file-area { text-align: center;}
 .file-box input{  line-height: 1.2; float: left;}
 .fa-plus, .op-plus{ cursor: pointer; font-size: 20px;}
 .file-box span{ float: right; cursor: pointer;}
@@ -66,7 +66,6 @@
 			<label class="mt-2">옵션 :</label><br>
 			<button type="button" class="btn btn-outline-warning op-add mb-1">옵션 추가</button>
 			<div class="op-area mt-2">
-				
 			</div>
 		</div>
 		
@@ -170,7 +169,8 @@ $(function(){
 		str += 		  '<div class="input-group-prepend">'
 		str += 	 			'<span class="input-group-text">선택 옵션 명:</span>'
 		str += 		 	'</div>'
-		str +=			'<input type="text" class="form-control mr-1" name="ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>'
+		str += 			'<input type="hidden" class="form-control ps_num" name="" value="">'
+		str +=			'<input type="text" class="form-control mr-1 ps_name" name="ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>'
     str += 		'</div>'
     str +=		'<div class="op-sub">'
     str += 			'<div class="mb-1 sub-box">'
@@ -186,8 +186,8 @@ $(function(){
 		str +=  	 			'</div>'
 		str +=  				'<input type="text" class="form-control" name="list[0].op_price" placeholder="정수로 입력">'
 		str += 				'</div>'
-		str +=	 		'<i class="fa-solid fa-plus op-plus"></i>'
 		str +=			'</div>'
+		str +=	 	'<div style="text-align: center;"><i class="fa-solid fa-plus op-plus"></i></div>'
 		str +=		'</div>'
 		str +=		'<button type="button" class="btn btn-outline-success op-save">등록</button>'
 		str +=		'<button type="button" class="btn btn-outline-primary op-update" style="display: none;">수정</button>'
@@ -212,8 +212,8 @@ $(function(){
 		str +=   	 '</div>'
 		str +=   	 '<input type="text" class="form-control" name="op_price[]" placeholder="정수로 입력">'
 		str +=	 '</div>'
-		str += '<i class="fa-solid fa-plus op-plus"></i>'
 		str += '</div>'
+		str += '<div style="text-align: center;"><i class="fa-solid fa-plus op-plus"></i></div>'
 		
 		$(this).parents('.op-sub').append(str);
 		$(this).remove();
@@ -297,8 +297,11 @@ function setNames(){
 	count_op = $('.op-box').find('.op_price').length;
 	for(let i = 0; i <= count_op; i++){
 		for(let j = 0; j <= count_ps; j++){
-			if($('.op_price').eq(i).parents('.op-box').index() != $('.op_price').eq(i-1).parents('.op-box').index())
-				$('.op_price').eq(i).parents('.op-box').children('.ps_name').children('input').attr('name', 'list['+i+'].ps_name');
+			if($('.op_price').eq(i).parents('.op-box').index() != $('.op_price').eq(i-1).parents('.op-box').index()){
+				$('.op_price').eq(i).parents('.op-box').children('.ps_name').children('.ps_name').attr('name', 'list['+i+'].ps_name');
+				$('.op-box').eq(j).children('.ps_name').children('.ps_num').attr('value',j +1);
+				$('.op_price').eq(i).parents('.op-box').children('.ps_name').children('.ps_num').attr('name', 'list['+i+'].ps_num');
+			}
 		}
 		$('.op-box').find('.op_price').eq(i).children('input').attr('name', 'list['+i+'].op_price');
 		$('.op-box').find('.op_title').eq(i).children('input').attr('name', 'list['+i+'].op_title');

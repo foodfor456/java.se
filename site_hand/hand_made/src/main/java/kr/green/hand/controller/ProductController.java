@@ -57,6 +57,8 @@ public class ProductController {
 			if(pr_code.matches("(..B)(\\d{5})$"))
 				pr.setPr_check(1);
 		}
+		ArrayList<OptionVO> op = productService.getOption(pr_code);
+		mv.addObject("op",op);
 		mv.addObject("wa", wa);
 		mv.addObject("pr",pr);
 		mv.addObject("file",file);
@@ -98,6 +100,8 @@ public class ProductController {
 			if(cas.getCl_name().equals(cl_num.getCl_name()))
 				category.add(cas);
 		}
+		ArrayList<OptionVO> op = productService.getOption(pr_code);
+		mv.addObject("op",op);
 		mv.addObject("wa", wa);
 		mv.addObject("category",category);
 		mv.addObject("cl_num",cl_num);
@@ -109,15 +113,17 @@ public class ProductController {
 	}
 	@RequestMapping(value= "/product/update", method=RequestMethod.POST)
 	public ModelAndView productUpdatePost(ModelAndView mv, int[] delFiles, MultipartFile[] files,
-			HttpSession session, ProductVO pr, String pr_num, HttpServletResponse response){
-		System.out.println(pr_num);
+			HttpSession session, ProductVO pr, String pr_num, HttpServletResponse response, OptionListVO op){
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		WaitingVO wa = productService.getWaiting(pr_num);
-		boolean res = productService.updateProduct(user, files, pr, delFiles, pr_num);
+		boolean res = productService.updateProduct(user, files, pr, delFiles, pr_num, op);
+		
+		
 		if(res)
 			messageService.message(response, "제품을 수정했습니다.", "/hand/product/select?pr_code="+pr.getPr_code());
 		else
 			messageService.message(response, "제품 수정에 실패했습니다.", "/hand/product/select?pr_code="+pr.getPr_code());
+		
 		return mv;
 	}
 	@RequestMapping(value= "/product/waiting/list", method=RequestMethod.GET)

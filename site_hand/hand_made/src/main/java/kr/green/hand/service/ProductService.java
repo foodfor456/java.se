@@ -9,6 +9,7 @@ import kr.green.hand.vo.CategoryVO;
 import kr.green.hand.vo.FileVO;
 import kr.green.hand.vo.MemberVO;
 import kr.green.hand.vo.OptionListVO;
+import kr.green.hand.vo.OptionVO;
 import kr.green.hand.vo.ProductVO;
 import kr.green.hand.vo.WaitingVO;
 
@@ -46,12 +47,14 @@ public interface ProductService {
 
 	ArrayList<FileVO> getDelFile(FileVO file);
 
-	boolean updateProduct(MemberVO user, MultipartFile[] files, ProductVO pr, int[] delFiles, String pr_num);
+	boolean updateProduct(MemberVO user, MultipartFile[] files, ProductVO pr, int[] delFiles, String pr_num, OptionListVO op);
 
 	boolean insertWaiting(WaitingVO wa, MemberVO user, ProductVO pr);
 
 	WaitingVO getWaiting(String pr_code);
 
 	boolean deleteWaiting(String pr_code, ProductVO prd, MemberVO user);
+
+	ArrayList<OptionVO> getOption(String pr_code);
 
 }

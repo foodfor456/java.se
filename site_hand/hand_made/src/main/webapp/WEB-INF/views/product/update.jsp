@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script src="https://kit.fontawesome.com/7a5abb87c2.js" crossorigin="anonymous"></script>
 <style type="text/css">
 .price-box{	float: right; width: 40%;}
 .header-box{	position: relative;}
@@ -26,6 +27,9 @@
 .themb-box-main { border: 1px solid gray; width: 50%; height: 50%; display: inline-block;}
 .themb-box-sub {	border: 1px solid gray;	width: 50%; height: 60px; }
 .sub-box{display: inline-block;}
+.fa-plus, .op-plus{ cursor: pointer; font-size: 20px;}
+.file-box span{ float: right; cursor: pointer;}
+.op-minus { margin: 5px; line-height: 1.7; cursor: pointer;}
 </style>
 </head>
 <body>
@@ -76,14 +80,13 @@
 		  <label>제품 코드 :</label>
 		  <input type="text" class="form-control" readonly id="pr_code" name="pr_code" value="${pr.pr_code}">
 		  <input type="hidden" class="form-control" name="pr_num" value="${pr.pr_code}">
-		  
 		</div>
 	</div>
 	<div class="form-group mt-3">
 	  <label>제목 :</label>
 	  <input type="text" class="form-control" name="pr_title" value="${pr.pr_title}">
 	</div>
-	<div class="form-group themb-box">
+	<div class="form-group themb-box clearfix">
 		<div class="themb-box-main">
 			<c:forEach items="${file}" var="fi" varStatus="i">
 				<c:if test="${i.count == 1}">
@@ -94,6 +97,53 @@
 		<div class="price-box">
 			<label>수량 :</label>
 	    <input type="text" class="form-control" value="${pr.pr_amount}" name="pr_amount">
+	    <label class="mt-2">옵션 :</label><br>
+			<button type="button" class="btn btn-outline-warning op-add mb-1">옵션 추가</button>
+			<div class="op-area mt-2">
+				<c:if test="${op != null || op.size() != 0}">
+					<c:set var="ona" value=""/>
+					<c:forEach items="${op}" var="opl">
+						<c:if test="${opl.ps_name != ona}">
+							<c:set var="ona" value="${opl.ps_name}"/>
+							<div class="op-box mt-2">
+								<div class="input-group mb-1 ps_name">
+									<div class="input-group-prepend">
+										<span class="input-group-text">선택 옵션 명:</span>
+									</div>
+									<input type="hidden" class="form-control ps_num" name="" value="">
+									<input type="text" class="form-control mr-1 ps_name" value="${opl.ps_name}" name="ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>
+						    </div>
+						    <div class="op-sub">
+						      <c:forEach items="${op}" var="opp">
+							    	<c:if test="${opp.ps_name == ona}">
+								    	<div class="mb-1 sub-box" style="width: 100%;">
+												<div class="input-group mb-1 op_title">
+													<div class="input-group-prepend">
+														<span class="input-group-text">옵션 이름:</span>
+													</div>
+													<input type="text" class="form-control" name="list[0].op_title" placeholder="예)S,M,L,ML" value="${opp.op_title}">
+													<i data-sub="${opp.op_code}" class="fa-solid fa-minus op-minus op-default"></i>
+												</div>
+												<div class="input-group mb-1 op_price">
+										  		<div class="input-group-prepend">
+										 	 			<span class="input-group-text">옵션 가격:</span>
+													</div>
+													<input type="text" class="form-control" name="list[0].op_price" placeholder="정수로 입력" value="${opp.op_title}">
+												</div>
+											</div>
+											<!-- <div style="text-align: center;"><i class="fa-solid fa-plus op-plus"></i></div> -->
+										</c:if>
+									</c:forEach>
+								</div>
+								<button type="button" class="btn btn-outline-success op-save">등록</button>
+								<button type="button" class="btn btn-outline-primary op-update" style="display: none;">수정</button>
+								<button type="button" class="btn btn-outline-danger op-cancle">삭제</button>
+							</div>
+						</c:if>
+					</c:forEach>
+				</c:if>
+			</div>
+	    
 	    <label class="mt-5">가격 :</label>
 			<input type="text" class="form-control" value="${pr.pr_price}" name="pr_price">
 			<label class="mt-5">파일 :</label>
@@ -213,7 +263,6 @@ $(function(){
 				$('.themb-box-main').html(str);
 				$('.themb-box-sub').html(strs);
 			})
-			
 		})
 	$(document).on('click','.wa-stop', function(){
 		if(confirm('대기상태를 해제 하시겠습니까?')){
@@ -235,6 +284,106 @@ $(function(){
 			return false;
 		}
 	})
+	$(document).on('click','.op-add', function(){
+		let str = '';
+		str += 	'<div class="op-box mt-2">'
+		str += 		'<div class="input-group mb-1 ps_name">'
+		str += 		  '<div class="input-group-prepend">'
+		str += 	 			'<span class="input-group-text">선택 옵션 명:</span>'
+		str += 		 	'</div>'
+		str +=			'<input type="text" class="form-control mr-1" name="ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>'
+    str += 		'</div>'
+    str +=		'<div class="op-sub">'
+    str += 			'<div class="mb-1 sub-box" style="width: 100%;">'
+		str += 				'<div class="input-group mb-1 op_title">'
+		str += 		  		'<div class="input-group-prepend">'
+		str += 		    		'<span class="input-group-text">옵션 이름:</span>'
+		str += 					'</div>'
+		str += 					'<input type="text" class="form-control" name="list[0].op_title" placeholder="예)S,M,L,ML">'
+		str += 				'</div>'
+		str += 				'<div class="input-group mb-1 op_price">'
+		str +=  				'<div class="input-group-prepend">'
+		str +=  	 				'<span class="input-group-text">옵션 가격:</span>'
+		str +=  	 			'</div>'
+		str +=  				'<input type="text" class="form-control" name="list[0].op_price" placeholder="정수로 입력">'
+		str += 				'</div>'
+		str +=			'</div>'
+		str += 			'<div style="text-align: center;"><i class="fa-solid fa-plus op-plus"></i></div>'
+		str +=		'</div>'
+		str +=		'<button type="button" class="btn btn-outline-success op-save">등록</button>'
+		str +=		'<button type="button" class="btn btn-outline-primary op-update" style="display: none;">수정</button>'
+		str +=		'<button type="button" class="btn btn-outline-danger op-cancle">삭제</button>'
+		str +=	'</div>'
+		$('.op-area').append(str);
+		setNames()
+	})
+	$(document).on('click','.op-plus', function(){
+		let str = '';
+		str += '<div class="mb-1 sub-box" style="width: 100%;">'
+		str += 	 '<div class="input-group mb-1 op_title">'
+		str +=   	 '<div class="input-group-prepend">'
+		str +=    	 '<span class="input-group-text">옵션 이름:</span>'
+		str +=   	 '</div>'
+		str +=  	 '<input type="text" class="form-control" name="op_title[]" placeholder="예)S,M,L,ML">'
+		str +=	 '<i class="fa-solid fa-minus op-minus"></i>'
+		str +=	 '</div>'
+		str += 	 '<div class="input-group mb-1 op_price">'
+		str +=   	 '<div class="input-group-prepend">'
+		str +=    	 '<span class="input-group-text">옵션 가격:</span>'
+		str +=   	 '</div>'
+		str +=   	 '<input type="text" class="form-control" name="op_price[]" placeholder="정수로 입력">'
+		str +=	 '</div>'
+		str += '</div>'
+		str += '<div style="text-align: center;"><i class="fa-solid fa-plus op-plus"></i></div>'
+		$(this).parents('.op-sub').append(str);
+		$(this).remove();
+		setNames()
+	})
+	$(document).on('click','.op-box>.btn', function(){
+		if($(this).hasClass('op-save')){
+			$(this).hide();
+			$(this).siblings('.op-sub').find('i').hide();
+			$(this).siblings('.op-update').show();
+			$(this).parent().find('input').prop('readonly', true);
+		}else if($(this).hasClass('op-update')){
+			$(this).hide();
+			$(this).siblings('.op-sub').find('i').show();
+			$(this).siblings('.op-save').show();
+			$(this).parent().find('input').prop('readonly', false);
+		}else if($(this).hasClass('op-cancle'))
+			$(this).parent().remove();
+		setNames()
+	});
+	$(document).on('click','.op-fold', function(){
+		$(this).parent().siblings('.op-sub').fadeToggle();
+		$(this).parent().siblings('button').fadeOut();
+		if($(this).hasClass('fol')){
+			if($(this).siblings('input').prop('readonly'))
+				$(this).parent().siblings('.op-update,.op-cancle').fadeIn();
+			else
+				$(this).parent().siblings('.op-save,.op-cancle').fadeIn();
+			$(this).css('color', 'blue').removeClass('fol').text('접기');
+		}
+		else{
+		$(this).css('color', 'green').addClass('fol').text('열기');
+		}
+	})
+	$(document).on('click', '.op-minus', function(){
+		$(this).parents('.sub-box').remove();
+	})
+	$('.op-sub').each(function(){
+		$(this).append('<div style="text-align: center;"><i class="fa-solid fa-plus op-plus"></i></div>');
+		$(this).find('.op-minus').first().remove();
+	})
+	$(document).on('click', '.op-default', function(){
+		console.log(123);
+		let op_num = $(this).data('sub');
+		let str = '';
+		str +=	'<input type="" name="nums" value="'+op_num+'">';
+		$('.op-area').append(str);
+	})
+	setNames()
+	
 });
 function ajaxPost(async, dataObj, url, success){
 	$.ajax({
@@ -249,6 +398,22 @@ function ajaxPost(async, dataObj, url, success){
 	  }
   })
 };
+function setNames(){
+	let ps_name = $('.ps_name').val();
+	count_ps = $('.op-area').children('.op-box').length;
+	count_op = $('.op-box').find('.op_price').length;
+	for(let i = 0; i <= count_op; i++){
+		for(let j = 0; j <= count_ps; j++){
+			if($('.op_price').eq(i).parents('.op-box').index() != $('.op_price').eq(i-1).parents('.op-box').index()){
+				$('.op_price').eq(i).parents('.op-box').children('.ps_name').children('.ps_name').attr('name', 'list['+i+'].ps_name');
+				$('.op-box').eq(j).children('.ps_name').children('.ps_num').attr('value',j +1);
+				$('.op_price').eq(i).parents('.op-box').children('.ps_name').children('.ps_num').attr('name', 'list['+i+'].ps_num');
+			}
+		}
+		$('.op-box').find('.op_price').eq(i).children('input').attr('name', 'list['+i+'].op_price');
+		$('.op-box').find('.op_title').eq(i).children('input').attr('name', 'list['+i+'].op_title');
+	}
+}
 function ajaxString(async, dataObj, url, success){
 	$.ajax({
 	  async: async,

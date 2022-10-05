@@ -73,22 +73,26 @@ public class ProductServiceImp implements ProductService{
 	public boolean productInsert(ProductVO product, MemberVO user, MultipartFile[] files, OptionListVO op) {
 		if(product == null || user == null)
 			return false;
-		//productDao.productInsert(product,user);
+		productDao.productInsert(product,user);
 		if(op == null)
 			return false;
 		String ps_name = "";
+		int ps_num = 0;
 		for(OptionVO ot : op.getList()) {
 			ot.setPs_pr_code(product.getPr_code());
-			if(ot.getPs_name() == null)
+			if(ot.getPs_name() == null) {
 				ot.setPs_name(ps_name);
+				ot.setPs_num(ps_num);
+			}
 			else {
 				ps_name = ot.getPs_name(); 
+				ps_num = ot.getPs_num();
 				productDao.insertOpSelect(ot);
+				
 			}
-			System.out.println(ot);
 			productDao.insertOption(ot);
 		}
-		//insertFiles(files, "product", product.getPr_code());
+		insertFiles(files, "product", product.getPr_code());
 		return true;
 	}
 	@Override
@@ -164,7 +168,8 @@ public class ProductServiceImp implements ProductService{
 	}
 
 	@Override
-	public boolean updateProduct(MemberVO user, MultipartFile[] files, ProductVO pr, int[] delFiles, String pr_num) {
+	public boolean updateProduct(MemberVO user, MultipartFile[] files,
+			ProductVO pr, int[] delFiles, String pr_num, OptionListVO op) {
 		if(user == null || user.getMe_id() == null)
 			return false;
 		if(files != null)
@@ -177,6 +182,28 @@ public class ProductServiceImp implements ProductService{
 				FileVO delFile = productDao.delFileInfo(num);
 				if(delFile != null)
 					deleteFile(delFile);
+			}
+		}
+		if(op.getList().size() != 0 || op != null) {
+			ArrayList<OptionVO> list = productDao.deleteOptionSelect(pr.getPr_code());
+			for(OptionVO delOp : list)
+				productDao.deleteOption(delOp.getPs_code());
+				
+			productDao.deleteOpSelect(pr.getPr_code());
+			String ps_name = "";
+			int ps_num = 0;
+			for(OptionVO ot : op.getList()) {
+				ot.setPs_pr_code(pr.getPr_code());
+				if(ot.getPs_name() == null) {
+					ot.setPs_name(ps_name);
+					ot.setPs_num(ps_num);
+				}
+				else {
+					ps_name = ot.getPs_name(); 
+					ps_num = ot.getPs_num();
+					productDao.insertOpSelect(ot);
+				}
+				productDao.insertOption(ot);
 			}
 		}
 		updateFiles(pr_num, pr.getPr_code());
@@ -243,6 +270,14 @@ public class ProductServiceImp implements ProductService{
 		prd.setPr_waiting("N");
 		productDao.updateProduct(prd, pr_code);
 		return productDao.deleteWaiting(pr_code) != 0 ? true : false;
+	}
+
+	@Override
+	public ArrayList<OptionVO> getOption(String pr_code) {
+		if(pr_code == null)
+			return null;
+		
+		return productDao.getOption(pr_code);
 	}
 
 }

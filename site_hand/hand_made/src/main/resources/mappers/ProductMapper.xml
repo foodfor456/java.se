@@ -81,12 +81,26 @@
   	select * from waitingproduct where wp_pr_code = #{pr_code};
   </select>
   <insert id="insertOpSelect">
-  	insert into prselect(ps_name, ps_pr_code)
-  		values (#{ps_name}, #{ps_pr_code});
+  	insert into prselect(ps_code, ps_name, ps_pr_code, ps_num)
+  		select concat(#{ps_pr_code},'_',count(*)+1), #{ps_name}, #{ps_pr_code}, #{ps_num}
+  		from prselect where ps_pr_code = #{ps_pr_code};
   </insert>
   <insert id="insertOption">
-  	insert into proption(op_title, op_price, op_ps_num)
-  		select #{op_title}, #{op_price}, ps_num
-  		from prselect where ps_name = #{ps_name} and ps_pr_code = #{ps_pr_code};
+  	insert into proption(op_code, op_title, op_price, op_ps_code)
+  		select concat(ps_code,'_', ifnull(count(op_code),0)+1), #{op_title}, #{op_price}, ps_code
+  		from proption right join prselect on op_ps_code = ps_code 
+  		where ps_pr_code = #{ps_pr_code} and ps_num = #{ps_num};
   </insert>
+  <select id="getOption" resultType="kr.green.hand.vo.OptionVO">
+  	select * from proption left join prselect on op_ps_code = ps_code where ps_pr_code = #{pr_code};
+  </select>
+  <select id="deleteOptionSelect" resultType="kr.green.hand.vo.OptionVO">
+  	select * from prselect where ps_pr_code = #{pr_code}
+  </select>
+  <delete id="deleteOption">
+  	delete from proption where op_ps_code = #{ps_code}
+  </delete>
+  <delete id="deleteOpSelect">
+  	delete from prselect where ps_pr_code = #{pr_code}
+  </delete>
 </mapper>
