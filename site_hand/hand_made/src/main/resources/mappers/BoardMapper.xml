@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.hand.dao.BoardDAO">
+	<insert id="insertRegionP">
+		insert into province values (#{pv_name});
+	</insert>
+	<insert id="insertRegionR">
+		insert into region(rg_name, rg_pv_name) values(#{rg_name}, #{pv_name});
+	</insert>
+	<select id="selectPv" resultType="String">
+		select pv_name from province order by pv_order;
+	</select>
+	<select id="selectRg" resultType="String">
+		select rg_name from region where rg_pv_name = #{pv_name};
+	</select>
+	<insert id="insertBt">
+		insert into boardtype values (#{bt_name});
+	</insert>
+	<insert id="insertBc">
+		insert into boardcategory(bc_name, bc_bt_name) values(#{bc_name}, #{bc_bt_name});
+	</insert>
+	<select id="getbt" resultType="String">
+		select * from boardtype;
+	</select>
+	<select id="getBc" resultType="map">
+		select * from boardcategory where bc_bt_name = #{board_type};
+	</select>
+	<insert id="insertBoard" useGeneratedKeys="true" keyProperty="bd_num">
+		insert into board(bd_title, bd_content, bd_date, bd_me_id, bd_bc_num)
+			values(#{bd_title}, #{bd_content}, now(), #{bd_me_id}, #{bd_bc_num})
+	</insert>
+	<insert id="insertRegionBoard">
+		insert into rgboard(rb_rg_name, rb_bd_num) values(#{rb_rg_name}, #{bd_num})
+	</insert>
+	<select id="getBoardListR" resultType="kr.green.hand.vo.BoardVO">
+		select * from board right join rgboard on bd_num = rb_bd_num
+			order by bd_num desc limit #{pageStart}, #{perPageNum};
+	</select>
+	<select id="getTotalCountR" resultType="int">
+		select count(*) from board right join rgboard on bd_num = rb_bd_num;
+	</select>
+</mapper>

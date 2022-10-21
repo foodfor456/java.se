@@ -34,7 +34,7 @@
 </head>
 <body>
 <form class="container mt-4" action="<c:url value="/product/update"></c:url>" id="cl_category" method="post" enctype="multipart/form-data">
-	<h1>제품 정보</h1>
+	<h1>제품 수정</h1>
 	<div class="form-group wa-box">
 		<c:if test="${pr.pr_waiting == 'Y'}">
 			<span>대기 상태 : <input type="text" value="${wa.wp_state}"></span>
@@ -110,8 +110,8 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text">선택 옵션 명:</span>
 									</div>
-									<input type="hidden" class="form-control ps_num" name="" value="">
-									<input type="text" class="form-control mr-1 ps_name" value="${opl.ps_name}" name="ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>
+									<input type="hidden" class="form-control ps_num" name="list[0].ps_num" value="${opl.ps_num}">
+									<input type="text" class="form-control mr-1 ps_name" value="${opl.ps_name}" name="list[0].ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>
 						    </div>
 						    <div class="op-sub">
 						      <c:forEach items="${op}" var="opp">
@@ -128,10 +128,10 @@
 										  		<div class="input-group-prepend">
 										 	 			<span class="input-group-text">옵션 가격:</span>
 													</div>
-													<input type="text" class="form-control" name="list[0].op_price" placeholder="정수로 입력" value="${opp.op_title}">
+													<input type="text" class="form-control" name="list[0].op_price" placeholder="정수로 입력" value="${opp.op_price}">
 												</div>
 											</div>
-											<!-- <div style="text-align: center;"><i class="fa-solid fa-plus op-plus"></i></div> -->
+											
 										</c:if>
 									</c:forEach>
 								</div>
@@ -291,7 +291,8 @@ $(function(){
 		str += 		  '<div class="input-group-prepend">'
 		str += 	 			'<span class="input-group-text">선택 옵션 명:</span>'
 		str += 		 	'</div>'
-		str +=			'<input type="text" class="form-control mr-1" name="ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>'
+		str += 			'<input type="hidden" class="form-control ps_num" name="list[0].ps_num" value="1">'
+		str +=			'<input type="text" class="form-control mr-1 ps_name" name="list[0].ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>'
     str += 		'</div>'
     str +=		'<div class="op-sub">'
     str += 			'<div class="mb-1 sub-box" style="width: 100%;">'
@@ -414,6 +415,7 @@ function setNames(){
 		$('.op-box').find('.op_title').eq(i).children('input').attr('name', 'list['+i+'].op_title');
 	}
 }
+
 function ajaxString(async, dataObj, url, success){
 	$.ajax({
 	  async: async,

@@ -35,6 +35,10 @@
 		  <input type="password" class="form-control col-6" id="me_pw2" name="me_pw2">
 		</div>
 		<div class="form-group">
+		  <label>이름</label>
+		  <input type="text" class="form-control col-6" id="me_name" name="me_name">
+		</div>
+		<div class="form-group">
 		  <label>이메일</label>
 		  <input type="text" class="form-control col-6" id="me_email" name="me_email">
 	    <button type="button" class="btn btn-outline-success btn-check">이메일 인증</button>

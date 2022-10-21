@@ -70,6 +70,10 @@ public interface ProductDAO {
 
 	void deleteOpSelect(String pr_code);
 
+	int updateProductAmount(@Param("pr_code")String by_pr_code, @Param("pr_amount")int by_amount);
+
+	void waitingProduct(String pr_code);
+
 	
 	
 	

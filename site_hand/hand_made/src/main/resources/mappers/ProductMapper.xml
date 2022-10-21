@@ -103,4 +103,10 @@
   <delete id="deleteOpSelect">
   	delete from prselect where ps_pr_code = #{pr_code}
   </delete>
+  <update id="updateProductAmount" useGeneratedKeys="true" keyProperty="pr_amount">
+  	update product set pr_amount = pr_amount - ${pr_amount} where pr_code = #{pr_code};
+  </update>
+  <update id="waitingProduct">
+  	update product set pr_waiting = 'Y' where pr_code = #{pr_code};
+  </update>
 </mapper>

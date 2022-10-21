@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.green.hand.dao.MemberDAO">
 	<insert id="signUp">
-		insert into member(me_id, me_pw, me_email, me_post, me_addr, me_addr_detail, me_phon, me_vali, me_authority)
-			values(#{me_id},#{me_pw},#{me_email},#{me_post},#{me_addr},#{me_addr_detail},#{me_phon},#{me_vali},#{me_authority});
+		insert into member(me_id, me_pw, me_name, me_email, me_post, me_addr, me_addr_detail, me_phon, me_vali, me_authority)
+			values(#{me_id},#{me_pw},#{me_name},#{me_email},#{me_post},#{me_addr},#{me_addr_detail},#{me_phon},#{me_vali},#{me_authority});
 	</insert>
 	<select id="idCheck" resultType="int">
   	select count(*) from member where me_id = #{me_id};

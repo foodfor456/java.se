@@ -117,8 +117,6 @@ public class ProductController {
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		WaitingVO wa = productService.getWaiting(pr_num);
 		boolean res = productService.updateProduct(user, files, pr, delFiles, pr_num, op);
-		
-		
 		if(res)
 			messageService.message(response, "제품을 수정했습니다.", "/hand/product/select?pr_code="+pr.getPr_code());
 		else

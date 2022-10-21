@@ -13,21 +13,25 @@
 .price-box{	float: right; width: 40%;}
 .header-box{	position: relative;}
 .code {	margin-top: 10px; position: absolute; bottom: -30px; right: 0; padding: 0;}
-.themb-box-main { border: 1px solid gray; width: 50%; height: 50%; display: inline-block;}
-.themb-box-sub {	border: 1px solid gray;	width: 50%; height: 60px;}
+.themb-box-main { border: 1px solid gray; width: 50%; height: 50%; display: inline-block; text-align: center;}
+.thumb-box-sub { border: 1px solid gray;	width: 50%; height: 60px; padding: 0 50px;}
+.thumb-box-sub>div{ margin: 0 7px;}
 .file-area { text-align: center;}
 .file-box input{  line-height: 1.2; float: left;}
 .fa-plus, .op-plus{ cursor: pointer; font-size: 20px;}
 .file-box span{ float: right; cursor: pointer;}
 .op-minus { margin: 5px; line-height: 1.7; cursor: pointer;}
+.thumb-box{ display: inline-block;}
+
 </style>
 </head>
 <body>
-<form class="container mt-4 clearfix" method="post" enctype="multipart/form-data">
-	<h1>제품 등록</h1>
+<form class="container mt-5 clearfix" method="post" enctype="multipart/form-data">
+	<h2>제품 등록</h2>
 	<div class="form-group header-box">
 		<div class="category-box">
 			<label>카테고리 :</label>
+			
 			<select class="form-control mb-3" id="cl_name" name="cl_name">
 				<option value="0">대분류 카테고리</option>
 				<c:forEach items="${categoryL}" var="cl">
@@ -50,14 +54,16 @@
 	  <input type="text" class="form-control" id="pr_title" name="pr_title">
 	</div>
 	<div class="form-group themb-box">
-		<div class="themb-box-main"></div>
+		<div class="themb-box-main">
+			<img id="preview" width= "550" height= "435" style="display: none">
+		</div>
 		<div class="price-box">
 			<label>수량 :</label>
 	    <input type="text" class="form-control" name="pr_amount">
 	    <label class="mt-2">파일 :</label>
 	    <div class="file-area">
 	    	<div class="file-box clearfix">
-		    	<div class="mb-1" ><input class="" type="file" id="pr_file" name="files"></div>
+		    	<div class="mb-1"><input class="pr_file" type="file" id="pr_file" name="files"></div>
 	    	</div>
 			  <i class="fa-solid fa-plus fi-plus"></i>
 			</div>
@@ -68,8 +74,9 @@
 			<div class="op-area mt-2">
 			</div>
 		</div>
-		
-		<div class="themb-box-sub"></div>
+		<div class="thumb-box-sub">
+			
+		</div>
 	</div>
 	<div class="form-group mt-3">
 	  <label>내용 :</label>
@@ -82,12 +89,15 @@ $(function(){
 	$('#cl_name').change(function(){
 		$('#cs_name').remove();	
 		let str = '';
-		let cl_name = $(this).children().eq($(this).val()).text();
+		let cl_name = '';
+		if($(this).children('option:selected').index() != 0){
+			cl_name = $(this).children('option:selected').text();
+		}
 		let cs_name = $('#cs_name').text();
 		let obj = {
 			cl_name : cl_name
 		}
-		console.log($(this).children().eq($(this).val()).val()-1);
+		
 		ajaxPost(false, obj, '/product/insert/categoryS', function(data){
 			 if(data.categoryS.length != 0){
 			str +=	'<select class="form-control" id="cs_name" name="cs_name">'
@@ -97,13 +107,40 @@ $(function(){
 			str +=		'<option value="'+(cs.cs_num)+'">'+cs.cs_name+'</option>'
 				}
 			str +=	'</select>'
-			}else{
+			}else {
 				str +=	'<select class="form-control" id="cs_name" name="cs_name">'
 				str +=	'<option value="-1">등록된 카테고리가 없습니다.</option>'
 				str +=	'</select>'
 			}
-			$('#cl_name').after(str);
+			if($('#cl_name').children('option:selected').index() != 0)
+				$('#cl_name').after(str);
 		})
+	});
+	$(document).on('change', '.pr_file', function(event) {
+		let str = '';
+		let index = $(this).parents('.file-box').index();
+		var file = event.target.files[0];
+		var reader = new FileReader(); 
+		
+		if(event.target.files.length == 0){
+			$('#preview').hide();
+			return;
+		}else if(index < 7){
+			if(index == 0){
+				reader.readAsDataURL(file);
+				reader.onload = function(e) {
+	   			$('#preview').attr("src", e.target.result);
+			  }
+				$('#preview').show();
+			}
+			else{
+				reader.readAsDataURL(file);
+				reader.onload = function(e) {
+					$('.thumb-box').eq(index-1).find('.thumb-img').attr("src", e.target.result);
+			  }
+			}
+		}
+		return;
 	});
 	$(document).on('change','.category-box', function(){
 		let cl_name = $('#cl_name').val()-1;
@@ -121,35 +158,43 @@ $(function(){
 			let obj = {ca_code : ca_code};
 			ajaxString(true, obj, '/product/select/category', function(data){
 				$('#pr_code').val(data);
-				console.log(data);
+				
 			}, null)
 		}else
 			$('#pr_code').val('');
 	})
 	$(document).on('click', '.fi-plus', function(){
 		let count = $('.file-area').children().length;
-		console.log(count)
 		let str = '';
+		let strs = '';
 		if(count < 7){
 			$(this).remove();
 			str += '<div class="file-box clearfix">'
-			str +=   '<div class="mb-1" ><input class="" type="file" id="pr_file" name="files"><span>X</span></div>'
+			str +=   '<div class="mb-1" ><input class="pr_file" type="file" id="pr_file" name="files"><span>X</span></div>'
 			str += '</div>'
 			str += '<i class="fa-solid fa-plus fi-plus"></i>'
+			strs += '<div class="thumb-box clearfix">'
+			strs +=		'<img class="thumb-img" width="60" height="100%"> '
+			strs += '</div>'
 		}
 		else if(count == 7){
 			$(this).remove();
 			str += '<div class="file-box clearfix">'
-			str +=   '<div class="mb-1" ><input class="" type="file" id="pr_file" name="files"><span>X</span></div>'
+			str +=   '<div class="mb-1" ><input class="pr_file" type="file" id="pr_file" name="files"><span>X</span></div>'
 			str += '</div>'
+			strs += '<div class="thumb-box clearfix">'
+			strs +=		'<img class="thumb-img" width="60" height="100%"> '
+			strs += '</div>'
 		}
 			$('.file-area').append(str);
+			$('.thumb-box-sub').append(strs);
 	})
 	$(document).on('click','.file-box span', function(){
-		$('.fi-plus').remove();			
+		$('.fi-plus').remove();
+		let index = $(this).parents('.file-box').index();
+		$('.thumb-box').eq(index-1).remove();
 		$(this).parents('.file-box').remove();
 		let count = $('.file-area').children().length;
-		console.log(count)
 		let str = '';
 		if(count < 7){
 			str += '<i class="fa-solid fa-plus fi-plus"></i>'
@@ -157,7 +202,7 @@ $(function(){
 		else if(count == 7){
 			$(this).remove();
 			str += '<div class="file-box clearfix">'
-			str +=   '<div class="mb-1" ><input class="" type="file" id="pr_file" name="files"><span>X</span></div>'
+			str +=   '<div class="mb-1" ><input class="pr_file" type="file" id="pr_file" name="files"><span>X</span></div>'
 			str += '</div>'
 		}
 			$('.file-area').append(str);
@@ -169,8 +214,8 @@ $(function(){
 		str += 		  '<div class="input-group-prepend">'
 		str += 	 			'<span class="input-group-text">선택 옵션 명:</span>'
 		str += 		 	'</div>'
-		str += 			'<input type="hidden" class="form-control ps_num" name="" value="">'
-		str +=			'<input type="text" class="form-control mr-1 ps_name" name="ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>'
+		str += 			'<input type="hidden" class="form-control ps_num" name="list[0].ps_num" value="1">'
+		str +=			'<input type="text" class="form-control mr-1 ps_name" name="list[0].ps_name" placeholder="예)사이즈, 색상"><span class="op-fold" style="font-size: 15px; line-height: 2.5; color: blue; cursor: pointer">접기</span>'
     str += 		'</div>'
     str +=		'<div class="op-sub">'
     str += 			'<div class="mb-1 sub-box">'

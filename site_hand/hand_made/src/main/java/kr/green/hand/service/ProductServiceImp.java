@@ -29,14 +29,11 @@ public class ProductServiceImp implements ProductService{
 			return false;
 		productDao.categoryInsertL(cl_name);
 			return true;
-		
 	}
-	
 	@Override
 	public boolean categoryInsertS(String cl_name, String cs_name) {
 		if(cl_name == null || cs_name == null)
 			return false;
-		
 		productDao.categoryInsertS(cl_name, cs_name);
 		return true;
 	}
@@ -88,8 +85,9 @@ public class ProductServiceImp implements ProductService{
 				ps_name = ot.getPs_name(); 
 				ps_num = ot.getPs_num();
 				productDao.insertOpSelect(ot);
-				
 			}
+			System.out.println(ot.getPs_num());
+			System.out.println(ot.getPs_pr_code());
 			productDao.insertOption(ot);
 		}
 		insertFiles(files, "product", product.getPr_code());
@@ -108,19 +106,16 @@ public class ProductServiceImp implements ProductService{
 			cri = new Criteria();
 		return productDao.getTotalcountPr(cri);
 	}
-	
 	@Override
 	public ProductVO selectProduct(String pr_code) {
 		if(pr_code == null)
 			return null;
-		
 		return productDao.selectProduct(pr_code);
 	}
 	@Override
 	public ArrayList<FileVO> selectProductFile(String pr_code) {
 		if(pr_code == null)
 			return null;
-		
 		return productDao.selectProductFile(pr_code);
 	}
 
@@ -222,8 +217,7 @@ public class ProductServiceImp implements ProductService{
 				String fi_name = UploadFileUtils.uploadFileUUID(uploadPath, file.getOriginalFilename(), file.getBytes());
 				FileVO fileVo = new FileVO(fi_name, file.getOriginalFilename(), fi_table, fi_code);
 				productDao.insertFile(fileVo);
-				System.out.println(fileVo);
-			} catch (Exception e) {
+			}catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -279,5 +273,5 @@ public class ProductServiceImp implements ProductService{
 		
 		return productDao.getOption(pr_code);
 	}
-
+	
 }
